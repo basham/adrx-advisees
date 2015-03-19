@@ -21,13 +21,11 @@ var App = React.createClass({
   //
   render: function() {
     return (
-      <section className="qn-App">
-        <header className="qn-Header">
-          <h1 className="qn-Header-heading">
-            Advisees
-          </h1>
-        </header>
-        <div className="qn-App-content">
+      <section className="adv-App">
+        <h1 className="adv-App-heading">
+          Advisees
+        </h1>
+        <div className="adv-App-content">
           {this.renderList()}
         </div>
       </section>
@@ -43,13 +41,73 @@ var App = React.createClass({
     return data.advisees.map(this.renderAdvisee);
   },
   renderAdvisee: function(advisee) {
+    var programPlan = advisee.acadProgPlanList.split('-');
+    var program = programPlan[0];
+    var plans = programPlan[1].split('/').join(' \u00b7 ');
+
     return (
-      <div>
-        <h2>{advisee.studentName}</h2>
-        <span>{advisee.emplid}</span>
+      <div className="adv-Advisee">
+        <header className="adv-Advisee-header">
+          <h2 className="adv-Advisee-heading">{advisee.studentName}</h2>
+          <p className="adv-Advisee-id">{advisee.emplid}</p>
+        </header>
+        <div className="adv-Advisee-groups">
+          <div className="adv-Advisee-group">
+            <dl className="adv-Advisee-list">
+              <dt className="adv-Advisee-listTitle">Academic Program and Plan</dt>
+              <dd className="adv-Advisee-listItem">{program}</dd>
+              <dd className="adv-Advisee-listItem">{plans}</dd>
+            </dl>
+          </div>
+          <div className="adv-Advisee-group">
+            <dl className="adv-Advisee-list">
+              <dt className="adv-Advisee-listTitle">Advisor Role</dt>
+              <dd className="adv-Advisee-listItem">{advisee.advisorRoleDescr}</dd>
+            </dl>
+            <dl className="adv-Advisee-list">
+              <dt className="adv-Advisee-listTitle">Last Enrolled</dt>
+              <dd className="adv-Advisee-listItem">{advisee.lastEnrolled}</dd>
+            </dl>
+          </div>
+          <div className="adv-Advisee-group">
+            <dl className="adv-Advisee-list">
+              <dt className="adv-Advisee-listTitle">Hours</dt>
+              <dd className="adv-Advisee-listItem">{advisee.hours}</dd>
+            </dl>
+            <dl className="adv-Advisee-list">
+              <dt className="adv-Advisee-listTitle">Program GPA</dt>
+              <dd className="adv-Advisee-listItem">{advisee.programGpa}</dd>
+            </dl>
+            <dl className="adv-Advisee-list">
+              <dt className="adv-Advisee-listTitle">IU GPA</dt>
+              <dd className="adv-Advisee-listItem">{advisee.iuGpa}</dd>
+            </dl>
+          </div>
+        </div>
       </div>
     );
   }
 });
+
+/*
+{
+  "emplid": "7496827183",
+  "studentName": "Blanda, Angelina Fannie",
+  "institution": "IUBLA",
+  "advisorRole": "ADVR",
+  "advisorRoleDescr": "Academic Advisor",
+  "acadProg": "BUS1",
+  "acadProgDescr": "Business Undergraduate",
+  "acadCareer": "UGRD",
+  "acadCareerDescr": "Undergraduate",
+  "acadProgPlanList": "Business Undergraduate-Supply Chain Management BSB",
+  "committeeId": " ",
+  "lastEnrolled": "Spring 2015",
+  "lastEnrolledStrm": "4152",
+  "hours": "111.5",
+  "programGpa": "2.188",
+  "iuGpa": "2.318"
+},
+*/
 
 module.exports = App;

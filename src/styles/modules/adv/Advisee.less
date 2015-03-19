@@ -1,0 +1,57 @@
+.adv-Advisee {
+  border: unit(1/16, em) solid @color-Border;
+
+  &-header {
+    margin: 1em 1em 0;
+
+    @media @xs {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &-heading {
+    font-size: @scale-FontSize--10;
+    margin: 0;
+  }
+
+  &-id {
+    margin: 0.5em 0 0 0;
+
+    @media @xs {
+      margin: 0 0 0 1em;
+    }
+  }
+
+  &-groups {
+
+    @media @sm {
+      display: flex;
+      font-size: 1em;
+    }
+  }
+
+  &-group {
+    display: flex;
+    margin: 1em 0;
+  }
+
+  &-list {
+    line-height: @scale-FontSize--20;
+    margin: 0 1em;
+
+    &Title {
+      font-size: @scale-FontSize--05i;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    &Item {
+      margin: 0;
+    }
+
+    &Item + &Title {
+      margin-top: 1em;
+    }
+  }
+}

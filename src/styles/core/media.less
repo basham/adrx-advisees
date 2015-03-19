@@ -1,0 +1,15 @@
+// Breakpoints
+@screen-xxs: (360em / 16);
+@screen-xs: (480em / 16);
+@screen-sm: (768em / 16);
+@screen-md: (992em / 16);
+@screen-lg: (1200em / 16);
+
+// http://www.thedotmack.com/2013/11/18/less-media-query-mixins/
+@xxs: ~'(min-width: @{screen-xxs})';
+@xs: ~'(min-width: @{screen-xs})';
+@sm: ~'(min-width: @{screen-sm})';
+@md: ~'(min-width: @{screen-md})';
+@lg: ~'(min-width: @{screen-lg})';
+
+@sm-height: ~'(min-height: @{screen-sm})';
