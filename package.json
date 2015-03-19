@@ -1,21 +1,21 @@
 {
-  "name": "react-boilerplate",
+  "name": "adrx-advisees",
   "version": "1.0.0",
-  "description": "React boilerplate.",
+  "description": "AdRx Advisees.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.iu.edu/ess-aa/react-boilerplate.git"
+    "url": "https://github.iu.edu/ess-aa/adrx-advisees.git"
   },
   "author": "Chris Basham <csbasham@iu.edu>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.iu.edu/ess-aa/react-boilerplate/issues"
+    "url": "https://github.iu.edu/ess-aa/adrx-advisees/issues"
   },
-  "homepage": "https://github.iu.edu/ess-aa/react-boilerplate",
+  "homepage": "https://github.iu.edu/ess-aa/adrx-advisees",
   "devDependencies": {
     "browser-sync": "^2.1.6",
     "browserify": "^9.0.3",

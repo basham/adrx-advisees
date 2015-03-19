@@ -1,4 +1,4 @@
-# React Boilerplate
+# AdRx Advisees
 
 Boilerplate code for a [React](http://facebook.github.io/react/) project with a [Reflux](https://github.com/spoike/refluxjs) architecture.
 
