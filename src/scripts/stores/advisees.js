@@ -3,6 +3,7 @@
 var Reflux = require('reflux');
 
 var actions = require('../actions');
+var helpers = require('../helpers');
 
 var adviseesStore = Reflux.createStore({
   listenables: actions,
@@ -13,8 +14,13 @@ var adviseesStore = Reflux.createStore({
     var data = require('./data.json');
 
     var output = data.advisees.map(function(advisee) {
+      // Extract plans.
       var programPlanList = advisee.acadProgPlanList.split('-');
       var plans = programPlanList[1].split('/');
+      // Round numerical values,
+      var hours = helpers.round(advisee.hours, 1);
+      var programGPA = helpers.round(advisee.programGpa, 2);
+      var universityGPA = helpers.round(advisee.iuGpa, 2);
 
       return {
         name: advisee.studentName,
@@ -35,17 +41,17 @@ var adviseesStore = Reflux.createStore({
           },
           {
             title: 'Hours',
-            items: [advisee.hours],
+            items: [hours],
             rightAlign: true
           },
           {
             title: 'Program GPA',
-            items: [advisee.programGpa],
+            items: [programGPA],
             rightAlign: true
           },
           {
             title: 'IU GPA',
-            items: [advisee.iuGpa],
+            items: [universityGPA],
             rightAlign: true
           }
         ]
