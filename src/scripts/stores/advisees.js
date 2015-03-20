@@ -1,6 +1,7 @@
 'use strict';
 
 var Reflux = require('reflux');
+var request = require('superagent');
 
 var actions = require('../actions');
 var helpers = require('../helpers');
@@ -11,9 +12,19 @@ var adviseesStore = Reflux.createStore({
   // Action methods
   //
   onGetData: function() {
-    var data = require('./data.json');
+    var params = helpers.getQueryParams();
 
-    var output = data.advisees.map(function(advisee) {
+    request
+      .get(helpers.api('myAdvisees_JSON'))
+      .query({
+        sr: params.sr
+      })
+      .end(helpers.requestCallback(this.onGetDataCompleted));
+  },
+  onGetDataCompleted: function(data) {
+    var advisees = data.myAdvisees;
+
+    var output = advisees.map(function(advisee) {
       // Extract plans.
       var programPlanList = advisee.acadProgPlanList.split('-');
       var plans = programPlanList[1].split('/');
