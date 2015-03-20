@@ -45,36 +45,41 @@ var App = React.createClass({
     return (
       <li className="adv-AdviseeList-item adv-Advisee">
         <header className="adv-Advisee-header">
-          <h2 className="adv-Advisee-heading">{advisee.name}</h2>
-          <p className="adv-Advisee-id">{advisee.universityId}</p>
+          <h2 className="adv-Advisee-heading">
+            {advisee.name}
+          </h2>
+          <p className="adv-Advisee-id">
+            {advisee.universityId}
+          </p>
         </header>
         <div className="adv-Advisee-details">
-          {this.renderAdviseeDetails(advisee.details)}
+          {advisee.details.map(this.renderAdviseeDetail)}
         </div>
       </li>
     );
   },
-  renderAdviseeDetails: function(details) {
-    return details.map(function(detail) {
-      var cn = classNames({
-        'adv-Advisee-detail': true,
-        'adv-Advisee-detail--fixed': detail.fixed,
-        'adv-Advisee-detail--right': detail.rightAlign
-      });
-      return (
-        <dl className={cn}>
-          <dt className="adv-Advisee-detailTitle">{detail.title}</dt>
-          {this.renderAdviseeDetailItems(detail.items)}
-        </dl>
-      );
-    }.bind(this));
-  },
-  renderAdviseeDetailItems: function(items) {
-    return items.map(function(item) {
-      return (
-        <dd className="adv-Advisee-detailItem">{item}</dd>
-      );
+  renderAdviseeDetail: function(detail) {
+    var cn = classNames({
+      'adv-Advisee-detail': true,
+      'adv-Advisee-detail--fixed': detail.fixed,
+      'adv-Advisee-detail--right': detail.rightAlign
     });
+
+    return (
+      <dl className={cn}>
+        <dt className="adv-Advisee-detailTitle">
+          {detail.title}
+        </dt>
+        {detail.items.map(this.renderAdviseeDetailItem)}
+      </dl>
+    );
+  },
+  renderAdviseeDetailItem: function(item) {
+    return (
+      <dd className="adv-Advisee-detailItem">
+        {item}
+      </dd>
+    );
   }
 });
 
