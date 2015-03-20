@@ -35,6 +35,7 @@
     "reactify": "^1.0.0",
     "require-directory": "^2.0.0",
     "run-sequence": "^1.0.2",
+    "superagent": "^1.1.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0"
   },
@@ -42,7 +43,6 @@
     "fastclick": "global:FastClick",
     "react": "global:React",
     "react-router": "global:ReactRouter",
-    "reflux": "global:Reflux",
-    "superagent": "global:superagent"
+    "reflux": "global:Reflux"
   }
 }

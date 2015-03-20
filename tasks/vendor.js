@@ -8,7 +8,6 @@ gulp.task('vendor', function() {
       './bower_components/react/react.min.js',
       './bower_components/react-router/build/global/ReactRouter.min.js',
       './bower_components/reflux/dist/reflux.min.js',
-      './bower_components/superagent/superagent.js',
       './bower_components/fastclick/lib/fastclick.js'
     ])
     .pipe(concat('vendor.js'))
