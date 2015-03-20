@@ -6,6 +6,7 @@ var classNames = require('classnames');
 
 var actions = require('../actions');
 var adviseesStore = require('../stores/advisees');
+var helpers = require('../helpers');
 
 var App = React.createClass({
   mixins: [
@@ -42,11 +43,21 @@ var App = React.createClass({
     return data.map(this.renderAdvisee);
   },
   renderAdvisee: function(advisee) {
+    var params = helpers.getQueryParams();
+    var url = helpers.api('search', {
+      searchEmplid: advisee.universityId,
+      sr: params.sr
+    });
+
     return (
       <li className="adv-AdviseeList-item adv-Advisee">
         <header className="adv-Advisee-header">
           <h2 className="adv-Advisee-heading">
-            {advisee.name}
+            <a
+              className="adv-Advisee-link"
+              href={url}>
+              {advisee.name}
+            </a>
           </h2>
           <p className="adv-Advisee-id">
             {advisee.universityId}
