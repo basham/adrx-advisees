@@ -59,16 +59,9 @@ function round(value, exp) {
   return parseFloat(value).toFixed(exp);
 }
 
-function objectToArray(obj) {
-  return Object.keys(obj).map(function(key) {
-    return obj[key];
-  });
-}
-
 module.exports = {
   api: api,
   getQueryParams: getQueryParams,
   requestCallback: requestCallback,
-  round: round,
-  objectToArray: objectToArray
+  round: round
 };
