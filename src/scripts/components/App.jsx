@@ -26,9 +26,9 @@ var App = React.createClass({
         <h1 className="adv-App-heading">
           Advisees
         </h1>
-        <div className="adv-App-content">
+        <ol className="adv-AdviseeList">
           {this.renderList()}
-        </div>
+        </ol>
       </section>
     );
   },
@@ -43,7 +43,7 @@ var App = React.createClass({
   },
   renderAdvisee: function(advisee) {
     return (
-      <div className="adv-Advisee">
+      <li className="adv-AdviseeList-item adv-Advisee">
         <header className="adv-Advisee-header">
           <h2 className="adv-Advisee-heading">{advisee.name}</h2>
           <p className="adv-Advisee-id">{advisee.universityId}</p>
@@ -51,7 +51,7 @@ var App = React.createClass({
         <div className="adv-Advisee-details">
           {this.renderAdviseeDetails(advisee.details)}
         </div>
-      </div>
+      </li>
     );
   },
   renderAdviseeDetails: function(details) {
