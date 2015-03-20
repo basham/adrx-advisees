@@ -23,35 +23,23 @@
     }
   }
 
-  &-groups {
-
-    @media @sm {
-      display: flex;
-      font-size: 1em;
-    }
-  }
-
-  &-group {
+  &-details {
     display: flex;
-    margin: 1em 0;
+    flex-wrap: wrap;
+    margin: 0.5em;
   }
 
-  &-list {
+  &-detail {
     line-height: @scale-FontSize--20;
-    margin: 0 1em;
+    margin: 0.5em;
+  }
 
-    &Title {
-      font-size: @scale-FontSize--05i;
-      font-weight: bold;
-      white-space: nowrap;
-    }
+  &-detailTitle {
+    font-size: @scale-FontSize--05i;
+    font-weight: bold;
+  }
 
-    &Item {
-      margin: 0;
-    }
-
-    &Item + &Title {
-      margin-top: 1em;
-    }
+  &-detailItem {
+    margin: 0;
   }
 }
