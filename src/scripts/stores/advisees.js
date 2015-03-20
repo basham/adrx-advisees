@@ -22,7 +22,8 @@ var adviseesStore = Reflux.createStore({
         details: [
           {
             title: advisee.acadProgDescr,
-            items: plans
+            items: plans,
+            fixed: true
           },
           {
             title: 'Advisor Role',
@@ -34,15 +35,18 @@ var adviseesStore = Reflux.createStore({
           },
           {
             title: 'Hours',
-            items: [advisee.hours]
+            items: [advisee.hours],
+            rightAlign: true
           },
           {
             title: 'Program GPA',
-            items: [advisee.programGpa]
+            items: [advisee.programGpa],
+            rightAlign: true
           },
           {
             title: 'IU GPA',
-            items: [advisee.iuGpa]
+            items: [advisee.iuGpa],
+            rightAlign: true
           }
         ]
       };

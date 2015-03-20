@@ -2,6 +2,7 @@
 
 var React = require('react');
 var Reflux = require('reflux');
+var classNames = require('classnames');
 
 var actions = require('../actions');
 var adviseesStore = require('../stores/advisees');
@@ -55,8 +56,13 @@ var App = React.createClass({
   },
   renderAdviseeDetails: function(details) {
     return details.map(function(detail) {
+      var cn = classNames({
+        'adv-Advisee-detail': true,
+        'adv-Advisee-detail--fixed': detail.fixed,
+        'adv-Advisee-detail--right': detail.rightAlign
+      });
       return (
-        <dl className="adv-Advisee-detail">
+        <dl className={cn}>
           <dt className="adv-Advisee-detailTitle">{detail.title}</dt>
           {this.renderAdviseeDetailItems(detail.items)}
         </dl>
