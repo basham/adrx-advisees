@@ -86,7 +86,7 @@ var App = React.createClass({
         <header className="adv-Advisee-header">
           <h2 className="adv-Advisee-heading">
             <a
-              className="adv-Advisee-link"
+              className="adv-Link"
               href={url}>
               {advisee.name}
             </a>
