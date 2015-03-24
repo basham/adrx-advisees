@@ -8,6 +8,8 @@ var actions = require('../actions');
 var adviseesStore = require('../stores/advisees');
 var helpers = require('../helpers');
 
+var Alert = require('./Alert');
+
 var App = React.createClass({
   mixins: [
     Reflux.listenTo(adviseesStore, 'onStoreChange'),
@@ -35,6 +37,9 @@ var App = React.createClass({
     if(this.state.requesting) {
       content = this.renderLoading();
     }
+    else if(this.state.errorMessage) {
+      content = this.renderError();
+    }
     else {
       content = data.length ? this.renderList(data) : this.renderEmpty()
     }
@@ -61,6 +66,14 @@ var App = React.createClass({
       <p className="adv-App-empty">
         You currently have no advisees assigned to you.
       </p>
+    );
+  },
+  renderError: function() {
+    return (
+      <Alert
+        message={this.state.errorMessage}
+        ref="error"
+        type="error"/>
     );
   },
   renderList: function(data) {
@@ -138,7 +151,16 @@ var App = React.createClass({
   //
   onGetData: function() {
     this.setState({
+      errorMessage: null,
       requesting: true
+    });
+  },
+  onGetDataFailed: function(message) {
+    this.setState({
+      errorMessage: message,
+      requesting: false
+    }, function() {
+      this.refs.error.getDOMNode().focus();
     });
   }
 });

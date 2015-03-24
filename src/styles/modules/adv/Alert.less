@@ -1,0 +1,37 @@
+.adv-Alert {
+  align-items: baseline;
+  background-color: @color-Base--150;
+  border: unit(1/16, em) solid @color-Base--250;
+  display: flex;
+  line-height: @scale-FontSize--10;
+  padding: 1em;
+
+  &:focus {
+    outline: none;
+  }
+
+  &--error {
+    background-color: @color-Danger--100;
+    border-color: @color-Danger--400;
+  }
+
+  &--error &-icon {
+    fill: @color-Danger--400;
+  }
+
+  &-icon {
+    flex-shrink: 0;
+    margin-right: 0.5em;
+    position: relative;
+    top: unit(3/16, em);
+  }
+
+  &-link {
+    .textShadow();
+    background-color: transparent;
+    border: none;
+    color: @color-Interactive--600;
+    cursor: pointer;
+    padding: 0;
+  }
+}

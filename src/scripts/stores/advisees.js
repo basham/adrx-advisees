@@ -19,12 +19,13 @@ var adviseesStore = Reflux.createStore({
       .query({
         sr: params.sr
       })
-      .end(helpers.requestCallback(this.onGetDataCompleted));
+      .end(helpers.requestCallback(this.handleSuccess, this.handleFail));
   },
-  onGetDataCompleted: function(data) {
-    var advisees = data.adviseeList;
+  handleSuccess: function(data) {
+    var adviseeList = data.myAdvisees ? data.myAdvisees : data.adviseeList;
+    adviseeList = Array.isArray(adviseeList) ? adviseeList : [];
 
-    var output = advisees
+    var output = adviseeList
       .sort(helpers.sortBy('studentName'))
       .map(function(advisee) {
         // Extract plans.
@@ -72,6 +73,15 @@ var adviseesStore = Reflux.createStore({
       });
 
     this.trigger(output);
+  },
+  handleFail: function() {
+    var message = (
+      <span>
+        Advisees could not load.
+        Please <button className="adv-Alert-link adv-Link" onClick={actions.getData}>try again</button>.
+      </span>
+    );
+    actions.getDataFailed(message);
   }
 });
 

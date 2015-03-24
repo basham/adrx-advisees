@@ -5,7 +5,7 @@ var rename = require('gulp-rename');
 function task() {
   return gulp.src('./src/assets/**/*.svg')
     .pipe(svg({
-      id: 'qn-Icon--%f',
+      id: 'adv-Icon--%f',
       templates: ['default-svg']
     }))
     .pipe(rename('icons.svg'))
