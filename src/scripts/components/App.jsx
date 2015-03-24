@@ -10,7 +10,8 @@ var helpers = require('../helpers');
 
 var App = React.createClass({
   mixins: [
-    Reflux.connect(adviseesStore, 'adviseesStore')
+    Reflux.listenTo(adviseesStore, 'onStoreChange'),
+    Reflux.listenToMany(actions)
   ],
   //
   // Lifecycle methods
@@ -18,24 +19,47 @@ var App = React.createClass({
   componentDidMount: function() {
     actions.getData();
   },
+  getInitialState: function() {
+    return {
+      adviseesStore: [],
+      requesting: true
+    }
+  },
   //
   // Render methods
   //
   render: function() {
     var data = this.state.adviseesStore;
+    var content = null;
+
+    if(this.state.requesting) {
+      content = this.renderLoading();
+    }
+    else {
+      content = data.length ? this.renderList(data) : this.renderEmpty()
+    }
+
     return (
       <section className="adv-App">
         <h1 className="adv-App-heading">
           Advisees
         </h1>
-        {data && data.length ? this.renderList(data) : this.renderEmpty()}
+        {content}
       </section>
+    );
+  },
+  renderLoading: function() {
+    return (
+      <p className="adv-App-loading">
+        Loading
+        <span className="adv-ProcessIndicator"/>
+      </p>
     );
   },
   renderEmpty: function() {
     return (
       <p className="adv-App-empty">
-        No advisees
+        You currently have no advisees assigned to you.
       </p>
     );
   },
@@ -99,6 +123,23 @@ var App = React.createClass({
         {item}
       </dd>
     );
+  },
+  //
+  // Store methods
+  //
+  onStoreChange: function(data) {
+   this.setState({
+     adviseesStore: data,
+     requesting: false
+   });
+  },
+  //
+  // Action methods
+  //
+  onGetData: function() {
+    this.setState({
+      requesting: true
+    });
   }
 });
 
