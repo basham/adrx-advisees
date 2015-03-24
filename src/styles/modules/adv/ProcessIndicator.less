@@ -1,0 +1,43 @@
+.adv-ProcessIndicator {
+  animation-delay: 0.16s !important;
+  position: relative;
+  margin: 0 0.5em 0 1em;
+  top: 1em;
+
+  &,
+  &::before,
+  &::after {
+    animation: advLoaderAnimation 1.8s infinite ease-in-out;
+    animation-fill-mode: both;
+    border-radius: 50%;
+    display: inline-block;
+    height: 0.5em;
+    width: 0.5em;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+  }
+
+  &::before {
+    left: -0.55em;
+  }
+
+  &::after {
+    animation-delay: 0.32s;
+    left: 0.55em;
+  }
+}
+
+@keyframes advLoaderAnimation {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 -1em 0 -0.5em @color-Interactive--400;
+  }
+  40% {
+    box-shadow: 0 -1em 0 0 @color-Interactive--400;
+  }
+}
