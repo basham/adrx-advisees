@@ -37,6 +37,11 @@ function getQueryParams() {
   return map;
 }
 
+function pluralize(count, singular, plural) {
+  plural = !!plural ? plural : singular + 's';
+  return count === 1 ? singular : plural;
+}
+
 function requestCallback(succeedCallback, failureCallback) {
   return function(err, res) {
     if(err || !res.ok) {
@@ -80,6 +85,7 @@ function sortStrings(a, b) {
 module.exports = {
   api: api,
   getQueryParams: getQueryParams,
+  pluralize: pluralize,
   requestCallback: requestCallback,
   round: round,
   sortBy: sortBy,

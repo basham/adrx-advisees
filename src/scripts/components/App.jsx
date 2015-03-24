@@ -22,25 +22,33 @@ var App = React.createClass({
   // Render methods
   //
   render: function() {
+    var data = this.state.adviseesStore;
     return (
       <section className="adv-App">
         <h1 className="adv-App-heading">
           Advisees
         </h1>
-        <ol className="adv-AdviseeList">
-          {this.renderList()}
-        </ol>
+        {data && data.length ? this.renderList(data) : this.renderEmpty()}
       </section>
     );
   },
-  renderList: function() {
-    var data = this.state.adviseesStore;
-    // Check for data.
-    if(!data) {
-      return null;
-    }
-    // Render items.
-    return data.map(this.renderAdvisee);
+  renderEmpty: function() {
+    return (
+      <p className="adv-App-empty">
+        No advisees
+      </p>
+    );
+  },
+  renderList: function(data) {
+    var count = data.length;
+    return (
+      <div>
+        <p>{count} {helpers.pluralize(count, 'advisee')}</p>
+        <ol className="adv-AdviseeList">
+          {data.map(this.renderAdvisee)}
+        </ol>
+      </div>
+    );
   },
   renderAdvisee: function(advisee) {
     var params = helpers.getQueryParams();
