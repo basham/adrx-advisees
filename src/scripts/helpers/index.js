@@ -59,9 +59,29 @@ function round(value, exp) {
   return parseFloat(value).toFixed(exp);
 }
 
+function sortBy(property) {
+  return function(a, b) {
+    return sortStrings(a[property], b[property]);
+  }
+}
+
+function sortStrings(a, b) {
+  a = a.toLowerCase();
+  b = b.toLowerCase();
+  if(a < b) {
+    return -1;
+  }
+  if(a > b) {
+    return 1;
+  }
+  return 0;
+}
+
 module.exports = {
   api: api,
   getQueryParams: getQueryParams,
   requestCallback: requestCallback,
-  round: round
+  round: round,
+  sortBy: sortBy,
+  sortStrings: sortStrings
 };
