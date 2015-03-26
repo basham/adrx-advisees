@@ -29,7 +29,7 @@ gulp build
 
 ## Releasing for production
 
-Initiate the production release build without running the development environment by appending either the `-p` or `--production` flag. Output is located in the `./release` directory.
+Build the production release by appending either the `-p` or `--production` flag to the default task. Output is located in the `./release` directory. The development environment will not initiate.
 
 ```
 gulp -p
