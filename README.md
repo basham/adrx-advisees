@@ -19,7 +19,7 @@ Run the development environment through the default [gulp](http://gulpjs.com/) t
 gulp
 ```
 
-## Build without initiating the development environment
+## Build without the development environment
 
 If wanting development output without initiating the environment, run the `build` task. Output is located in the `./build` directory.
 
