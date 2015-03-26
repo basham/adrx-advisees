@@ -8,6 +8,8 @@ var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
 var gzip = require('gulp-gzip');
 
+var config = require('./config');
+
 var bundler = browserify({
   entries: ['./src/scripts/main.jsx'],
   transform: [
@@ -19,13 +21,19 @@ var bundler = browserify({
 });
 
 gulp.task('scripts', function() {
-  return bundler.bundle()
-    .pipe(source('scripts.js'))
-    .pipe(gulp.dest('./build'))
-    .pipe(buffer())
-    .pipe(uglify())
-    .pipe(rename('scripts.min.js'))
-    .pipe(gulp.dest('./build'))
-    .pipe(gzip())
+  var src = bundler.bundle()
+    .pipe(source('scripts.js'));
+
+  if(config.isProduction) {
+    return src
+      .pipe(buffer())
+      .pipe(uglify())
+      .pipe(rename('scripts.min.js'))
+      .pipe(gulp.dest('./release'))
+      .pipe(gzip())
+      .pipe(gulp.dest('./release'));
+  }
+
+  return src
     .pipe(gulp.dest('./build'));
 });

@@ -13,8 +13,24 @@ bower install
 
 ## Developing
 
-Run the development environment through the default [gulp](http://gulpjs.com/) task.
+Run the development environment through the default [gulp](http://gulpjs.com/) task. Output is located in the `./build` directory.
 
 ```
 gulp
+```
+
+## Build without initiating the development environment
+
+If wanting development output without initiating the environment, run the `build` task. Output is located in the `./build` directory.
+
+```
+gulp build
+```
+
+## Releasing for production
+
+Initiate the production release build without running the development environment by appending either the `-p` or `--production` flag. Output is located in the `./release` directory.
+
+```
+gulp -p
 ```
