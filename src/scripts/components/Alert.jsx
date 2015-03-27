@@ -15,8 +15,7 @@ var Alert = React.createClass({
     return this.transferPropsTo(
       <p
         className={classNames}
-        ref="alert"
-        tabIndex="0">
+        role="alert">
         <Icon
           className="adv-Alert-icon"
           name={type}/>
