@@ -12,6 +12,12 @@ var adviseesStore = Reflux.createStore({
   // Action methods
   //
   onGetData: function() {
+    setTimeout(function() {
+      //this.handleFail();
+      this.handleSuccess(require('./data.json'));
+    }.bind(this), 0);
+    return;
+
     var params = helpers.getQueryParams();
 
     request

@@ -4,6 +4,13 @@ var React = require('react');
 var Reflux = require('reflux');
 var classNames = require('classnames');
 
+var ReactTabs = require('./Tabs');
+//var ReactTabs = require('react-tabs');
+var Tab = ReactTabs.Tab;
+var Tabs = ReactTabs.Tabs;
+var TabList = ReactTabs.TabList;
+var TabPanel = ReactTabs.TabPanel;
+
 var actions = require('../actions');
 var adviseesStore = require('../stores/advisees');
 var helpers = require('../helpers');
@@ -111,6 +118,23 @@ var App = React.createClass({
         <div className="adv-Advisee-details">
           {advisee.details.map(this.renderAdviseeDetail)}
         </div>
+        <Tabs
+          selectedIndex={0}>
+          <TabList>
+            <Tab>Groups</Tab>
+            <Tab>Negative</Tab>
+            <Tab>Positive</Tab>
+          </TabList>
+          <TabPanel>
+            <p>Hello from Foo</p>
+          </TabPanel>
+          <TabPanel>
+            <p>Hello from Bar</p>
+          </TabPanel>
+          <TabPanel>
+            <p>Hello from Baz</p>
+          </TabPanel>
+        </Tabs>
       </li>
     );
   },
