@@ -21,6 +21,27 @@ function api(method, query) {
   return config.API_URL + '?' + queryString;
 }
 
+function getFocusableElements($el) {
+  var childElementsNodeList = $el.querySelectorAll('*');
+  var childElementsArray = Array.prototype.slice.call(childElementsNodeList);
+  return childElementsArray.filter(function(el) {
+    var index = null;
+    // Rely on the tabIndex value if one is explicitly set.
+    if(el.hasAttribute('tabindex')) {
+      index = el.tabIndex;
+    }
+    // Because IE doesn't return proper tabIndex values, we have to be explicit.
+    // http://nemisj.com/focusable/
+    else {
+      var focusable = 'a body button frame iframe img input object select textarea'.split(' ');
+      var nodeName = el.nodeName.toLowerCase();
+      var isFocusable = focusable.indexOf(nodeName) !== -1;
+      index = isFocusable ? 0 : -1;
+    }
+    return index === 0;
+  });
+}
+
 // http://codereview.stackexchange.com/a/10396
 function getQueryParams() {
   var query = (window.location.search || '?').substr(1);
@@ -79,6 +100,7 @@ function sortStrings(a, b) {
 module.exports = {
   api: api,
   getQueryParams: getQueryParams,
+  getFocusableElements: getFocusableElements,
   pluralize: pluralize,
   requestCallback: requestCallback,
   round: round,
