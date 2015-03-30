@@ -12,6 +12,11 @@ var adviseesStore = Reflux.createStore({
   // Action methods
   //
   onGetData: function() {
+    setTimeout(function() {
+      this.handleSuccess(require('./data.json'));
+    }.bind(this), 0);
+    return;
+
     var params = helpers.getQueryParams();
 
     request
@@ -20,6 +25,9 @@ var adviseesStore = Reflux.createStore({
         sr: params.sr
       })
       .end(helpers.requestCallback(this.handleSuccess, this.handleFail));
+  },
+  onSortBy: function(index) {
+    console.log('---', index);
   },
   handleSuccess: function(data) {
     var adviseeList = data.myAdvisees ? data.myAdvisees : data.adviseeList;

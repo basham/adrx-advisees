@@ -4,7 +4,8 @@ var Reflux = require('reflux');
 
 var actions = Reflux.createActions([
   'getData',
-  'getDataFailed'
+  'getDataFailed',
+  'sortBy'
 ]);
 
 module.exports = actions;

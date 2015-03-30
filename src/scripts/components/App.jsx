@@ -78,13 +78,50 @@ var App = React.createClass({
   },
   renderList: function(data) {
     var count = data.length;
+    var sortOptions = [
+      'Academic Plan',
+      'Academic Program',
+      'Advisor Role',
+      'Flags',
+      'GPA - IU',
+      'GPA - Program Hours',
+      'Last Enrolled',
+      'Name',
+      'Negative Service Indicators',
+      'Positive Service Indicators',
+      'Student Groups'
+    ];
     return (
       <div>
-        <p>{count} {helpers.pluralize(count, 'advisee')}</p>
+        <div className="adv-Controls">
+          <p className="adv-Controls-count">
+            {count} {helpers.pluralize(count, 'advisee')}
+          </p>
+          <form className="adv-Controls-form">
+            <label
+              className="adv-Controls-label"
+              htmlFor="sortByInput">
+              Sort by
+            </label>
+            <select
+              className="adv-Controls-select"
+              id="sortByInput"
+              onChange={this.handleSortByChange}>
+              {sortOptions.map(this.renderSortOptions)}
+            </select>
+          </form>
+        </div>
         <ol className="adv-AdviseeList">
           {data.map(this.renderAdvisee)}
         </ol>
       </div>
+    );
+  },
+  renderSortOptions: function(option, index) {
+    return (
+      <option value={index}>
+        {option}
+      </option>
     );
   },
   renderAdvisee: function(advisee) {
@@ -136,6 +173,12 @@ var App = React.createClass({
         {item}
       </dd>
     );
+  },
+  //
+  // Handler methods
+  //
+  handleSortByChange: function(event) {
+    actions.sortBy(event.target.value);
   },
   //
   // Store methods
