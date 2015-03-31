@@ -5,6 +5,7 @@ var request = require('superagent');
 
 var actions = require('../actions');
 var helpers = require('../helpers');
+var sortStore = require('./sort');
 
 var adviseesStore = Reflux.createStore({
   listenables: actions,
@@ -12,6 +13,11 @@ var adviseesStore = Reflux.createStore({
   // Action methods
   //
   onGetData: function() {
+    setTimeout(function() {
+      this.handleSuccess(require('./data.json'));
+    }.bind(this), 0);
+    return;
+
     var params = helpers.getQueryParams();
 
     request
@@ -21,17 +27,66 @@ var adviseesStore = Reflux.createStore({
       })
       .end(helpers.requestCallback(this.handleSuccess, this.handleFail));
   },
+  onSortBy: function(key, isAscending) {
+    this.sortByKey = key;
+    this.isAscending = isAscending;
+    this.handleSuccess(this.data);
+  },
+  //
+  // Handler methods
+  //
   handleSuccess: function(data) {
-    var adviseeList = data.myAdvisees ? data.myAdvisees : data.adviseeList;
-    adviseeList = Array.isArray(adviseeList) ? adviseeList : [];
+    var adviseeList = data.adviseeList;
+
+    this.data = data;
+    this.sortByKey = !!this.sortByKey ? this.sortByKey : sortStore.defaultSortByKey;
+    this.isAscending = this.isAscending !== undefined ? this.isAscending : sortStore.defaultIsAscending;
 
     var output = adviseeList
-      .sort(helpers.sortBy('studentName'))
       .map(function(advisee) {
-        // Extract plans.
-        var programPlanList = advisee.acadProgPlanList.split('-');
-        var plans = programPlanList[1].split('/');
-        // Round numerical values,
+        advisee.hours = parseFloat(advisee.hours);
+        advisee.programGpa = parseFloat(advisee.programGpa);
+        advisee.iuGpa = parseFloat(advisee.iuGpa);
+        return advisee;
+      })
+      .sort(helpers.sortBy(this.sortByKey, this.isAscending, sortStore.defaultSortByKey))
+      .map(function(advisee) {
+        //
+        // Handle Program and Plan
+        //
+        var program = advisee.acadProgDescr;
+        var planList = advisee.acadPlanList;
+
+        var hasProgram = !!program && !!program.trim();
+        var hasPlanList = Array.isArray(planList) && !!planList.length;
+
+        var programPlanTitle = null;
+        var programPlanItems = null;
+
+        // Program & Plan
+        if (hasProgram && hasPlanList) {
+          programPlanTitle = program;
+          programPlanItems = planList;
+        }
+        // Program & No Plan
+        else if (hasProgram && !hasPlanList) {
+          programPlanTitle = 'Academic Program';
+          programPlanItems = [program];
+        }
+        // No Program & Plan
+        else if (!hasProgram && hasPlanList) {
+          programPlanTitle = helpers.pluralize(planList.length, 'Academic Plan');
+          programPlanItems = planList;
+        }
+        // No Program & No Plan
+        else {
+          programPlanTitle = 'Academic Program & Plan';
+          programPlanItems = ['None'];
+        }
+
+        //
+        // Round numerical values.
+        //
         var hours = helpers.round(advisee.hours, 1);
         var programGPA = helpers.round(advisee.programGpa, 2);
         var universityGPA = helpers.round(advisee.iuGpa, 2);
@@ -41,8 +96,8 @@ var adviseesStore = Reflux.createStore({
           universityId: advisee.emplid,
           details: [
             {
-              title: advisee.acadProgDescr,
-              items: plans,
+              title: programPlanTitle,
+              items: programPlanItems,
               fixed: true
             },
             {

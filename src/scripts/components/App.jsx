@@ -6,6 +6,7 @@ var classNames = require('classnames');
 
 var actions = require('../actions');
 var adviseesStore = require('../stores/advisees');
+var sortStore = require('../stores/sort');
 var helpers = require('../helpers');
 
 var Alert = require('./Alert');
@@ -24,7 +25,9 @@ var App = React.createClass({
   getInitialState: function() {
     return {
       adviseesStore: [],
-      requesting: true
+      isAscending: sortStore.defaultIsAscending,
+      requesting: true,
+      sortByKey: sortStore.defaultSortByKey
     }
   },
   //
@@ -78,13 +81,60 @@ var App = React.createClass({
   },
   renderList: function(data) {
     var count = data.length;
+    var orderOptions = sortStore.sortMap[this.state.sortByKey].order;
+
     return (
       <div>
-        <p>{count} {helpers.pluralize(count, 'advisee')}</p>
+        <div className="adv-Controls">
+          <p className="adv-Controls-count">
+            {count} {helpers.pluralize(count, 'advisee')}
+          </p>
+          <form className="adv-Controls-form">
+            <label
+              className="adv-Controls-label"
+              htmlFor="sortByInput">
+              Sort by
+            </label>
+            <select
+              className="adv-Controls-select"
+              id="sortByInput"
+              onChange={this.handleSortByChange}
+              value={this.state.sortByKey}>
+              {sortStore.sortList.map(this.renderSortOption)}
+            </select>
+            <label
+              className="adv-Controls-label"
+              htmlFor="orderByInput">
+              Order by
+            </label>
+            <select
+              className="adv-Controls-select"
+              id="orderByInput"
+              onChange={this.handleOrderByChange}
+              value={this.state.isAscending}>
+              {orderOptions.map(this.renderOrderOption)}
+            </select>
+          </form>
+        </div>
         <ol className="adv-AdviseeList">
           {data.map(this.renderAdvisee)}
         </ol>
       </div>
+    );
+  },
+  renderSortOption: function(option, index) {
+    return (
+      <option value={option.key}>
+        {option.label}
+      </option>
+    );
+  },
+  renderOrderOption: function(label, index) {
+    var isAscending = index === 0;
+    return (
+      <option value={isAscending}>
+        {label}
+      </option>
     );
   },
   renderAdvisee: function(advisee) {
@@ -136,6 +186,26 @@ var App = React.createClass({
         {item}
       </dd>
     );
+  },
+  //
+  // Handler methods
+  //
+  handleSortByChange: function(event) {
+    var key = event.target.value;
+    // Reset order whenever sort field changes.
+    var isAscending = true;
+    this.setState({
+      sortByKey: key,
+      isAscending: isAscending
+    });
+    actions.sortBy(key, isAscending);
+  },
+  handleOrderByChange: function(event) {
+    var isAscending = event.target.value === 'true';
+    this.setState({
+      isAscending: isAscending
+    });
+    actions.sortBy(this.state.sortByKey, isAscending);
   },
   //
   // Store methods

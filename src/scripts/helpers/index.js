@@ -21,6 +21,13 @@ function api(method, query) {
   return config.API_URL + '?' + queryString;
 }
 
+function compare(a, b, isAscending) {
+  var inverse = isAscending ? 1 : -1;
+  a = isString(a) ? a.toLowerCase() : a;
+  b = isString(b) ? b.toLowerCase() : b;
+  return a < b ? -1 * inverse : (a > b ? 1 * inverse : 0);
+}
+
 function getFocusableElements($el) {
   var childElementsNodeList = $el.querySelectorAll('*');
   var childElementsArray = Array.prototype.slice.call(childElementsNodeList);
@@ -58,6 +65,10 @@ function getQueryParams() {
   return map;
 }
 
+function isString(object) {
+  return typeof object === 'string' || object instanceof String;
+}
+
 function pluralize(count, singular, plural) {
   plural = !!plural ? plural : singular + 's';
   return count === 1 ? singular : plural;
@@ -85,25 +96,34 @@ function round(value, exp) {
   return parseFloat(value).toFixed(exp);
 }
 
-function sortBy(property) {
+// `key` is required. Sorts based on the key of two objects.
+// `isAscending` is optional. Defaults to true.
+// `secondaryKey` is optional. No further sorting if initial values are identical.
+function sortBy(key, isAscending, secondaryKey) {
+  var isAscending = isAscending !== false;
+  // Return the compare function.
   return function(a, b) {
-    return sortStrings(a[property], b[property]);
+    // Initial comparison.
+    var comparison = compare(a[key], b[key], isAscending);
+    // Potentially sort by secondary key.
+    var hasSecondaryKey = !!secondaryKey;
+    var isDifferentKey = secondaryKey !== key;
+    var isSameValue = comparison === 0;
+    if(hasSecondaryKey && isDifferentKey && isSameValue) {
+      comparison = compare(a[secondaryKey], b[secondaryKey], true);
+    }
+    return comparison;
   }
-}
-
-function sortStrings(a, b) {
-  a = a.toLowerCase();
-  b = b.toLowerCase();
-  return a < b ? -1 : (a > b ? 1 : 0);
 }
 
 module.exports = {
   api: api,
+  compare: compare,
   getQueryParams: getQueryParams,
   getFocusableElements: getFocusableElements,
+  isString: isString,
   pluralize: pluralize,
   requestCallback: requestCallback,
   round: round,
-  sortBy: sortBy,
-  sortStrings: sortStrings
+  sortBy: sortBy
 };
