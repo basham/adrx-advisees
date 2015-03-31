@@ -21,6 +21,13 @@ function api(method, query) {
   return config.API_URL + '?' + queryString;
 }
 
+function compare(a, b, isAscending) {
+  var inverse = isAscending ? 1 : -1;
+  a = isString(a) ? a.toLowerCase() : a;
+  b = isString(b) ? b.toLowerCase() : b;
+  return a < b ? -1 * inverse : (a > b ? 1 * inverse : 0);
+}
+
 function getFocusableElements($el) {
   var childElementsNodeList = $el.querySelectorAll('*');
   var childElementsArray = Array.prototype.slice.call(childElementsNodeList);
@@ -89,26 +96,20 @@ function round(value, exp) {
   return parseFloat(value).toFixed(exp);
 }
 
-function sortBy(property) {
+function sortBy(property, isAscending) {
   return function(a, b) {
-    return sort(a[property], b[property]);
+    return compare(a[property], b[property], isAscending);
   }
-}
-
-function sort(a, b) {
-  a = isString(a) ? a.toLowerCase() : a;
-  b = isString(b) ? b.toLowerCase() : b;
-  return a < b ? -1 : (a > b ? 1 : 0);
 }
 
 module.exports = {
   api: api,
+  compare: compare,
   getQueryParams: getQueryParams,
   getFocusableElements: getFocusableElements,
   isString: isString,
   pluralize: pluralize,
   requestCallback: requestCallback,
   round: round,
-  sortBy: sortBy,
-  sort: sort
+  sortBy: sortBy
 };

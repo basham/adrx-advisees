@@ -27,8 +27,9 @@ var adviseesStore = Reflux.createStore({
       })
       .end(helpers.requestCallback(this.handleSuccess, this.handleFail));
   },
-  onSortBy: function(key) {
+  onSortBy: function(key, isAscending) {
     this.sortByKey = key;
+    this.isAscending = isAscending;
     this.handleSuccess(this.data);
   },
   //
@@ -40,6 +41,7 @@ var adviseesStore = Reflux.createStore({
 
     this.data = data;
     this.sortByKey = !!this.sortByKey ? this.sortByKey : sortStore.defaultSortByKey;
+    this.isAscending = this.isAscending !== undefined ? this.isAscending : sortStore.defaultIsAscending;
 
     var output = adviseeList
       .map(function(advisee) {
@@ -48,7 +50,7 @@ var adviseesStore = Reflux.createStore({
         advisee.iuGpa = parseFloat(advisee.iuGpa);
         return advisee;
       })
-      .sort(helpers.sortBy(this.sortByKey))
+      .sort(helpers.sortBy(this.sortByKey, this.isAscending))
       .map(function(advisee) {
         // Extract plans.
         var programPlanList = advisee.acadProgPlanList.split('-');

@@ -25,6 +25,7 @@ var App = React.createClass({
   getInitialState: function() {
     return {
       adviseesStore: [],
+      isAscending: sortStore.defaultIsAscending,
       requesting: true,
       sortByKey: sortStore.defaultSortByKey
     }
@@ -80,6 +81,8 @@ var App = React.createClass({
   },
   renderList: function(data) {
     var count = data.length;
+    var orderOptions = sortStore.sortMap[this.state.sortByKey].order;
+
     return (
       <div>
         <div className="adv-Controls">
@@ -97,7 +100,19 @@ var App = React.createClass({
               id="sortByInput"
               onChange={this.handleSortByChange}
               value={this.state.sortByKey}>
-              {sortStore.sortOptions.map(this.renderSortOptions)}
+              {sortStore.sortList.map(this.renderSortOption)}
+            </select>
+            <label
+              className="adv-Controls-label"
+              htmlFor="orderByInput">
+              Order by
+            </label>
+            <select
+              className="adv-Controls-select"
+              id="orderByInput"
+              onChange={this.handleOrderByChange}
+              value={this.state.isAscending}>
+              {orderOptions.map(this.renderOrderOption)}
             </select>
           </form>
         </div>
@@ -107,10 +122,18 @@ var App = React.createClass({
       </div>
     );
   },
-  renderSortOptions: function(option, index) {
+  renderSortOption: function(option, index) {
     return (
       <option value={option.key}>
         {option.label}
+      </option>
+    );
+  },
+  renderOrderOption: function(label, index) {
+    var isAscending = index === 0;
+    return (
+      <option value={isAscending}>
+        {label}
       </option>
     );
   },
@@ -169,10 +192,20 @@ var App = React.createClass({
   //
   handleSortByChange: function(event) {
     var key = event.target.value;
+    // Reset order whenever sort field changes.
+    var isAscending = true;
     this.setState({
-      sortByKey: key
+      sortByKey: key,
+      isAscending: isAscending
     });
-    actions.sortBy(key);
+    actions.sortBy(key, isAscending);
+  },
+  handleOrderByChange: function(event) {
+    var isAscending = event.target.value === 'true';
+    this.setState({
+      isAscending: isAscending
+    });
+    actions.sortBy(this.state.sortByKey, isAscending);
   },
   //
   // Store methods
