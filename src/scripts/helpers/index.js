@@ -58,6 +58,10 @@ function getQueryParams() {
   return map;
 }
 
+function isString(object) {
+  return typeof object === 'string' || object instanceof String;
+}
+
 function pluralize(count, singular, plural) {
   plural = !!plural ? plural : singular + 's';
   return count === 1 ? singular : plural;
@@ -87,13 +91,13 @@ function round(value, exp) {
 
 function sortBy(property) {
   return function(a, b) {
-    return sortStrings(a[property], b[property]);
+    return sort(a[property], b[property]);
   }
 }
 
-function sortStrings(a, b) {
-  a = a.toLowerCase();
-  b = b.toLowerCase();
+function sort(a, b) {
+  a = isString(a) ? a.toLowerCase() : a;
+  b = isString(b) ? b.toLowerCase() : b;
   return a < b ? -1 : (a > b ? 1 : 0);
 }
 
@@ -101,9 +105,10 @@ module.exports = {
   api: api,
   getQueryParams: getQueryParams,
   getFocusableElements: getFocusableElements,
+  isString: isString,
   pluralize: pluralize,
   requestCallback: requestCallback,
   round: round,
   sortBy: sortBy,
-  sortStrings: sortStrings
+  sort: sort
 };

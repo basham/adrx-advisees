@@ -5,6 +5,7 @@ var request = require('superagent');
 
 var actions = require('../actions');
 var helpers = require('../helpers');
+var sortStore = require('./sort');
 
 var adviseesStore = Reflux.createStore({
   listenables: actions,
@@ -26,15 +27,28 @@ var adviseesStore = Reflux.createStore({
       })
       .end(helpers.requestCallback(this.handleSuccess, this.handleFail));
   },
-  onSortBy: function(index) {
-    console.log('---', index);
+  onSortBy: function(key) {
+    this.sortByKey = key;
+    this.handleSuccess(this.data);
   },
+  //
+  // Handler methods
+  //
   handleSuccess: function(data) {
     var adviseeList = data.myAdvisees ? data.myAdvisees : data.adviseeList;
     adviseeList = Array.isArray(adviseeList) ? adviseeList : [];
 
+    this.data = data;
+    this.sortByKey = !!this.sortByKey ? this.sortByKey : sortStore.defaultSortByKey;
+
     var output = adviseeList
-      .sort(helpers.sortBy('studentName'))
+      .map(function(advisee) {
+        advisee.hours = parseFloat(advisee.hours);
+        advisee.programGpa = parseFloat(advisee.programGpa);
+        advisee.iuGpa = parseFloat(advisee.iuGpa);
+        return advisee;
+      })
+      .sort(helpers.sortBy(this.sortByKey))
       .map(function(advisee) {
         // Extract plans.
         var programPlanList = advisee.acadProgPlanList.split('-');

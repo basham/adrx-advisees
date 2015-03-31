@@ -6,6 +6,7 @@ var classNames = require('classnames');
 
 var actions = require('../actions');
 var adviseesStore = require('../stores/advisees');
+var sortStore = require('../stores/sort');
 var helpers = require('../helpers');
 
 var Alert = require('./Alert');
@@ -24,7 +25,8 @@ var App = React.createClass({
   getInitialState: function() {
     return {
       adviseesStore: [],
-      requesting: true
+      requesting: true,
+      sortByKey: sortStore.defaultSortByKey
     }
   },
   //
@@ -78,19 +80,6 @@ var App = React.createClass({
   },
   renderList: function(data) {
     var count = data.length;
-    var sortOptions = [
-      'Academic Plan',
-      'Academic Program',
-      'Advisor Role',
-      'Flags',
-      'GPA - IU',
-      'GPA - Program Hours',
-      'Last Enrolled',
-      'Name',
-      'Negative Service Indicators',
-      'Positive Service Indicators',
-      'Student Groups'
-    ];
     return (
       <div>
         <div className="adv-Controls">
@@ -106,8 +95,9 @@ var App = React.createClass({
             <select
               className="adv-Controls-select"
               id="sortByInput"
-              onChange={this.handleSortByChange}>
-              {sortOptions.map(this.renderSortOptions)}
+              onChange={this.handleSortByChange}
+              value={this.state.sortByKey}>
+              {sortStore.sortOptions.map(this.renderSortOptions)}
             </select>
           </form>
         </div>
@@ -119,8 +109,8 @@ var App = React.createClass({
   },
   renderSortOptions: function(option, index) {
     return (
-      <option value={index}>
-        {option}
+      <option value={option.key}>
+        {option.label}
       </option>
     );
   },
@@ -178,7 +168,11 @@ var App = React.createClass({
   // Handler methods
   //
   handleSortByChange: function(event) {
-    actions.sortBy(event.target.value);
+    var key = event.target.value;
+    this.setState({
+      sortByKey: key
+    });
+    actions.sortBy(key);
   },
   //
   // Store methods
