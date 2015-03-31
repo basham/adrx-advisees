@@ -10,7 +10,8 @@
       "acadProgDescr": "Business Undergraduate",
       "acadCareer": "UGRD",
       "acadCareerDescr": "Undergraduate",
-      "acadProgPlanList": "Business Undergraduate-Supply Chain Management BSB",
+      "acadProgPlanList": "Business Undergraduate",
+      "acadPlanList": [],
       "committeeId": " ",
       "lastEnrolled": "Spring 2015",
       "lastEnrolledStrm": "4152",
@@ -29,6 +30,10 @@
       "acadCareer": "UGRD",
       "acadCareerDescr": "Undergraduate",
       "acadProgPlanList": "Business Undergraduate-Operations Management BSB\/Psychology MIN",
+      "acadPlanList": [
+        "Operations Management BSB",
+        "Psychology MIN"
+      ],
       "committeeId": " ",
       "lastEnrolled": "Spring 2014",
       "lastEnrolledStrm": "4142",
@@ -47,6 +52,9 @@
       "acadCareer": "UGRD",
       "acadCareerDescr": "Undergraduate",
       "acadProgPlanList": "Business Undergraduate-Finance BSB",
+      "acadPlanList": [
+        "Finance BSB"
+      ],
       "committeeId": " ",
       "lastEnrolled": "Spring 2015",
       "lastEnrolledStrm": "4152",
@@ -65,6 +73,10 @@
       "acadCareer": "UGRD",
       "acadCareerDescr": "Undergraduate",
       "acadProgPlanList": "Business Undergraduate-Accounting BSB\/Finance BSB",
+      "acadPlanList": [
+        "Accounting BSB",
+        "Finance BSB"
+      ],
       "committeeId": " ",
       "lastEnrolled": "Spring 2015",
       "lastEnrolledStrm": "4152",
@@ -79,10 +91,10 @@
       "advisorRole": "ADVR",
       "advisorRoleDescr": "Academic Advisor",
       "acadProg": "BUS1",
-      "acadProgDescr": "Business Undergraduate",
       "acadCareer": "UGRD",
       "acadCareerDescr": "Undergraduate",
       "acadProgPlanList": "Business Undergraduate-Finance BSB\/Supply Chain Management BSB",
+      "acadPlanList": [],
       "committeeId": " ",
       "lastEnrolled": "Spring 2015",
       "lastEnrolledStrm": "4152",
@@ -101,6 +113,11 @@
       "acadCareer": "UGRD",
       "acadCareerDescr": "Undergraduate",
       "acadProgPlanList": "Business Undergraduate-Marketing BSB\/Professional Sales\/Supply Chain Management BSB",
+      "acadPlanList": [
+        "Marketing BSB",
+        "Professional Sales",
+        "Supply Chain Management BSB"
+      ],
       "committeeId": " ",
       "lastEnrolled": "Spring 2015",
       "lastEnrolledStrm": "4152",
@@ -119,6 +136,10 @@
       "acadCareer": "UGRD",
       "acadCareerDescr": "Undergraduate",
       "acadProgPlanList": "Business Undergraduate-Accounting BSB\/Finance BSB",
+      "acadPlanList": [
+        "Accounting BSB",
+        "Finance BSB"
+      ],
       "committeeId": "      ",
       "lastEnrolled": "Spring 2015",
       "lastEnrolledStrm": "4152",
@@ -133,10 +154,13 @@
       "advisorRole": "ADVR",
       "advisorRoleDescr": "Academic Advisor",
       "acadProg": "BUS1",
-      "acadProgDescr": "Business Undergraduate",
       "acadCareer": "UGRD",
       "acadCareerDescr": "Undergraduate",
-      "acadProgPlanList": "Business Undergraduate-Accounting BSB\/Technology Mngmt CO-MAJ BSB",
+      "acadProgPlanList": "Accounting BSB\/Technology Mngmt CO-MAJ BSB",
+      "acadPlanList": [
+        "Accounting BSB",
+        "Technology Mngmt CO-MAJ BSB"
+      ],
       "committeeId": "      ",
       "lastEnrolled": "Spring 2015",
       "lastEnrolledStrm": "4152",
@@ -155,6 +179,9 @@
       "acadCareer": "UGRD",
       "acadCareerDescr": "Undergraduate",
       "acadProgPlanList": "Business Undergraduate-Supply Chain Management BSB",
+      "acadPlanList": [
+        "Supply Chain Management BSB"
+      ],
       "committeeId": "      ",
       "lastEnrolled": "Spring 2015",
       "lastEnrolledStrm": "4152",
@@ -173,6 +200,9 @@
       "acadCareer": "UGRD",
       "acadCareerDescr": "Undergraduate",
       "acadProgPlanList": "Business Undergraduate-Finance BSB",
+      "acadPlanList": [
+        "Finance BSB"
+      ],
       "committeeId": "      ",
       "lastEnrolled": "Spring 2015",
       "lastEnrolledStrm": "4152",
