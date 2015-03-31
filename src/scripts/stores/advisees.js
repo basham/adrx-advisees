@@ -50,7 +50,7 @@ var adviseesStore = Reflux.createStore({
         advisee.iuGpa = parseFloat(advisee.iuGpa);
         return advisee;
       })
-      .sort(helpers.sortBy(this.sortByKey, this.isAscending))
+      .sort(helpers.sortBy(this.sortByKey, this.isAscending, sortStore.defaultSortByKey))
       .map(function(advisee) {
         // Extract plans.
         var programPlanList = advisee.acadProgPlanList.split('-');

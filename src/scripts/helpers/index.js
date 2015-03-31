@@ -96,9 +96,23 @@ function round(value, exp) {
   return parseFloat(value).toFixed(exp);
 }
 
-function sortBy(property, isAscending) {
+// `key` is required. Sorts based on the key of two objects.
+// `isAscending` is optional. Defaults to true.
+// `secondaryKey` is optional. No further sorting if initial values are identical.
+function sortBy(key, isAscending, secondaryKey) {
+  var isAscending = isAscending !== false;
+  // Return the compare function.
   return function(a, b) {
-    return compare(a[property], b[property], isAscending);
+    // Initial comparison.
+    var comparison = compare(a[key], b[key], isAscending);
+    // Potentially sort by secondary key.
+    var hasSecondaryKey = !!secondaryKey;
+    var isDifferentKey = secondaryKey !== key;
+    var isSameValue = comparison === 0;
+    if(hasSecondaryKey && isDifferentKey && isSameValue) {
+      comparison = compare(a[secondaryKey], b[secondaryKey], true);
+    }
+    return comparison;
   }
 }
 
