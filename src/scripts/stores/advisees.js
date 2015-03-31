@@ -36,8 +36,7 @@ var adviseesStore = Reflux.createStore({
   // Handler methods
   //
   handleSuccess: function(data) {
-    var adviseeList = data.myAdvisees ? data.myAdvisees : data.adviseeList;
-    adviseeList = Array.isArray(adviseeList) ? adviseeList : [];
+    var adviseeList = data.adviseeList;
 
     this.data = data;
     this.sortByKey = !!this.sortByKey ? this.sortByKey : sortStore.defaultSortByKey;
