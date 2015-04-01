@@ -14,11 +14,13 @@ module.exports = React.createClass({
 
 	render: function () {
 		// Attributes
-		var style = {display: this.props.selected ? '' : 'none'},
+		var style = {display: this.props.selected && this.props.show ? '' : 'none'},
 			ariaLabeledBy = this.props.tabId;
 
 		return (
-			<div role="tabpanel"
+			<div
+				{...this.props}
+				role="tabpanel"
 				id={this.props.id}
 				aria-labeledby={ariaLabeledBy}
 				style={style}>{this.props.children}</div>

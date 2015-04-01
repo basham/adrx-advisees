@@ -1,7 +1,8 @@
 /** @jsx React.DOM */
+//var React = require('react');
 var React = require('react/addons');
-var invariant = require('react/lib/invariant');
-var jss = require('js-stylesheet');
+//var invariant = require('react/lib/invariant');
+//var jss = require('js-stylesheet');
 var uuid = require('../helpers/uuid');
 
 // Determine if a node from event.target is a Tab element
@@ -21,6 +22,7 @@ module.exports = React.createClass({
 	getDefaultProps: function () {
 		return {
 			selectedIndex: 0,
+			showPanel: false,
 			focus: false
 		};
 	},
@@ -47,27 +49,33 @@ module.exports = React.createClass({
 		var tabsCount = this.getTabsCount();
 		var panelsCount = this.getPanelsCount();
 
+/*
 		invariant(
 			tabsCount === panelsCount,
 			'There should be an equal number of Tabs and TabPanels. ' +
 			'Received %s Tabs and %s TabPanels.',
 			tabsCount, panelsCount
 		);
-
-		jss(require('../helpers/styles.js'));
+*/
+		//jss(require('../helpers/styles.js'));
 	},
-	
-	setSelected: function (index, focus) {
+
+	setSelected: function (index, focus, showPanel) {
 		// Don't do anything if nothing has changed
-		if (index === this.state.selectedIndex) return;
+		//if (index === this.state.selectedIndex) return;
 		// Check index boundary
-		if (index < 0 || index >= this.getTabsCount()) return;
+		//if (index < 0 || index >= this.getTabsCount()) return;
 
 		// Keep reference to last index for event handler
 		var last = this.state.selectedIndex;
+		showPanel = showPanel === undefined ? true : showPanel;
 
 		// Update selected index
-		this.setState({ selectedIndex: index, focus: focus === true });
+		this.setState({
+			selectedIndex: index,
+			showPanel: showPanel,
+			focus: focus === true
+		});
 
 		// Call change event handler
 		if (typeof this.props.onSelect === 'function') {
@@ -75,12 +83,52 @@ module.exports = React.createClass({
 		}
 	},
 
+	getDescendants: function() {
+
+		function getDescendants(component) {
+			var el = [];
+			var children = component.props.children;
+			var hasChildren = Array.isArray(children) && children.length;
+			if(hasChildren) {
+				children.forEach(function(child) {
+					// Add child to array.
+					el.push(child);
+					// Add the child's children to array.
+					el = el.concat(getDescendants(child));
+				})
+			}
+			return el;
+		}
+
+		return getDescendants(this);
+	},
+
+	getDescendantsByType: function(type) {
+		return this.getDescendants().filter(function(component) {
+			return component.type.displayName === type;
+		});
+	},
+
+	getTabListChild: function() {
+		return this.getDescendantsByType('TabList')[0];
+	},
+
+	getTabChildren: function() {
+		return this.getDescendantsByType('Tab');
+	},
+
+	getPanelChildren: function() {
+		return this.getDescendantsByType('TabPanel');
+	},
+
 	getTabsCount: function () {
-		return React.Children.count(this.props.children[0].props.children);
+		return this.getTabChildren().length;
+		//return React.Children.count(this.props.children[0].props.children);
 	},
 
 	getPanelsCount: function () {
-		return React.Children.count(this.props.children.slice(1));
+		return this.getPanelChildren().length;
+		//return React.Children.count(this.props.children.slice(1));
 	},
 
 	getTabList: function () {
@@ -100,7 +148,8 @@ module.exports = React.createClass({
 		do {
 			if (isTabNode(node)) {
 				var index = [].slice.call(node.parentNode.children).indexOf(node);
-				this.setSelected(index);
+				var show = index === this.state.selectedIndex ? !this.state.showPanel : true;
+				this.setSelected(index, true, show);
 				return;
 			}
 		} while (node = node.parentNode);
@@ -109,6 +158,7 @@ module.exports = React.createClass({
 	handleKeyDown: function (e) {
 		if (isTabNode(e.target)) {
 			var index = this.state.selectedIndex,
+				showPanel = this.state.showPanel,
 				max = this.getTabsCount() - 1,
 				preventDefault = false;
 
@@ -132,13 +182,19 @@ module.exports = React.createClass({
 					index = 0;
 				}
 			}
+			// Keyed Enter or Space.
+			else if(e.keyCode === 13 || e.keyCode === 32) {
+				//console.log('---', e.key, e.keyCode, e);
+				showPanel = !showPanel;
+				preventDefault = true;
+			}
 
 			// This prevents scrollbars from moving around
 			if (preventDefault) {
 				e.preventDefault();
 			}
 
-			this.setSelected(index, true);
+			this.setSelected(index, true, showPanel);
 		}
 	},
 
@@ -148,6 +204,47 @@ module.exports = React.createClass({
 		var children;
 		var state = this.state;
 
+		var tabListEl = this.getTabListChild();
+		var tabList = React.addons.cloneWithProps(tabListEl, {
+			ref: 'tablist',
+			children: React.Children.map(this.getTabChildren(), function(tab) {
+				var ref = 'tabs-' + index;
+				var id = state.tabIds[index];
+				var panelId = state.panelIds[index];
+				var selected = state.selectedIndex === index;
+				var focus = selected && state.focus;
+
+				index++;
+
+				return React.addons.cloneWithProps(tab, {
+					ref: ref,
+					id: id,
+					panelId: panelId,
+					selected: selected,
+					focus: focus
+				});
+			})
+		});
+
+		index = 0;
+
+		var tabPanels = React.Children.map(this.getPanelChildren(), function(panel) {
+			var ref = 'panels-' + index;
+			var id = state.panelIds[index];
+			var tabId = state.tabIds[index];
+			var selected = state.selectedIndex === index;
+
+			index ++;
+
+			return React.addons.cloneWithProps(panel, {
+				ref: ref,
+				id: id,
+				tabId: tabId,
+				selected: selected,
+				show: state.showPanel
+			});
+		});
+/*
 		// Map children to dynamically setup refs
 		children = React.Children.map(this.props.children, function (child) {
 			var result = null;
@@ -197,12 +294,16 @@ module.exports = React.createClass({
 
 			return result;
 		});
-
+*/
+		//{tabList}
+		//{tabPanels}
 		return (
-			<div className="react-tabs"
+			<div
+				{...this.props}
 				onClick={this.handleClick}
 				onKeyDown={this.handleKeyDown}>
-				{children}
+				{tabList}
+				{tabPanels}
 			</div>
 		);
 	}

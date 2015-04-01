@@ -41,7 +41,9 @@ module.exports = React.createClass({
 			ariaControls = this.props.panelId;
 
 		return (
-			<li role="tab"
+			<li
+				{...this.props}
+				role="tab"
 				id={this.props.id}
 				aria-selected={ariaSelected}
 				aria-expanded={ariaExpanded}

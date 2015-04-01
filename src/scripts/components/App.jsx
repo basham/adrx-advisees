@@ -169,19 +169,20 @@ var App = React.createClass({
           {advisee.details.map(this.renderAdviseeDetail)}
         </div>
         <Tabs
+          className="adv-Tabs"
           selectedIndex={0}>
-          <TabList>
-            <Tab>Groups</Tab>
-            <Tab>Negative</Tab>
-            <Tab>Positive</Tab>
+          <TabList className="adv-Tabs-list">
+            <Tab className="adv-Tabs-tab">Groups</Tab>
+            <Tab className="adv-Tabs-tab">Negative</Tab>
+            <Tab className="adv-Tabs-tab">Positive</Tab>
           </TabList>
-          <TabPanel>
+          <TabPanel className="adv-Tabs-panel">
             <p>Hello from Foo</p>
           </TabPanel>
-          <TabPanel>
+          <TabPanel className="adv-Tabs-panel">
             <p>Hello from Bar</p>
           </TabPanel>
-          <TabPanel>
+          <TabPanel className="adv-Tabs-panel">
             <p>Hello from Baz</p>
           </TabPanel>
         </Tabs>
