@@ -25,7 +25,8 @@ var adviseesStore = Reflux.createStore({
     request
       .get(helpers.api('myAdvisees_JSON'))
       .query({
-        sr: params.sr
+        sr: params.sr,
+        backdoorId: params.backdoorId
       })
       .end(helpers.requestCallback(this.handleSuccess, this.handleFail));
   },
@@ -46,9 +47,9 @@ var adviseesStore = Reflux.createStore({
 
     var output = adviseeList
       .map(function(advisee) {
-        advisee.hours = parseFloat(advisee.hours);
-        advisee.programGpa = parseFloat(advisee.programGpa);
-        advisee.iuGpa = parseFloat(advisee.iuGpa);
+        advisee.hours = parseFloat(helpers.round(advisee.hours, 1));
+        advisee.programGpa = parseFloat(helpers.round(advisee.programGpa, 2));
+        advisee.iuGpa = parseFloat(helpers.round(advisee.iuGpa, 2));
         return advisee;
       })
       .sort(helpers.sortBy(this.sortByKey, this.isAscending, sortStore.defaultSortByKey))
