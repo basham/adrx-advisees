@@ -142,7 +142,7 @@ module.exports = React.createClass({
 	getPanel: function (index) {
 		return this.refs['panels-' + index];
 	},
-
+	
 	handleClick: function (e) {
 		var node = e.target;
 		do {
@@ -227,6 +227,9 @@ module.exports = React.createClass({
 		});
 
 		index = 0;
+
+//KDM
+console.log(state.showPanel);
 
 		var tabPanels = React.Children.map(this.getPanelChildren(), function(panel) {
 			var ref = 'panels-' + index;
