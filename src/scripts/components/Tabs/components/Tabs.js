@@ -41,7 +41,8 @@ module.exports = React.createClass({
 			selectedIndex: this.props.selectedIndex,
 			focus: this.props.focus,
 			tabIds: tabIds,
-			panelIds: panelIds
+			panelIds: panelIds,
+			kdmArgument: this.props.kdmArgument
 		};
 	},
 
@@ -78,8 +79,8 @@ module.exports = React.createClass({
 		});
 
 		// Call change event handler
-		if (typeof this.props.onSelect === 'function') {
-			this.props.onSelect(index, last);
+		if (typeof this.props.onSelect2 === 'function') {
+			this.props.onSelect2(index, last);
 		}
 	},
 
@@ -145,6 +146,7 @@ module.exports = React.createClass({
 	
 	handleClick: function (e) {
 		var node = e.target;
+		console.log('Tabs:handleClick(): ', this.state.kdmArgument);
 		do {
 			if (isTabNode(node)) {
 				var index = [].slice.call(node.parentNode.children).indexOf(node);
@@ -207,6 +209,14 @@ module.exports = React.createClass({
 		var tabListEl = this.getTabListChild();
 		var tabList = React.addons.cloneWithProps(tabListEl, {
 			ref: 'tablist',
+			//KDM #39 20150403 Passing showPanel to TabPanel child component
+			showPanel: this.state.showPanel,
+			onTogglePanel: function(a) {
+				console.log('Tabs:render(): My passed argument', a);
+				//KDM #28 20150403 updating showPanel when toggle icon is clicked
+				this.setState({showPanel: !this.state.showPanel});
+			}.bind(this),
+			kdmArgument: 'This was passed from parent Tabs component to TabList',
 			children: React.Children.map(this.getTabChildren(), function(tab) {
 				var ref = 'tabs-' + index;
 				var id = state.tabIds[index];
@@ -228,10 +238,7 @@ module.exports = React.createClass({
 
 		index = 0;
 
-//KDM
-console.log(state.showPanel);
-
-		var tabPanels = React.Children.map(this.getPanelChildren(), function(panel) {
+		var tabPanels = React.Children.map(this.getPanelChildren(), function(panel, index2) {
 			var ref = 'panels-' + index;
 			var id = state.panelIds[index];
 			var tabId = state.tabIds[index];
@@ -247,59 +254,7 @@ console.log(state.showPanel);
 				show: state.showPanel
 			});
 		});
-/*
-		// Map children to dynamically setup refs
-		children = React.Children.map(this.props.children, function (child) {
-			var result = null;
 
-			// Clone TabList and Tab components to have refs
-			if (count++ === 0) {
-				result = React.addons.cloneWithProps(child, {
-					ref: 'tablist',
-					children: React.Children.map(child.props.children, function (tab) {
-						var ref = 'tabs-' + index;
-						var id = state.tabIds[index];
-						var panelId = state.panelIds[index];
-						var selected = state.selectedIndex === index;
-						var focus = selected && state.focus;
-
-						index++;
-
-						return React.addons.cloneWithProps(tab, {
-							ref: ref,
-							id: id,
-							panelId: panelId,
-							selected: selected,
-							focus: focus
-						});
-					})
-				});
-
-				// Reset index for panels
-				index = 0;
-			}
-			// Clone TabPanel components to have refs
-			else {
-				var ref = 'panels-' + index;
-				var id = state.panelIds[index];
-				var tabId = state.tabIds[index];
-				var selected = state.selectedIndex === index;
-
-				index ++;
-
-				result = React.addons.cloneWithProps(child, {
-					ref: ref,
-					id: id,
-					tabId: tabId,
-					selected: selected
-				});
-			}
-
-			return result;
-		});
-*/
-		//{tabList}
-		//{tabPanels}
 		return (
 			<div
 				{...this.props}

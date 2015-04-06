@@ -1,27 +1,28 @@
 /** @jsx React.DOM */
 var React = require('react');
-
+var classNames = require('classnames');
 var Icon = require('../../Icon');
 
 module.exports = React.createClass({
 	displayName: 'TabList',
 
 	getInitialState: function () {
-		var tabIds = [];
-		var panelIds = [];
-
 		return {
-			selectedIndex: this.props.selectedIndex,
-			focus: this.props.focus,
-			tabIds: tabIds,
-			panelIds: panelIds,
-			showPanel: 'KDM'
+			//KDM #28 Receiving showPanel from Tabs parent component
+			showPanel: this.props.showPanel,
+			kdmArgument: this.props.kdmArgument
 		};
 	},
 
 	render: function () {
 		var state = this.state;
-		console.log(state.showPanel); 
+		console.log('TabList.render() kdmArgument: ', this.props.kdmArgument);
+		console.log('TabList.render(): showPanel', this.props.showPanel);
+		var cn = classNames({
+			'adv-Icon': true,
+			'adv-Icon--reversed': this.props.showPanel
+		});
+
 		return (
 			<div className="adv-Tabs-controls">
 				<ul
@@ -30,22 +31,22 @@ module.exports = React.createClass({
 					{this.props.children}
 				</ul>
 
-				<Icon name="caret-bottom" className="adv-Icon--reversed"/>
+				<Icon
+					className={cn}
+					name="caret-bottom" 
+					onClick={this.handleClick.bind(this)}/>
 			</div>
 		);
 	},
 
-/* KDM testing TabList click */
 	handleClick: function (e) {
-		var node = e.target;
-		do {
-			if (isTabNode(node)) {
-				var index = [].slice.call(node.parentNode.children).indexOf(node);
-				var show = index === this.state.selectedIndex ? !this.state.showPanel : true;
-				this.setSelected(index, true, show);
-				return;
-			}
-		} while (node = node.parentNode);
+		e.preventDefault();
+		console.log('You clicked arror!');
+
+		// Call change event handler
+		if (typeof this.props.onTogglePanel === 'function') {
+			this.props.onTogglePanel('KDM');
+		}
 	}
 
 });
