@@ -41,8 +41,7 @@ module.exports = React.createClass({
 			selectedIndex: this.props.selectedIndex,
 			focus: this.props.focus,
 			tabIds: tabIds,
-			panelIds: panelIds,
-			kdmArgument: this.props.kdmArgument
+			panelIds: panelIds
 		};
 	},
 
@@ -146,7 +145,6 @@ module.exports = React.createClass({
 	
 	handleClick: function (e) {
 		var node = e.target;
-		console.log('Tabs:handleClick(): ', this.state.kdmArgument);
 		do {
 			if (isTabNode(node)) {
 				var index = [].slice.call(node.parentNode.children).indexOf(node);
@@ -211,12 +209,10 @@ module.exports = React.createClass({
 			ref: 'tablist',
 			//KDM #39 20150403 Passing showPanel to TabPanel child component
 			showPanel: this.state.showPanel,
-			onTogglePanel: function(a) {
-				console.log('Tabs:render(): My passed argument', a);
+			onTogglePanel: function() {
 				//KDM #28 20150403 updating showPanel when toggle icon is clicked
 				this.setState({showPanel: !this.state.showPanel});
 			}.bind(this),
-			kdmArgument: 'This was passed from parent Tabs component to TabList',
 			children: React.Children.map(this.getTabChildren(), function(tab) {
 				var ref = 'tabs-' + index;
 				var id = state.tabIds[index];
@@ -238,7 +234,7 @@ module.exports = React.createClass({
 
 		index = 0;
 
-		var tabPanels = React.Children.map(this.getPanelChildren(), function(panel, index2) {
+		var tabPanels = React.Children.map(this.getPanelChildren(), function(panel) {
 			var ref = 'panels-' + index;
 			var id = state.panelIds[index];
 			var tabId = state.tabIds[index];

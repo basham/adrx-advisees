@@ -170,8 +170,7 @@ var App = React.createClass({
         </div>
         <Tabs
           className="adv-Tabs"
-          selectedIndex={0}
-          kdmArgument="This was passed from parent App to Tabs component">
+          selectedIndex={0}>
           <TabList className="adv-Tabs-list">
             <Tab className="adv-Tabs-tab">Groups</Tab>
             <Tab className="adv-Tabs-tab">Negative</Tab>

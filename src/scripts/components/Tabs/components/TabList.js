@@ -9,15 +9,12 @@ module.exports = React.createClass({
 	getInitialState: function () {
 		return {
 			//KDM #28 Receiving showPanel from Tabs parent component
-			showPanel: this.props.showPanel,
-			kdmArgument: this.props.kdmArgument
+			showPanel: this.props.showPanel
 		};
 	},
 
 	render: function () {
 		var state = this.state;
-		console.log('TabList.render() kdmArgument: ', this.props.kdmArgument);
-		console.log('TabList.render(): showPanel', this.props.showPanel);
 		var cn = classNames({
 			'adv-Icon': true,
 			'adv-Icon--reversed': this.props.showPanel
@@ -34,7 +31,7 @@ module.exports = React.createClass({
 				<Icon
 					className={cn}
 					name="caret-bottom" 
-					onClick={this.handleClick.bind(this)}/>
+					onClick={this.handleClick}/>
 			</div>
 		);
 	},
@@ -42,11 +39,10 @@ module.exports = React.createClass({
 	//KDM 20150403 Passing parm back to Tabs parent component
 	handleClick: function (e) {
 		e.preventDefault();
-		console.log('You clicked arror!');
 
 		// Call change event handler
 		if (typeof this.props.onTogglePanel === 'function') {
-			this.props.onTogglePanel('KDM');
+			this.props.onTogglePanel();
 		}
 	}
 
