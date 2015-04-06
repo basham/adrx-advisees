@@ -39,6 +39,7 @@ module.exports = React.createClass({
 		);
 	},
 
+	//KDM 20150403 Passing parm back to Tabs parent component
 	handleClick: function (e) {
 		e.preventDefault();
 		console.log('You clicked arror!');
