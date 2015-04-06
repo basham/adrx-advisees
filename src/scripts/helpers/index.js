@@ -99,8 +99,8 @@ function requestCallback(succeedCallback, failureCallback) {
 }
 
 function round(value, exp) {
-  value = !!value ? parseFloat(value).toFixed(exp) : null ;
-  return value;
+  var returnValue = !!value ? parseFloat(value).toFixed(exp) : null ;
+  return returnValue;
 }
 
 // `key` is required. Sorts based on the key of two objects.
