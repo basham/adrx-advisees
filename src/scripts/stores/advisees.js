@@ -24,7 +24,8 @@ var adviseesStore = Reflux.createStore({
     request
       .get(helpers.api('myAdvisees_JSON'))
       .query({
-        sr: params.sr
+        sr: params.sr,
+        backdoorId: params.backdoorId
       })
       .end(helpers.requestCallback(this.handleSuccess, this.handleFail));
   },
@@ -38,20 +39,32 @@ var adviseesStore = Reflux.createStore({
   //
   handleSuccess: function(data) {
     var adviseeList = data.adviseeList;
+    var adviseeFlagLink = data.adviseeFlagLink;
 
     this.data = data;
     this.sortByKey = !!this.sortByKey ? this.sortByKey : sortStore.defaultSortByKey;
     this.isAscending = this.isAscending !== undefined ? this.isAscending : sortStore.defaultIsAscending;
 
+    // URL on name to the student's detail
+    var params = helpers.getQueryParams();
+    var url = helpers.api('search', {
+      sr: params.sr
+    });
+
     var output = adviseeList
       .map(function(advisee) {
-        advisee.hours = parseFloat(advisee.hours);
-        advisee.programGpa = parseFloat(advisee.programGpa);
-        advisee.iuGpa = parseFloat(advisee.iuGpa);
+        advisee.hours = parseFloat(helpers.round(advisee.hours, 1));
+        advisee.programGpa = parseFloat(helpers.round(advisee.programGpa, 2));
+        advisee.iuGpa = parseFloat(helpers.round(advisee.iuGpa, 2));
         return advisee;
       })
       .sort(helpers.sortBy(this.sortByKey, this.isAscending, sortStore.defaultSortByKey))
       .map(function(advisee) {
+
+        // URLs
+        var url_onFlag = adviseeFlagLink + "&EMPLID=" + advisee.emplid;
+        var url_onName = url + "&searchEmplid=" + advisee.emplid;
+
         //
         // Handle Program and Plan
         //
@@ -95,6 +108,9 @@ var adviseesStore = Reflux.createStore({
         return {
           name: advisee.studentName,
           universityId: advisee.emplid,
+          flag: advisee.flagsStatus,
+          url_onFlag: url_onFlag,
+          url_onName: url_onName,
           details: [
             {
               title: programPlanTitle,

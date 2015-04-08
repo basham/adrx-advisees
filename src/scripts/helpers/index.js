@@ -23,9 +23,15 @@ function api(method, query) {
 
 function compare(a, b, isAscending) {
   var inverse = isAscending ? 1 : -1;
-  a = isString(a) ? a.toLowerCase() : a;
-  b = isString(b) ? b.toLowerCase() : b;
-  return a < b ? -1 * inverse : (a > b ? 1 * inverse : 0);
+  a = isString(a) ? a.toLowerCase().trim() : a;
+  b = isString(b) ? b.toLowerCase().trim() : b;
+
+  // Handle if a or b is undefined
+  // Return 0 if a and b are undefined at the same time
+  var returnValue = a < b ? -1 : (a > b ? 1 : 0);
+  returnValue = (!a && !!b) ? -1 : ((!!a && !b) ? 1 : returnValue);
+  returnValue = returnValue * inverse;
+  return returnValue;
 }
 
 function getFocusableElements($el) {
@@ -93,7 +99,8 @@ function requestCallback(succeedCallback, failureCallback) {
 }
 
 function round(value, exp) {
-  return parseFloat(value).toFixed(exp);
+  var returnValue = !!value ? parseFloat(value).toFixed(exp) : null ;
+  return returnValue;
 }
 
 // `key` is required. Sorts based on the key of two objects.

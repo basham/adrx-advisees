@@ -17,6 +17,7 @@ var sortStore = require('../stores/sort');
 var helpers = require('../helpers');
 
 var Alert = require('./Alert');
+var Icon = require('./Icon');
 
 var App = React.createClass({
   mixins: [
@@ -51,7 +52,7 @@ var App = React.createClass({
       content = this.renderError();
     }
     else {
-      content = data.length ? this.renderList(data) : this.renderEmpty()
+      content = data.length ? this.renderList(data) : this.renderEmpty();
     }
 
     return (
@@ -88,7 +89,7 @@ var App = React.createClass({
   },
   renderList: function(data) {
     var count = data.length;
-    var orderOptions = sortStore.sortMap[this.state.sortByKey].order;
+    var content_orderBySection = (this.state.sortByKey !== "flagsStatus") ? this.renderOrderBySection() : null;
 
     return (
       <div>
@@ -109,18 +110,7 @@ var App = React.createClass({
               value={this.state.sortByKey}>
               {sortStore.sortList.map(this.renderSortOption)}
             </select>
-            <label
-              className="adv-Controls-label"
-              htmlFor="orderByInput">
-              Order by
-            </label>
-            <select
-              className="adv-Controls-select"
-              id="orderByInput"
-              onChange={this.handleOrderByChange}
-              value={this.state.isAscending}>
-              {orderOptions.map(this.renderOrderOption)}
-            </select>
+            {content_orderBySection}
           </form>
         </div>
         <ol className="adv-AdviseeList">
@@ -144,26 +134,43 @@ var App = React.createClass({
       </option>
     );
   },
+  renderOrderBySection: function() {
+    var orderOptions = sortStore.sortMap[this.state.sortByKey].order;
+    return (
+      <span>
+        <label
+          className="adv-Controls-label"
+          htmlFor="orderByInput">
+          Order by
+        </label>
+        <select
+          className="adv-Controls-select"
+          id="orderByInput"
+          onChange={this.handleOrderByChange}
+          value={this.state.isAscending}>
+          {orderOptions.map(this.renderOrderOption)}
+        </select>
+      </span>
+    );
+  },
   renderAdvisee: function(advisee) {
-    var params = helpers.getQueryParams();
-    var url = helpers.api('search', {
-      searchEmplid: advisee.universityId,
-      sr: params.sr
-    });
-
+    var content_flag = !!advisee.flag ? this.renderAdviseeFlag(advisee) : null;
     return (
       <li className="adv-AdviseeList-item adv-Advisee">
         <header className="adv-Advisee-header">
-          <h2 className="adv-Advisee-heading">
-            <a
-              className="adv-Link"
-              href={url}>
-              {advisee.name}
-            </a>
-          </h2>
-          <p className="adv-Advisee-id">
-            {advisee.universityId}
-          </p>
+          <div className="adv-Advisee-nameGroup">
+            <h2 className="adv-Advisee-heading">
+              <a
+                className="adv-Link"
+                href={advisee.url_onName}>
+                {advisee.name}
+              </a>
+            </h2>
+            <p className="adv-Advisee-id">
+              {advisee.universityId}
+            </p>
+          </div>
+          {content_flag}
         </header>
         <div className="adv-Advisee-details">
           {advisee.details.map(this.renderAdviseeDetail)}
@@ -212,13 +219,25 @@ var App = React.createClass({
       </dd>
     );
   },
+  renderAdviseeFlag: function(advisee) {
+    return (
+      <a
+        className="adv-Advisee-flag"
+        href={advisee.url_onFlag}
+        target="sisStudent">
+        <Icon
+          className="adv-Advisee-flagIcon"
+          name="flag"/>
+      </a>
+    );
+  },
   //
   // Handler methods
   //
   handleSortByChange: function(event) {
     var key = event.target.value;
     // Reset order whenever sort field changes.
-    var isAscending = true;
+    var isAscending = (key !== "flagsStatus") ? true : false;
     this.setState({
       sortByKey: key,
       isAscending: isAscending
