@@ -24,25 +24,25 @@
         stdntGroup: "21ST",
         stdntGroupDescr: "21st Century Scholar Recipient",
         active: true,
-        effectiveDate: 2009-05-12
+        effectiveDate: "2009-05-12"
         },
         {
         stdntGroup: "ACP",
         stdntGroupDescr: "Advance College Project",
         active: true,
-        effectiveDate: 2014-09-04
+        effectiveDate: "2014-09-04"
         },
         {
         stdntGroup: "VLC1",
         stdntGroupDescr: "Collins Living Learning Center",
         active: false,
-        effectiveDate: 2010-12-03
+        effectiveDate: "2010-12-03"
         },
         {
         stdntGroup: "IHOP",
         stdntGroupDescr: "International House Of Parties",
         active: true,
-        effectiveDate: 2011-07-02
+        effectiveDate: "2011-07-02"
         }
       ],
       negativeSisServiceIndicatorList: [ ],
@@ -113,21 +113,21 @@
         stdntGroup: "KDM group",
         stdntGroupDescr: "21st Century Scholar Recipient",
         active: true,
-        effectiveDate: 2011-03-18
+        effectiveDate: "2011-03-18"
         },
         {
         institutionDescr: "Bloomington",
         stdntGroup: "BTG",
         stdntGroupDescr: "Bloomington Tennis Club",
         active: true,
-        effectiveDate: 2011-05-12
+        effectiveDate: "2011-05-12"
         },
         {
         institutionDescr: "Bloomington",
         stdntGroup: "VC",
         stdntGroupDescr: "Volleyball Club",
         active: true,
-        effectiveDate: 2011-09-30
+        effectiveDate: "2011-09-30"
         }
       ],
       negativeSisServiceIndicatorList: [ ],

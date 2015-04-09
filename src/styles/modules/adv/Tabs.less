@@ -8,6 +8,16 @@
     display: flex;
   }
 
+  &-item {
+    margin: 0.5em;
+  }
+
+  &-font {
+    &--italic {
+      font-style: italic;
+    }
+  }
+
   //[role=tablist],
   &-list {
     display: flex;
@@ -35,5 +45,11 @@
   //[role=tabpanel],
   &-panel {
     padding: 0.5em;
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    &--fixed {
+      min-width: 25em;
+    }
   }
 }
