@@ -111,6 +111,7 @@ var adviseesStore = Reflux.createStore({
           flag: advisee.flagsStatus,
           url_onFlag: url_onFlag,
           url_onName: url_onName,
+          studentGroupList: advisee.sisStudentGroupList,
           details: [
             {
               title: programPlanTitle,

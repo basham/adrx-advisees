@@ -20,67 +20,70 @@
       "iuGpa": "",
       flagsStatus: false,
       sisStudentGroupList: [
-      {
-      emplid: "0003079414",
-      institution: "IUBLA",
-      institutionDescr: "Bloomington",
-      stdntGroup: "21ST",
-      stdntGroupDescr: "21st Century Scholar Recipient"
-      },
-      {
-      emplid: "0003079414",
-      institution: "IUBLA",
-      institutionDescr: "Bloomington",
-      stdntGroup: "ACP",
-      stdntGroupDescr: "Advance College Project"
-      },
-      {
-      emplid: "0003079414",
-      institution: "IUBLA",
-      institutionDescr: "Bloomington",
-      stdntGroup: "VLC1",
-      stdntGroupDescr: "Collins Living Learning Center"
-      }
+        {
+        stdntGroup: "21ST",
+        stdntGroupDescr: "21st Century Scholar Recipient",
+        active: true,
+        effectiveDate: 2009-05-12
+        },
+        {
+        stdntGroup: "ACP",
+        stdntGroupDescr: "Advance College Project",
+        active: true,
+        effectiveDate: 2014-09-04
+        },
+        {
+        stdntGroup: "VLC1",
+        stdntGroupDescr: "Collins Living Learning Center",
+        active: false,
+        effectiveDate: 2010-12-03
+        },
+        {
+        stdntGroup: "IHOP",
+        stdntGroupDescr: "International House Of Parties",
+        active: true,
+        effectiveDate: 2011-07-02
+        }
       ],
       negativeSisServiceIndicatorList: [ ],
       positiveSisServiceIndicatorList: [
-      {
-      distinctEntry: "IUBLACompleted Verify for US Status",
-      institutionDescr: "BL",
-      serviceIndicatorCode: "R39",
-      serviceIndicatorDescr: "Completed Verify for US Status",
-      impact: "No",
-      reasonDescr: "Eligible for Benefits",
-      startTerm: "4118",
-      startTermDescr: "Fall 2011",
-      endTerm: "9999",
-      endTermDescr: "End Term",
-      startDate: "Dec 12, 2013 12:00:00 AM"
-      },
-      {
-      distinctEntry: "IUBLAFT State Aid-Completion Reqmts",
-      institutionDescr: "BL",
-      serviceIndicatorCode: "F02",
-      serviceIndicatorDescr: "FT State Aid-Completion Reqmts",
-      impact: "No",
-      reasonDescr: "Renewal Subj to CR Completion",
-      startTerm: "0000",
-      startTermDescr: "Bot",
-      endTerm: "    ",
-      startDate: "Sep 8, 2014 12:00:00 AM"
-      },
-      {
-      distinctEntry: "IUBLASigned Title IV Waiver",
-      institutionDescr: "BL",
-      serviceIndicatorCode: "G14",
-      serviceIndicatorDescr: "Signed Title IV Waiver",
-      impact: "No",
-      reasonDescr: "Grandfathered",
-      startTerm: "0000",
-      startTermDescr: "Bot",
-      endTerm: "    ",
-      startDate: "May 4, 2012 12:00:00 AM"
-      }
+        {
+        distinctEntry: "IUBLACompleted Verify for US Status",
+        institutionDescr: "BL",
+        serviceIndicatorCode: "R39",
+        serviceIndicatorDescr: "Completed Verify for US Status",
+        impact: "No",
+        reasonDescr: "Eligible for Benefits",
+        startTerm: "4118",
+        startTermDescr: "Fall 2011",
+        endTerm: "9999",
+        endTermDescr: "End Term",
+        startDate: "Dec 12, 2013 12:00:00 AM"
+        },
+        {
+        distinctEntry: "IUBLAFT State Aid-Completion Reqmts",
+        institutionDescr: "BL",
+        serviceIndicatorCode: "F02",
+        serviceIndicatorDescr: "FT State Aid-Completion Reqmts",
+        impact: "No",
+        reasonDescr: "Renewal Subj to CR Completion",
+        startTerm: "0000",
+        startTermDescr: "Bot",
+        endTerm: "    ",
+        startDate: "Sep 8, 2014 12:00:00 AM"
+        },
+        {
+        distinctEntry: "IUBLASigned Title IV Waiver",
+        institutionDescr: "BL",
+        serviceIndicatorCode: "G14",
+        serviceIndicatorDescr: "Signed Title IV Waiver",
+        impact: "No",
+        reasonDescr: "Grandfathered",
+        startTerm: "0000",
+        startTermDescr: "Bot",
+        endTerm: "    ",
+        startDate: "May 4, 2012 12:00:00 AM"
+        }
       ]
     },
     {
@@ -106,67 +109,66 @@
       "iuGpa": "3.45",
       flagsStatus: true,
       sisStudentGroupList: [
-      {
-      emplid: "0003079414",
-      institution: "IUBLA",
-      institutionDescr: "Bloomington",
-      stdntGroup: "21ST",
-      stdntGroupDescr: "21st Century Scholar Recipient"
-      },
-      {
-      emplid: "0003079414",
-      institution: "IUBLA",
-      institutionDescr: "Bloomington",
-      stdntGroup: "ACP",
-      stdntGroupDescr: "Advance College Project"
-      },
-      {
-      emplid: "0003079414",
-      institution: "IUBLA",
-      institutionDescr: "Bloomington",
-      stdntGroup: "VLC1",
-      stdntGroupDescr: "Collins Living Learning Center"
-      }
+        {
+        stdntGroup: "KDM group",
+        stdntGroupDescr: "21st Century Scholar Recipient",
+        active: true,
+        effectiveDate: 2011-03-18
+        },
+        {
+        institutionDescr: "Bloomington",
+        stdntGroup: "BTG",
+        stdntGroupDescr: "Bloomington Tennis Club",
+        active: true,
+        effectiveDate: 2011-05-12
+        },
+        {
+        institutionDescr: "Bloomington",
+        stdntGroup: "VC",
+        stdntGroupDescr: "Volleyball Club",
+        active: true,
+        effectiveDate: 2011-09-30
+        }
       ],
       negativeSisServiceIndicatorList: [ ],
       positiveSisServiceIndicatorList: [
-      {
-      distinctEntry: "IUBLACompleted Verify for US Status",
-      institutionDescr: "BL",
-      serviceIndicatorCode: "R39",
-      serviceIndicatorDescr: "Completed Verify for US Status",
-      impact: "No",
-      reasonDescr: "Eligible for Benefits",
-      startTerm: "4118",
-      startTermDescr: "Fall 2011",
-      endTerm: "9999",
-      endTermDescr: "End Term",
-      startDate: "Dec 12, 2013 12:00:00 AM"
-      },
-      {
-      distinctEntry: "IUBLAFT State Aid-Completion Reqmts",
-      institutionDescr: "BL",
-      serviceIndicatorCode: "F02",
-      serviceIndicatorDescr: "FT State Aid-Completion Reqmts",
-      impact: "No",
-      reasonDescr: "Renewal Subj to CR Completion",
-      startTerm: "0000",
-      startTermDescr: "Bot",
-      endTerm: "    ",
-      startDate: "Sep 8, 2014 12:00:00 AM"
-      },
-      {
-      distinctEntry: "IUBLASigned Title IV Waiver",
-      institutionDescr: "BL",
-      serviceIndicatorCode: "G14",
-      serviceIndicatorDescr: "Signed Title IV Waiver",
-      impact: "No",
-      reasonDescr: "Grandfathered",
-      startTerm: "0000",
-      startTermDescr: "Bot",
-      endTerm: "    ",
-      startDate: "May 4, 2012 12:00:00 AM"
-      }
+        {
+        distinctEntry: "IUBLACompleted Verify for US Status",
+        institutionDescr: "BL",
+        serviceIndicatorCode: "R39",
+        serviceIndicatorDescr: "Completed Verify for US Status",
+        impact: "No",
+        reasonDescr: "Eligible for Benefits",
+        startTerm: "4118",
+        startTermDescr: "Fall 2011",
+        endTerm: "9999",
+        endTermDescr: "End Term",
+        startDate: "Dec 12, 2013 12:00:00 AM"
+        },
+        {
+        distinctEntry: "IUBLAFT State Aid-Completion Reqmts",
+        institutionDescr: "BL",
+        serviceIndicatorCode: "F02",
+        serviceIndicatorDescr: "FT State Aid-Completion Reqmts",
+        impact: "No",
+        reasonDescr: "Renewal Subj to CR Completion",
+        startTerm: "0000",
+        startTermDescr: "Bot",
+        endTerm: "    ",
+        startDate: "Sep 8, 2014 12:00:00 AM"
+        },
+        {
+        distinctEntry: "IUBLASigned Title IV Waiver",
+        institutionDescr: "BL",
+        serviceIndicatorCode: "G14",
+        serviceIndicatorDescr: "Signed Title IV Waiver",
+        impact: "No",
+        reasonDescr: "Grandfathered",
+        startTerm: "0000",
+        startTermDescr: "Bot",
+        endTerm: "    ",
+        startDate: "May 4, 2012 12:00:00 AM"
+        }
       ]
     },
     {
