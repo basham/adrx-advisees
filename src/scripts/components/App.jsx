@@ -4,6 +4,13 @@ var React = require('react');
 var Reflux = require('reflux');
 var classNames = require('classnames');
 
+var ReactTabs = require('./Tabs');
+//var ReactTabs = require('react-tabs');
+var Tab = ReactTabs.Tab;
+var Tabs = ReactTabs.Tabs;
+var TabList = ReactTabs.TabList;
+var TabPanel = ReactTabs.TabPanel;
+
 var actions = require('../actions');
 var adviseesStore = require('../stores/advisees');
 var sortStore = require('../stores/sort');
@@ -168,6 +175,24 @@ var App = React.createClass({
         <div className="adv-Advisee-details">
           {advisee.details.map(this.renderAdviseeDetail)}
         </div>
+        <Tabs
+          className="adv-Tabs"
+          selectedIndex={0}>
+          <TabList className="adv-Tabs-list">
+            <Tab className="adv-Tabs-tab">Groups</Tab>
+            <Tab className="adv-Tabs-tab">Negative</Tab>
+            <Tab className="adv-Tabs-tab">Positive</Tab>
+          </TabList>
+          <TabPanel className="adv-Tabs-panel">
+            <p>Student Groups</p>
+          </TabPanel>
+          <TabPanel className="adv-Tabs-panel">
+            <p>Negative Service Indicators</p>
+          </TabPanel>
+          <TabPanel className="adv-Tabs-panel">
+            <p>Positive Service Indicators</p>
+          </TabPanel>
+        </Tabs>
       </li>
     );
   },
