@@ -99,6 +99,8 @@ module.exports = React.createClass({
 					el = el.concat(getDescendants(child));
 				})
 			}
+			// Added by Eunmee Yi on 2015/04/09
+			// For debugging
 			//if (!!component && !!component.type) {
 			/*
 			if (!!component && !!component.type && !!component.type.displayName) {

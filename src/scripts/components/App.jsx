@@ -300,6 +300,7 @@ var App = React.createClass({
           {list.stdntGroupDescr}
         </span>
         <span className="adv-Advisee-studentGroupDetail">
+          {list.activeDescription} {list.effectiveDateDescription}
         </span>
       </p>
     );
@@ -323,18 +324,22 @@ var App = React.createClass({
           </span>
           {list.serviceIndicatorDescr} - {list.reasonDescr}
         </span>
+        <div className="adv-Advisee-serviceIndicatorDetails">
           {this.renderAdviseeServiceIndicatorDetail({title: "Start Term" , item: list.startTermDescr})}
           {this.renderAdviseeServiceIndicatorDetail({title: "End Term" , item: list.endTermDescr})}
           {this.renderAdviseeServiceIndicatorDetail({title: "Start Date" , item: list.startDate})}
           {this.renderAdviseeServiceIndicatorDetail({title: "End Date" , item: list.endDate})}
         </div>
-      </p>    );
+      </p>
+    );
   },
   renderAdviseeServiceIndicatorDetail: function(detail) {
     return (
       <dl className="adv-Advisee-serviceIndicatorDetail">
+        <dt className="adv-Advisee-serviceIndicatorDetailTitle">
           {detail.title}
         </dt>
+        <dd className="adv-Advisee-serviceIndicatorDetailItem">
           {detail.item}
         </dd>
       </dl>
