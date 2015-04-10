@@ -20,29 +20,76 @@
       "iuGpa": "",
       flagsStatus: false,
       sisStudentGroupList: [
-      {
-      emplid: "0003079414",
-      institution: "IUBLA",
-      institutionDescr: "Bloomington",
-      stdntGroup: "21ST",
-      stdntGroupDescr: "21st Century Scholar Recipient"
-      },
-      {
-      emplid: "0003079414",
-      institution: "IUBLA",
-      institutionDescr: "Bloomington",
-      stdntGroup: "ACP",
-      stdntGroupDescr: "Advance College Project"
-      },
-      {
-      emplid: "0003079414",
-      institution: "IUBLA",
-      institutionDescr: "Bloomington",
-      stdntGroup: "VLC1",
-      stdntGroupDescr: "Collins Living Learning Center"
-      }
+        {
+          stdntGroup: "21ST",
+          stdntGroupDescr: "21st Century Scholar Recipient",
+          active: true,
+          effectiveDate: "2015-03-01"
+        },
+        {
+          stdntGroup: "21ST",
+          stdntGroupDescr: "21st Century Scholar Recipient",
+          active: false,
+          effectiveDate: "2015-03-01"
+        },
+        {
+          stdntGroup: "21ST",
+          stdntGroupDescr: "21st Century Scholar Recipient",
+          active: true,
+          effectiveDate: "2015-03-01"
+        },
+        {
+          stdntGroup: "ACP",
+          stdntGroupDescr: "Advance College Project",
+          active: true,
+          effectiveDate: "2015-04-01"
+        },
+        {
+          stdntGroup: "VLC1",
+          stdntGroupDescr: "Collins Living Learning Center",
+          active: false,
+          effectiveDate: "2015-05-01"
+        }
       ],
-      negativeSisServiceIndicatorList: [ ],
+      negativeSisServiceIndicatorList: [
+        {
+        distinctEntry: "IUBLACompleted Verify for US Status",
+        institutionDescr: "BL",
+        serviceIndicatorCode: "R39",
+        serviceIndicatorDescr: "Completed Verify for US Status",
+        impact: "No",
+        reasonDescr: "Eligible for Benefits",
+        startTerm: "4118",
+        startTermDescr: "Fall 2011",
+        endTerm: "9999",
+        endTermDescr: "End Term",
+        startDate: "Dec 12, 2013 12:00:00 AM"
+        },
+        {
+        distinctEntry: "IUBLAFT State Aid-Completion Reqmts",
+        institutionDescr: "BL",
+        serviceIndicatorCode: "F02",
+        serviceIndicatorDescr: "FT State Aid-Completion Reqmts",
+        impact: "Yes",
+        reasonDescr: "Renewal Subj to CR Completion",
+        startTerm: "0000",
+        startTermDescr: "Bot",
+        endTerm: "    ",
+        startDate: "Sep 8, 2014 12:00:00 AM"
+        },
+        {
+        distinctEntry: "IUBLASigned Title IV Waiver",
+        institutionDescr: "BL",
+        serviceIndicatorCode: "G14",
+        serviceIndicatorDescr: "Signed Title IV Waiver",
+        impact: "No",
+        reasonDescr: "Grandfathered",
+        startTerm: "0000",
+        startTermDescr: "Bot",
+        endTerm: "    ",
+        startDate: "May 4, 2012 12:00:00 AM"
+        }
+      ],
       positiveSisServiceIndicatorList: [
       {
       distinctEntry: "IUBLACompleted Verify for US Status",
@@ -62,7 +109,7 @@
       institutionDescr: "BL",
       serviceIndicatorCode: "F02",
       serviceIndicatorDescr: "FT State Aid-Completion Reqmts",
-      impact: "No",
+      impact: "Yes",
       reasonDescr: "Renewal Subj to CR Completion",
       startTerm: "0000",
       startTermDescr: "Bot",
@@ -106,27 +153,24 @@
       "iuGpa": "3.45",
       flagsStatus: true,
       sisStudentGroupList: [
-      {
-      emplid: "0003079414",
-      institution: "IUBLA",
-      institutionDescr: "Bloomington",
-      stdntGroup: "21ST",
-      stdntGroupDescr: "21st Century Scholar Recipient"
-      },
-      {
-      emplid: "0003079414",
-      institution: "IUBLA",
-      institutionDescr: "Bloomington",
-      stdntGroup: "ACP",
-      stdntGroupDescr: "Advance College Project"
-      },
-      {
-      emplid: "0003079414",
-      institution: "IUBLA",
-      institutionDescr: "Bloomington",
-      stdntGroup: "VLC1",
-      stdntGroupDescr: "Collins Living Learning Center"
-      }
+        {
+          stdntGroup: "21ST",
+          stdntGroupDescr: "21st Century Scholar Recipient",
+          active: true,
+          effectiveDate: "2015-03-01"
+        },
+        {
+          stdntGroup: "ACP",
+          stdntGroupDescr: "Advance College Project",
+          active: false,
+          effectiveDate: "2015-04-01"
+        },
+        {
+          stdntGroup: "VLC1",
+          stdntGroupDescr: "Collins Living Learning Center",
+          active: true,
+          effectiveDate: "2015-05-01"
+        }
       ],
       negativeSisServiceIndicatorList: [ ],
       positiveSisServiceIndicatorList: [
@@ -212,7 +256,27 @@
       "hours": "62",
       "programGpa": "3.422",
       "iuGpa": "3.524",
-      flagsStatus: false
+      flagsStatus: false,
+      sisStudentGroupList: [
+        {
+          stdntGroup: "21ST",
+          stdntGroupDescr: "21st Century Scholar Recipient",
+          active: false,
+          effectiveDate: "2015-03-01"
+        },
+        {
+          stdntGroup: "ACP",
+          stdntGroupDescr: "Advance College Project",
+          active: true,
+          effectiveDate: "2015-04-01"
+        },
+        {
+          stdntGroup: "VLC1",
+          stdntGroupDescr: "Collins Living Learning Center",
+          active: false,
+          effectiveDate: "2015-05-01"
+        }
+      ],
     },
     {
       "emplid": "3478623139",

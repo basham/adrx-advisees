@@ -106,12 +106,97 @@ var adviseesStore = Reflux.createStore({
         var programGPA = helpers.round(advisee.programGpa, 2);
         var universityGPA = helpers.round(advisee.iuGpa, 2);
 
+        //
+        // Variables for Arrays
+        //
+        var temp_List;
+        var studentGroups = [];
+        var positiveServiceIndicators_Impact = [];
+        var positiveServiceIndicators_NoImpact = [];
+        var negativeServiceIndicators_Impact = [];
+        var negativeServiceIndicators_NoImpact = [];
+
+        //
+        // Student Groups
+        //
+        temp_List = advisee.sisStudentGroupList;
+        if (!!temp_List) {
+          temp_List =
+            temp_List
+            .map(function(list) {
+              list.activeDescription = !!list.active ? "Active" : "Inactive";
+              list.effectiveDateDescription = !!list.effectiveDate ? "as of " + list.effectiveDate : null;
+              return list;
+            })
+            .sort(helpers.sortBy("active", false, "stdntGroupDescr"))
+            ;
+          studentGroups = temp_List;
+        }
+
+        //
+        // Positive Service Indicators
+        //
+        temp_List = advisee.positiveSisServiceIndicatorList;
+        if (!!temp_List) {
+          temp_List =
+            temp_List
+            .map(function(list) {
+              // Failed to replace null to "&mdash;" by Eunmee Yi on 2015/04/09
+              list.startTermDescr = (!!list.startTermDescr && !!list.startTermDescr.trim()) ? list.startTermDescr : "-";
+              list.endTermDescr = (!!list.endTermDescr && !!list.endTermDescr.trim()) ? list.endTermDescr : "-";
+              list.startDate = (!!list.startDate && !!list.startDate.trim()) ? list.startDate : "-";
+              list.endDate = (!!list.endDate && !!list.endDate.trim()) ? list.endDate : "-";
+              return list;
+            })
+            ;
+
+          positiveServiceIndicators_Impact =
+            helpers.filterBy(temp_List, {impact: "Yes"})
+            .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
+            ;
+          positiveServiceIndicators_NoImpact =
+            helpers.filterBy(temp_List, {impact: "No"})
+            .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
+            ;
+        }
+
+        //
+        // Nagative Service Indicators
+        //
+        temp_List = advisee.negativeSisServiceIndicatorList;
+        if (!!temp_List) {
+          temp_List =
+          temp_List
+          .map(function(list) {
+            list.startTermDescr = (!!list.startTermDescr && !!list.startTermDescr.trim()) ? list.startTermDescr : "-";
+            list.endTermDescr = (!!list.endTermDescr && !!list.endTermDescr.trim()) ? list.endTermDescr : "-";
+            list.startDate = (!!list.startDate && !!list.startDate.trim()) ? list.startDate : "-";
+            list.endDate = (!!list.endDate && !!list.endDate.trim()) ? list.endDate : "-";
+            return list;
+          })
+          ;
+
+          negativeServiceIndicators_Impact =
+            helpers.filterBy(temp_List, {impact: "Yes"})
+            .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
+            ;
+          negativeServiceIndicators_NoImpact =
+            helpers.filterBy(temp_List, {impact: "No"})
+            .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
+            ;
+        }
+
         return {
           name: advisee.studentName,
           universityId: advisee.emplid,
           flag: advisee.flagsStatus,
           url_onFlag: url_onFlag,
           url_onName: url_onName,
+          studentGroups: studentGroups,
+          positiveServiceIndicators_Impact: positiveServiceIndicators_Impact,
+          positiveServiceIndicators_NoImpact: positiveServiceIndicators_NoImpact,
+          negativeServiceIndicators_Impact: negativeServiceIndicators_Impact,
+          negativeServiceIndicators_NoImpact: negativeServiceIndicators_NoImpact,
           details: [
             {
               title: programPlanTitle,

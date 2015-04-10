@@ -37,12 +37,14 @@
     padding: 0.5em;
   }
 
+  &-serviceIndicatorDetails,
   &-details {
     display: flex;
     flex-wrap: wrap;
     margin: 0 0.5em 0.5em;
   }
 
+  &-serviceIndicatorDetail,
   &-detail {
     line-height: @scale-FontSize--20;
     margin: 0.5em;
@@ -57,12 +59,48 @@
     }
   }
 
+  &-serviceIndicatorDetailTitle,
   &-detailTitle {
     font-size: @scale-FontSize--10i;
     font-weight: bold;
   }
 
+  &-serviceIndicatorDetailItem,
   &-detailItem {
     margin: 0;
+  }
+
+  &-studentGroupHeader {
+    float:left;
+    font-weight: bold;
+    width: 20em;
+  }
+
+  &-studentGroupDetail {
+    font-size: @scale-FontSize--10i;
+  }
+
+  &-studentGroup {
+
+    &--inactive {
+      color: @color-Base--250;
+    }
+  }
+
+  &-serviceIndicator {
+    margin: 0.5em 0.5em 0;
+  }
+
+  &-serviceIndicatorType {
+    font-weight: bold;
+    padding: 0.5em 0.5em 0.5em 0;
+  }
+
+  &-serviceIndicatorHeader {
+  }
+
+  &-code {
+    font-style: italic;
+    margin: 0 0.3em 0 0;
   }
 }

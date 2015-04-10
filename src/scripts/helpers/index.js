@@ -34,6 +34,18 @@ function compare(a, b, isAscending) {
   return returnValue;
 }
 
+// Added by Eunmee Yi on 2015/04/09
+// `list' and 'criteria' are required.
+// 'list' is an array and 'criteria' is an object.
+// Examples for the 'criteria': {impact: "Yes"} or {impact:"No", startTerm: "4118"}
+function filterBy(list, criteria) {
+  return list.filter(function(obj) {
+    return Object.keys(criteria).every(function(c) {
+      return obj[c] == criteria[c];
+    })
+  })
+}
+
 function getFocusableElements($el) {
   var childElementsNodeList = $el.querySelectorAll('*');
   var childElementsArray = Array.prototype.slice.call(childElementsNodeList);
@@ -126,8 +138,9 @@ function sortBy(key, isAscending, secondaryKey) {
 module.exports = {
   api: api,
   compare: compare,
-  getQueryParams: getQueryParams,
+  filterBy: filterBy,
   getFocusableElements: getFocusableElements,
+  getQueryParams: getQueryParams,
   isString: isString,
   pluralize: pluralize,
   requestCallback: requestCallback,

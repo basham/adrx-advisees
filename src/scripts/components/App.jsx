@@ -154,7 +154,54 @@ var App = React.createClass({
     );
   },
   renderAdvisee: function(advisee) {
+    //
+    // Handle dynamic flag/sections
+    //
     var content_flag = !!advisee.flag ? this.renderAdviseeFlag(advisee) : null;
+
+    var temp_List;
+    var temp_Method;
+
+    temp_List = advisee.studentGroups;
+    temp_Method = this.renderAdviseeStudentGroupSection;
+    temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List) : 'No Student Groups';
+    var content_studentGroupSection = temp_List;
+
+    temp_List = advisee.positiveServiceIndicators_Impact;
+    temp_Method = this.renderAdviseeServiceIndicatorSection;
+    temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List, "Impact") : '';
+    var content_positiveServiceIndicator_Impact = temp_List;
+
+    temp_List = advisee.positiveServiceIndicators_NoImpact;
+    temp_Method = this.renderAdviseeServiceIndicatorSection;
+    temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List, "No impact") : '';
+    var content_positiveServiceIndicator_NoImpact = temp_List;
+
+    temp_List = advisee.negativeServiceIndicators_Impact;
+    temp_Method = this.renderAdviseeServiceIndicatorSection;
+    temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List, "Impact") : '';
+    var content_negativeServiceIndicator_Impact = temp_List;
+
+    temp_List = advisee.negativeServiceIndicators_NoImpact;
+    temp_Method = this.renderAdviseeServiceIndicatorSection;
+    temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List, "No impact") : '';
+    var content_negativeServiceIndicator_NoImpact = temp_List;
+
+    content_positiveServiceIndicator_Impact = (!!content_positiveServiceIndicator_Impact || !!content_positiveServiceIndicator_NoImpact) ? content_positiveServiceIndicator_Impact : 'No Positive Service Indicators';
+    content_negativeServiceIndicator_Impact = (!!content_negativeServiceIndicator_Impact || !!content_negativeServiceIndicator_NoImpact) ? content_negativeServiceIndicator_Impact : 'No Negative Service Indicators';
+
+    //
+    // Handle dynamic Tab label
+    //
+    var TabLabel_Groups = "Groups";
+    var TabLabel_Positive = "Positive";
+    var TabLabel_Negative = "Negative";
+    if (window.innerWidth > 800) {
+      TabLabel_Groups = "Student Groups";
+      TabLabel_Positive = "Positive Service Indicators";
+      TabLabel_Negative = "Negative Service Indicators";
+    }
+
     return (
       <li className="adv-AdviseeList-item adv-Advisee">
         <header className="adv-Advisee-header">
@@ -179,18 +226,20 @@ var App = React.createClass({
           className="adv-Tabs"
           selectedIndex={0}>
           <TabList className="adv-Tabs-list">
-            <Tab className="adv-Tabs-tab">Groups</Tab>
-            <Tab className="adv-Tabs-tab">Negative</Tab>
-            <Tab className="adv-Tabs-tab">Positive</Tab>
+            <Tab className="adv-Tabs-tab">{TabLabel_Groups}</Tab>
+            <Tab className="adv-Tabs-tab">{TabLabel_Negative}</Tab>
+            <Tab className="adv-Tabs-tab">{TabLabel_Positive}</Tab>
           </TabList>
           <TabPanel className="adv-Tabs-panel">
-            <p>Student Groups</p>
+            {content_studentGroupSection}
           </TabPanel>
           <TabPanel className="adv-Tabs-panel">
-            <p>Negative Service Indicators</p>
+            {content_negativeServiceIndicator_Impact}
+            {content_negativeServiceIndicator_NoImpact}
           </TabPanel>
           <TabPanel className="adv-Tabs-panel">
-            <p>Positive Service Indicators</p>
+            {content_positiveServiceIndicator_Impact}
+            {content_positiveServiceIndicator_NoImpact}
           </TabPanel>
         </Tabs>
       </li>
@@ -229,6 +278,66 @@ var App = React.createClass({
           className="adv-Advisee-flagIcon"
           name="flag"/>
       </a>
+    );
+  },
+  renderAdviseeStudentGroupSection: function(list) {
+    return (
+      <div className="adv-Advisee-studentGroups">
+        {list.map(this.renderAdviseeStudentGroup)}
+      </div>
+    );
+  },
+  renderAdviseeStudentGroup: function(list) {
+    var cn = classNames({
+      'adv-Advisee-studentGroup--inactive': !list.active
+    });
+    return (
+      <p className={cn}>
+        <span className="adv-Advisee-studentGroupHeader">
+          <span className="adv-Advisee-code">
+            {list.stdntGroup}:
+          </span>
+          {list.stdntGroupDescr}
+        </span>
+        <span className="adv-Advisee-studentGroupDetail">
+        </span>
+      </p>
+    );
+  },
+  renderAdviseeServiceIndicatorSection: function(list, impactDescription) {
+    return (
+      <div className="adv-Advisee-ServiceIndicators">
+        <span className="adv-Advisee-serviceIndicatorType">
+          {impactDescription}
+        </span>
+        {list.map(this.renderAdviseeServiceIndicator)}
+      </div>
+    );
+  },
+  renderAdviseeServiceIndicator: function(list) {
+    return (
+      <p className="adv-Advisee-serviceIndicator">
+        <span className="adv-Advisee-serviceIndicatorHeader">
+          <span className="adv-Advisee-code">
+            {list.serviceIndicatorCode}:
+          </span>
+          {list.serviceIndicatorDescr} - {list.reasonDescr}
+        </span>
+          {this.renderAdviseeServiceIndicatorDetail({title: "Start Term" , item: list.startTermDescr})}
+          {this.renderAdviseeServiceIndicatorDetail({title: "End Term" , item: list.endTermDescr})}
+          {this.renderAdviseeServiceIndicatorDetail({title: "Start Date" , item: list.startDate})}
+          {this.renderAdviseeServiceIndicatorDetail({title: "End Date" , item: list.endDate})}
+        </div>
+      </p>    );
+  },
+  renderAdviseeServiceIndicatorDetail: function(detail) {
+    return (
+      <dl className="adv-Advisee-serviceIndicatorDetail">
+          {detail.title}
+        </dt>
+          {detail.item}
+        </dd>
+      </dl>
     );
   },
   //

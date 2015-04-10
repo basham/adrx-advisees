@@ -87,7 +87,9 @@ module.exports = React.createClass({
 
 		function getDescendants(component) {
 			var el = [];
-			var children = component.props.children;
+			// Updated by Eunmee Yi on 2015/04/09
+			//var children = component.props.children;
+			var children = (!!component && !!component.props) ? component.props.children : [];
 			var hasChildren = Array.isArray(children) && children.length;
 			if(hasChildren) {
 				children.forEach(function(child) {
@@ -97,6 +99,12 @@ module.exports = React.createClass({
 					el = el.concat(getDescendants(child));
 				})
 			}
+			//if (!!component && !!component.type) {
+			/*
+			if (!!component && !!component.type && !!component.type.displayName) {
+				console.log('----- in function getDescendants() ', component.type, '---' , component.type.displayName);
+			}
+			*/
 			return el;
 		}
 
@@ -105,7 +113,9 @@ module.exports = React.createClass({
 
 	getDescendantsByType: function(type) {
 		return this.getDescendants().filter(function(component) {
-			return component.type.displayName === type;
+			// Updated by Eunmee Yi on 2015/04/09
+			//return component.type.displayName === type;
+			return (!!component && !!component.type) ? component.type.displayName === type : false;
 		});
 	},
 
