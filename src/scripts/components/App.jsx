@@ -156,17 +156,7 @@ var App = React.createClass({
   renderAdvisee: function(advisee) {
     var content_flag = !!advisee.flag ? this.renderAdviseeFlag(advisee) : null;
 
-    var hasGroupList = Array.isArray(advisee.studentGroupList) && !!advisee.studentGroupList.length;
-
-    var studentGroups = "";
-    if (hasGroupList) {
-      studentGroups = advisee.studentGroupList.map(this.renderAdviseeStudentGroup);
-    }
-
-    var cn = classNames({
-      'adv-Advisee-detail': true,
-      'adv-Advisee-detail--fixed': true
-    });
+    var studentGroups = !advisee.studentGroupList ? null : advisee.studentGroupList.map(this.renderAdviseeStudentGroup);
 
     return (
       <li className="adv-AdviseeList-item adv-Advisee">
@@ -197,7 +187,7 @@ var App = React.createClass({
             <Tab className="adv-Tabs-tab">Positive</Tab>
           </TabList>
           <TabPanel className="adv-Tabs-panel">
-            <dl className={cn}>{studentGroups}</dl>
+            <dl>{studentGroups}</dl>
           </TabPanel>
           <TabPanel className="adv-Tabs-panel">
             <p>Hello from Bar</p>
@@ -245,9 +235,21 @@ var App = React.createClass({
     );
   },
   renderAdviseeStudentGroup: function(item) {
+    var cn = classNames({
+      'adv-Tabs-item' : true,
+      'adv-Tabs-item--inactive' : !item.active
+    });
     return (
-      <dd className="adv-Advisee-detailItem">
-        {item.stdntGroup}: {item.stdntGroupDescr}
+      <dd className={cn}>
+        <div className="adv-Tabs-panel">
+          <div className="adv-Tabs-panel--fixed">
+            <span className="adv-Tabs-font--italic">{item.stdntGroup}: </span>
+            {item.stdntGroupDescr}
+          </div>
+          <div>
+            {item.activeStatus} {item.effectiveDate}
+          </div>
+        </div>
       </dd>
     );
   },

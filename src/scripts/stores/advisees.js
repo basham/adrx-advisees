@@ -105,13 +105,28 @@ var adviseesStore = Reflux.createStore({
         var programGPA = helpers.round(advisee.programGpa, 2);
         var universityGPA = helpers.round(advisee.iuGpa, 2);
 
+        //
+        // Handle Student Groups
+        //
+        var hasGroupList = Array.isArray(advisee.sisStudentGroupList) && !!advisee.sisStudentGroupList.length;
+        var sortedStudentGroupList = null;
+        if (hasGroupList) {
+          sortedStudentGroupList = advisee.sisStudentGroupList
+            .map(function(item) {
+              item.activeStatus = !!item.active ? "Active as of" : "Inactive as of";
+              console.log('item', item);
+              return item;
+            })
+            .sort(helpers.sortBy("active", false, "stdntGroup"));
+        }
+
         return {
           name: advisee.studentName,
           universityId: advisee.emplid,
           flag: advisee.flagsStatus,
           url_onFlag: url_onFlag,
           url_onName: url_onName,
-          studentGroupList: advisee.sisStudentGroupList,
+          studentGroupList: sortedStudentGroupList,
           details: [
             {
               title: programPlanTitle,
