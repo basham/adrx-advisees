@@ -156,12 +156,7 @@ var App = React.createClass({
   renderAdvisee: function(advisee) {
     var content_flag = !!advisee.flag ? this.renderAdviseeFlag(advisee) : null;
 
-    //KDM render Student Groups only if list is not empty
-    var hasGroupList = Array.isArray(advisee.studentGroupList) && !!advisee.studentGroupList.length;
-    var studentGroups = "";
-    if (hasGroupList) {
-      studentGroups = advisee.studentGroupList.map(this.renderAdviseeStudentGroup);
-    }
+    var studentGroups = !advisee.studentGroupList ? null : advisee.studentGroupList.map(this.renderAdviseeStudentGroup);
 
     return (
       <li className="adv-AdviseeList-item adv-Advisee">
@@ -240,7 +235,7 @@ var App = React.createClass({
     );
   },
   renderAdviseeStudentGroup: function(item) {
-    var activeStatus = !!item.active ? "Active" : "Inactive";
+    var cn = !!item.active ? null : "adv-Tabs-item--inactive";
     return (
       <dd className="adv-Tabs-item">
         <div className="adv-Tabs-panel">
@@ -248,8 +243,8 @@ var App = React.createClass({
             <span className="adv-Tabs-font--italic">{item.stdntGroup}: </span>
             {item.stdntGroupDescr}
           </div>
-          <div>
-            {activeStatus} as of {item.effectiveDate}
+          <div className={cn}>
+            {item.activeStatus} {item.effectiveDate}
           </div>
         </div>
       </dd>

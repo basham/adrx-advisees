@@ -27,12 +27,6 @@
         effectiveDate: "2009-05-12"
         },
         {
-        stdntGroup: "ACP",
-        stdntGroupDescr: "Advance College Project",
-        active: true,
-        effectiveDate: "2014-09-04"
-        },
-        {
         stdntGroup: "VLC1",
         stdntGroupDescr: "Collins Living Learning Center",
         active: false,
@@ -43,6 +37,12 @@
         stdntGroupDescr: "International House Of Parties",
         active: true,
         effectiveDate: "2011-07-02"
+        },
+        {
+        stdntGroup: "ACP",
+        stdntGroupDescr: "Advance College Project",
+        active: true,
+        effectiveDate: "2014-09-04"
         }
       ],
       negativeSisServiceIndicatorList: [ ],
@@ -119,14 +119,14 @@
         institutionDescr: "Bloomington",
         stdntGroup: "BTG",
         stdntGroupDescr: "Bloomington Tennis Club",
-        active: true,
+        active: false,
         effectiveDate: "2011-05-12"
         },
         {
         institutionDescr: "Bloomington",
         stdntGroup: "VC",
         stdntGroupDescr: "Volleyball Club",
-        active: true,
+        active: false,
         effectiveDate: "2011-09-30"
         }
       ],
