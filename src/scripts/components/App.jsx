@@ -235,15 +235,18 @@ var App = React.createClass({
     );
   },
   renderAdviseeStudentGroup: function(item) {
-    var cn = !!item.active ? null : "adv-Tabs-item--inactive";
+    var cn = classNames({
+      'adv-Tabs-item' : true,
+      'adv-Tabs-item--inactive' : !item.active
+    });
     return (
-      <dd className="adv-Tabs-item">
+      <dd className={cn}>
         <div className="adv-Tabs-panel">
           <div className="adv-Tabs-panel--fixed">
             <span className="adv-Tabs-font--italic">{item.stdntGroup}: </span>
             {item.stdntGroupDescr}
           </div>
-          <div className={cn}>
+          <div>
             {item.activeStatus} {item.effectiveDate}
           </div>
         </div>
