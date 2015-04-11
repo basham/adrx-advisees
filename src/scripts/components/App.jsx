@@ -29,13 +29,22 @@ var App = React.createClass({
   //
   componentDidMount: function() {
     actions.getData();
+    window.addEventListener("resize", this.onWindowResized);
+  },
+  componentWillUnmount: function() {
+    window.removeEventListener("resize", this.onWindowResized);
+  },
+  componentWillUpdate: function(nextProps, nextState){
+    this.state.isLongerTabLabel = (window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange) ? true : false;
   },
   getInitialState: function() {
     return {
       adviseesStore: [],
       isAscending: sortStore.defaultIsAscending,
+      isLongerTabLabel: true,
       requesting: true,
-      sortByKey: sortStore.defaultSortByKey
+      sortByKey: sortStore.defaultSortByKey,
+      windowInnerWidth_borderForTabLabelChange: 700
     }
   },
   //
@@ -154,9 +163,67 @@ var App = React.createClass({
     );
   },
   renderAdvisee: function(advisee) {
+    var studentGroups = !advisee.studentGroupList ? null : advisee.studentGroupList.map(this.renderAdviseeStudentGroup);
+
+    //--------------------------------------------------//
+    //
+    // Handle flag/student group/service indicator sections
+    // and prepare messages when no rows
+    //
+    //--------------------------------------------------//
+    //-- Added by Eunmee Yi on 2015/04/08
+    //--------------------------------------------------//
     var content_flag = !!advisee.flag ? this.renderAdviseeFlag(advisee) : null;
 
-    var studentGroups = !advisee.studentGroupList ? null : advisee.studentGroupList.map(this.renderAdviseeStudentGroup);
+    var temp_List;
+    var temp_Method;
+
+    //temp_List = advisee.studentGroups;
+    //temp_Method = this.renderAdviseeStudentGroupSection;
+    //temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List) : 'No Student Groups';
+    //var content_studentGroupSection = temp_List;
+
+    temp_List = advisee.positiveServiceIndicators_Impact;
+    temp_Method = this.renderAdviseeServiceIndicatorSection;
+    temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List, "Impact") : '';
+    var content_positiveServiceIndicator_Impact = temp_List;
+
+    temp_List = advisee.positiveServiceIndicators_NoImpact;
+    temp_Method = this.renderAdviseeServiceIndicatorSection;
+    temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List, "No impact") : '';
+    var content_positiveServiceIndicator_NoImpact = temp_List;
+
+    temp_List = advisee.negativeServiceIndicators_Impact;
+    temp_Method = this.renderAdviseeServiceIndicatorSection;
+    temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List, "Impact") : '';
+    var content_negativeServiceIndicator_Impact = temp_List;
+
+    temp_List = advisee.negativeServiceIndicators_NoImpact;
+    temp_Method = this.renderAdviseeServiceIndicatorSection;
+    temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List, "No impact") : '';
+    var content_negativeServiceIndicator_NoImpact = temp_List;
+
+    content_positiveServiceIndicator_Impact = (!!content_positiveServiceIndicator_Impact || !!content_positiveServiceIndicator_NoImpact) ? content_positiveServiceIndicator_Impact : 'No Positive Service Indicators';
+    content_negativeServiceIndicator_Impact = (!!content_negativeServiceIndicator_Impact || !!content_negativeServiceIndicator_NoImpact) ? content_negativeServiceIndicator_Impact : 'No Negative Service Indicators';
+
+    //--------------------------------------------------//
+    //
+    // Handle dynamic Tab label
+    //
+    //--------------------------------------------------//
+    //-- Added by Eunmee Yi on 2015/04/08
+    //--------------------------------------------------//
+    if (this.state.isLongerTabLabel) {
+      var TabLabel_Groups = "Student Groups";
+      var TabLabel_Positive = "Positive Service Indicators";
+      var TabLabel_Negative = "Negative Service Indicators";
+    }
+    else {
+      var TabLabel_Groups = "Groups";
+      var TabLabel_Positive = "Positive";
+      var TabLabel_Negative = "Negative";
+    }
+    //--------------------------------------------------//
 
     return (
       <li className="adv-AdviseeList-item adv-Advisee">
@@ -182,18 +249,20 @@ var App = React.createClass({
           className="adv-Tabs"
           selectedIndex={0}>
           <TabList className="adv-Tabs-list">
-            <Tab className="adv-Tabs-tab">Groups</Tab>
-            <Tab className="adv-Tabs-tab">Negative</Tab>
-            <Tab className="adv-Tabs-tab">Positive</Tab>
+            <Tab className="adv-Tabs-tab">{TabLabel_Groups}</Tab>
+            <Tab className="adv-Tabs-tab">{TabLabel_Negative}</Tab>
+            <Tab className="adv-Tabs-tab">{TabLabel_Positive}</Tab>
           </TabList>
           <TabPanel className="adv-Tabs-panel">
             <dl>{studentGroups}</dl>
           </TabPanel>
           <TabPanel className="adv-Tabs-panel">
-            <p>Hello from Bar</p>
+            {content_negativeServiceIndicator_Impact}
+            {content_negativeServiceIndicator_NoImpact}
           </TabPanel>
           <TabPanel className="adv-Tabs-panel">
-            <p>Hello from Baz</p>
+            {content_positiveServiceIndicator_Impact}
+            {content_positiveServiceIndicator_NoImpact}
           </TabPanel>
         </Tabs>
       </li>
@@ -253,6 +322,46 @@ var App = React.createClass({
       </dd>
     );
   },
+  renderAdviseeServiceIndicatorSection: function(list, impactDescription) {
+    return (
+      <div className="adv-Advisee-ServiceIndicators">
+        <span className="adv-Advisee-serviceIndicatorType">
+          {impactDescription}
+        </span>
+        {list.map(this.renderAdviseeServiceIndicator)}
+      </div>
+    );
+  },
+  renderAdviseeServiceIndicator: function(list) {
+    return (
+      <div className="adv-Advisee-serviceIndicator">
+        <span className="adv-Advisee-serviceIndicatorHeader">
+          <span className="adv-Advisee-code">
+            {list.serviceIndicatorCode}:
+          </span>
+          {list.serviceIndicatorDescr} - {list.reasonDescr}
+        </span>
+        <div className="adv-Advisee-serviceIndicatorDetails">
+          {this.renderAdviseeServiceIndicatorDetail({title: "Start Term" , item: list.startTermDescr})}
+          {this.renderAdviseeServiceIndicatorDetail({title: "End Term" , item: list.endTermDescr})}
+          {this.renderAdviseeServiceIndicatorDetail({title: "Start Date" , item: list.startDate})}
+          {this.renderAdviseeServiceIndicatorDetail({title: "End Date" , item: list.endDate})}
+        </div>
+      </div>
+    );
+  },
+  renderAdviseeServiceIndicatorDetail: function(detail) {
+    return (
+      <dl className="adv-Advisee-serviceIndicatorDetail">
+        <dt className="adv-Advisee-serviceIndicatorDetailTitle">
+          {detail.title}
+        </dt>
+        <dd className="adv-Advisee-serviceIndicatorDetailItem">
+          {detail.item}
+        </dd>
+      </dl>
+    );
+  },
   //
   // Handler methods
   //
@@ -298,6 +407,26 @@ var App = React.createClass({
     }, function() {
       this.refs.error.getDOMNode().focus();
     });
+  },
+  //
+  // Window event listener
+  //
+  //--------------------------------------------------//
+  //-- Created by Eunmee Yi on 2015/04/09
+  //--------------------------------------------------//
+  onWindowResized: function() {
+    //console.log("----- onWindowResized: window.innerWidth = ", window.innerWidth, ", this.state.isLongerTabLabel = ", this.state.isLongerTabLabel);
+    if (
+      ( this.state.isLongerTabLabel && window.innerWidth < this.state.windowInnerWidth_borderForTabLabelChange) ||
+      (!this.state.isLongerTabLabel && window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange)
+      )
+    {
+      this.setState({
+        isLongerTabLabel: !this.state.isLongerTabLabel
+      }, function() {
+        this.render();
+      });
+    }
   }
 });
 

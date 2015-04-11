@@ -13,12 +13,12 @@ var adviseesStore = Reflux.createStore({
   // Action methods
   //
   onGetData: function() {
-
+    /*
     setTimeout(function() {
       this.handleSuccess(require('./data.json'));
     }.bind(this), 0);
     return;
-
+    */
     var params = helpers.getQueryParams();
 
     request
@@ -120,6 +120,79 @@ var adviseesStore = Reflux.createStore({
             .sort(helpers.sortBy("active", false, "stdntGroup"));
         }
 
+        //--------------------------------------------------//
+        //
+        // Manipulate the data to get 5 proper arrays
+        // with map()/filter()/sort()
+        // and send them to render
+        //
+        //--------------------------------------------------//
+        //-- Added by Eunmee Yi on 2015/04/08
+        //--------------------------------------------------//
+        var temp_List;
+        //var studentGroups = [];
+        var positiveServiceIndicators_Impact = [];
+        var positiveServiceIndicators_NoImpact = [];
+        var negativeServiceIndicators_Impact = [];
+        var negativeServiceIndicators_NoImpact = [];
+
+        // Failed to replace null to "&mdash;" by Eunmee Yi on 2015/04/09
+        //var stringForEmptyValue = "&mdash;";
+        var stringForEmptyValue = "-----";
+
+        //--------------------------------------------------//
+        // Positive Service Indicators
+        //--------------------------------------------------//
+        temp_List = advisee.positiveSisServiceIndicatorList;
+        if (!!temp_List) {
+          temp_List =
+            temp_List
+            .map(function(list) {
+              list.startTermDescr = (!!list.startTermDescr && !!list.startTermDescr.trim()) ? list.startTermDescr : stringForEmptyValue;
+              list.endTermDescr = (!!list.endTermDescr && !!list.endTermDescr.trim()) ? list.endTermDescr : stringForEmptyValue;
+              list.startDate = (!!list.startDate && !!list.startDate.trim()) ? list.startDate : stringForEmptyValue;
+              list.endDate = (!!list.endDate && !!list.endDate.trim()) ? list.endDate : stringForEmptyValue;
+              return list;
+            })
+            ;
+
+          positiveServiceIndicators_Impact =
+            helpers.filterBy(temp_List, {impact: "Yes"})
+            .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
+            ;
+          positiveServiceIndicators_NoImpact =
+            helpers.filterBy(temp_List, {impact: "No"})
+            .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
+            ;
+        }
+
+        //--------------------------------------------------//
+        // Nagative Service Indicators
+        //--------------------------------------------------//
+        temp_List = advisee.negativeSisServiceIndicatorList;
+        if (!!temp_List) {
+          temp_List =
+          temp_List
+          .map(function(list) {
+            list.startTermDescr = (!!list.startTermDescr && !!list.startTermDescr.trim()) ? list.startTermDescr : stringForEmptyValue;
+            list.endTermDescr = (!!list.endTermDescr && !!list.endTermDescr.trim()) ? list.endTermDescr : stringForEmptyValue;
+            list.startDate = (!!list.startDate && !!list.startDate.trim()) ? list.startDate : stringForEmptyValue;
+            list.endDate = (!!list.endDate && !!list.endDate.trim()) ? list.endDate : stringForEmptyValue;
+            return list;
+          })
+          ;
+
+          negativeServiceIndicators_Impact =
+            helpers.filterBy(temp_List, {impact: "Yes"})
+            .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
+            ;
+          negativeServiceIndicators_NoImpact =
+            helpers.filterBy(temp_List, {impact: "No"})
+            .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
+            ;
+        }
+        //--------------------------------------------------//
+
         return {
           name: advisee.studentName,
           universityId: advisee.emplid,
@@ -127,6 +200,11 @@ var adviseesStore = Reflux.createStore({
           url_onFlag: url_onFlag,
           url_onName: url_onName,
           studentGroupList: sortedStudentGroupList,
+          //studentGroups: studentGroups,
+          positiveServiceIndicators_Impact: positiveServiceIndicators_Impact,
+          positiveServiceIndicators_NoImpact: positiveServiceIndicators_NoImpact,
+          negativeServiceIndicators_Impact: negativeServiceIndicators_Impact,
+          negativeServiceIndicators_NoImpact: negativeServiceIndicators_NoImpact,
           details: [
             {
               title: programPlanTitle,

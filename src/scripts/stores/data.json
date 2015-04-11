@@ -45,7 +45,6 @@
         effectiveDate: "2014-09-04"
         }
       ],
-      negativeSisServiceIndicatorList: [ ],
       positiveSisServiceIndicatorList: [
         {
         distinctEntry: "IUBLACompleted Verify for US Status",
@@ -214,7 +213,27 @@
       "hours": "62",
       "programGpa": "3.422",
       "iuGpa": "3.524",
-      flagsStatus: false
+      flagsStatus: false,
+      sisStudentGroupList: [
+        {
+          stdntGroup: "21ST",
+          stdntGroupDescr: "21st Century Scholar Recipient",
+          active: false,
+          effectiveDate: "2015-03-01"
+        },
+        {
+          stdntGroup: "ACP",
+          stdntGroupDescr: "Advance College Project",
+          active: true,
+          effectiveDate: "2015-04-01"
+        },
+        {
+          stdntGroup: "VLC1",
+          stdntGroupDescr: "Collins Living Learning Center",
+          active: false,
+          effectiveDate: "2015-05-01"
+        }
+      ],
     },
     {
       "emplid": "3478623139",

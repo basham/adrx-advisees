@@ -27,10 +27,9 @@ module.exports = React.createClass({
 					role="tablist">
 					{this.props.children}
 				</ul>
-
 				<Icon
 					className={cn}
-					name="caret-bottom" 
+					name="caret-bottom"
 					onClick={this.handleClick}/>
 			</div>
 		);
