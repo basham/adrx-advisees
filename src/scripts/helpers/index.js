@@ -26,18 +26,25 @@ function compare(a, b, isAscending) {
   a = isString(a) ? a.toLowerCase().trim() : a;
   b = isString(b) ? b.toLowerCase().trim() : b;
 
+  //--------------------------------------------------//
   // Handle if a or b is undefined
   // Return 0 if a and b are undefined at the same time
+  //--------------------------------------------------//
+  //-- Updated by Eunmee Yi on 2015/04/02
+  //--------------------------------------------------//
   var returnValue = a < b ? -1 : (a > b ? 1 : 0);
   returnValue = (!a && !!b) ? -1 : ((!!a && !b) ? 1 : returnValue);
   returnValue = returnValue * inverse;
   return returnValue;
 }
 
-// Added by Eunmee Yi on 2015/04/09
+//--------------------------------------------------//
 // `list' and 'criteria' are required.
 // 'list' is an array and 'criteria' is an object.
 // Examples for the 'criteria': {impact: "Yes"} or {impact:"No", startTerm: "4118"}
+//--------------------------------------------------//
+//-- Added by Eunmee Yi on 2015/04/09
+//--------------------------------------------------//
 function filterBy(list, criteria) {
   return list.filter(function(obj) {
     return Object.keys(criteria).every(function(c) {

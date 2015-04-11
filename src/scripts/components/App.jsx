@@ -29,13 +29,22 @@ var App = React.createClass({
   //
   componentDidMount: function() {
     actions.getData();
+    window.addEventListener("resize", this.onWindowResized);
+  },
+  componentWillUnmount: function() {
+    window.removeEventListener("resize", this.onWindowResized);
+  },
+  componentWillUpdate: function(nextProps, nextState){
+    this.state.isLongerTabLabel = (window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange) ? true : false;
   },
   getInitialState: function() {
     return {
       adviseesStore: [],
       isAscending: sortStore.defaultIsAscending,
+      isLongerTabLabel: true,
       requesting: true,
-      sortByKey: sortStore.defaultSortByKey
+      sortByKey: sortStore.defaultSortByKey,
+      windowInnerWidth_borderForTabLabelChange: 700
     }
   },
   //
@@ -154,9 +163,14 @@ var App = React.createClass({
     );
   },
   renderAdvisee: function(advisee) {
+    //--------------------------------------------------//
     //
-    // Handle dynamic flag/sections
+    // Handle flag/student group/service indicator sections
+    // and prepare messages when no rows
     //
+    //--------------------------------------------------//
+    //-- Added by Eunmee Yi on 2015/04/08
+    //--------------------------------------------------//
     var content_flag = !!advisee.flag ? this.renderAdviseeFlag(advisee) : null;
 
     var temp_List;
@@ -190,17 +204,24 @@ var App = React.createClass({
     content_positiveServiceIndicator_Impact = (!!content_positiveServiceIndicator_Impact || !!content_positiveServiceIndicator_NoImpact) ? content_positiveServiceIndicator_Impact : 'No Positive Service Indicators';
     content_negativeServiceIndicator_Impact = (!!content_negativeServiceIndicator_Impact || !!content_negativeServiceIndicator_NoImpact) ? content_negativeServiceIndicator_Impact : 'No Negative Service Indicators';
 
+    //--------------------------------------------------//
     //
     // Handle dynamic Tab label
     //
-    var TabLabel_Groups = "Groups";
-    var TabLabel_Positive = "Positive";
-    var TabLabel_Negative = "Negative";
-    if (window.innerWidth > 800) {
-      TabLabel_Groups = "Student Groups";
-      TabLabel_Positive = "Positive Service Indicators";
-      TabLabel_Negative = "Negative Service Indicators";
+    //--------------------------------------------------//
+    //-- Added by Eunmee Yi on 2015/04/08
+    //--------------------------------------------------//
+    if (this.state.isLongerTabLabel) {
+      var TabLabel_Groups = "Student Groups";
+      var TabLabel_Positive = "Positive Service Indicators";
+      var TabLabel_Negative = "Negative Service Indicators";
     }
+    else {
+      var TabLabel_Groups = "Groups";
+      var TabLabel_Positive = "Positive";
+      var TabLabel_Negative = "Negative";
+    }
+    //--------------------------------------------------//
 
     return (
       <li className="adv-AdviseeList-item adv-Advisee">
@@ -289,10 +310,11 @@ var App = React.createClass({
   },
   renderAdviseeStudentGroup: function(list) {
     var cn = classNames({
+      'adv-Advisee-studentGroup': true,
       'adv-Advisee-studentGroup--inactive': !list.active
     });
     return (
-      <p className={cn}>
+      <div className={cn}>
         <span className="adv-Advisee-studentGroupHeader">
           <span className="adv-Advisee-code">
             {list.stdntGroup}:
@@ -302,7 +324,7 @@ var App = React.createClass({
         <span className="adv-Advisee-studentGroupDetail">
           {list.activeDescription} {list.effectiveDateDescription}
         </span>
-      </p>
+      </div>
     );
   },
   renderAdviseeServiceIndicatorSection: function(list, impactDescription) {
@@ -317,7 +339,7 @@ var App = React.createClass({
   },
   renderAdviseeServiceIndicator: function(list) {
     return (
-      <p className="adv-Advisee-serviceIndicator">
+      <div className="adv-Advisee-serviceIndicator">
         <span className="adv-Advisee-serviceIndicatorHeader">
           <span className="adv-Advisee-code">
             {list.serviceIndicatorCode}:
@@ -330,7 +352,7 @@ var App = React.createClass({
           {this.renderAdviseeServiceIndicatorDetail({title: "Start Date" , item: list.startDate})}
           {this.renderAdviseeServiceIndicatorDetail({title: "End Date" , item: list.endDate})}
         </div>
-      </p>
+      </div>
     );
   },
   renderAdviseeServiceIndicatorDetail: function(detail) {
@@ -390,6 +412,26 @@ var App = React.createClass({
     }, function() {
       this.refs.error.getDOMNode().focus();
     });
+  },
+  //
+  // Window event listener
+  //
+  //--------------------------------------------------//
+  //-- Created by Eunmee Yi on 2015/04/09
+  //--------------------------------------------------//
+  onWindowResized: function() {
+    //console.log("----- onWindowResized: window.innerWidth = ", window.innerWidth, ", this.state.isLongerTabLabel = ", this.state.isLongerTabLabel);
+    if (
+      ( this.state.isLongerTabLabel && window.innerWidth < this.state.windowInnerWidth_borderForTabLabelChange) ||
+      (!this.state.isLongerTabLabel && window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange)
+      )
+    {
+      this.setState({
+        isLongerTabLabel: !this.state.isLongerTabLabel
+      }, function() {
+        this.render();
+      });
+    }
   }
 });
 
