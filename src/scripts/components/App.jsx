@@ -306,7 +306,7 @@ var App = React.createClass({
   renderAdviseeStudentGroup: function(item) {
     var cn = classNames({
       'adv-Tabs-item' : true,
-      'adv-Tabs-item--inactive' : !item.active
+      'adv-Tabs-item--inactive' : !item.effectiveStatusBoolean
     });
     return (
       <dd className={cn}>
