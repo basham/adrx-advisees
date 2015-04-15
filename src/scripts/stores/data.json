@@ -21,70 +21,53 @@
       flagsStatus: false,
       sisStudentGroupList: [
         {
-        stdntGroup: "21ST",
-        stdntGroupDescr: "21st Century Scholar Recipient",
-        active: true,
-        effectiveDate: "2009-05-12"
+        effectiveDateFormatted: "2009-10-15",
+        effectiveStatusBoolean: true,
+        stdntGroup: "FGEN",
+        stdntGroupDescr: "First Generation Student"
         },
         {
-        stdntGroup: "VLC1",
-        stdntGroupDescr: "Collins Living Learning Center",
-        active: false,
-        effectiveDate: "2010-12-03"
-        },
-        {
-        stdntGroup: "IHOP",
-        stdntGroupDescr: "International House Of Parties",
-        active: true,
-        effectiveDate: "2011-07-02"
-        },
-        {
-        stdntGroup: "ACP",
-        stdntGroupDescr: "Advance College Project",
-        active: true,
-        effectiveDate: "2014-09-04"
+        effectiveDateFormatted: "2010-04-21",
+        effectiveStatusBoolean: true,
+        stdntGroup: "GPRE",
+        stdntGroupDescr: "Groups/Removed"
         }
       ],
+      negativeSisServiceIndicatorList: [
+      {
+      serviceIndicatorCode: "G03",
+      serviceIndicatorDescr: "Past Due Encumbrance",
+      impactBoolean: true,
+      reasonDescr: "Past Due",
+      startTerm: "",
+      startTermDescr: "",
+      endTerm: " ",
+      startDateFormatted: "2015-02-22"
+      }
+      ],
       positiveSisServiceIndicatorList: [
-        {
-        distinctEntry: "IUBLACompleted Verify for US Status",
-        institutionDescr: "BL",
-        serviceIndicatorCode: "R39",
-        serviceIndicatorDescr: "Completed Verify for US Status",
-        impact: "No",
-        reasonDescr: "Eligible for Benefits",
-        startTerm: "4118",
-        startTermDescr: "Fall 2011",
-        endTerm: "9999",
-        endTermDescr: "End Term",
-        startDate: "Dec 12, 2013 12:00:00 AM"
-        },
-        {
-        distinctEntry: "IUBLAFT State Aid-Completion Reqmts",
-        institutionDescr: "BL",
-        serviceIndicatorCode: "F02",
-        serviceIndicatorDescr: "FT State Aid-Completion Reqmts",
-        impact: "No",
-        reasonDescr: "Renewal Subj to CR Completion",
-        startTerm: "0000",
-        startTermDescr: "Bot",
-        endTerm: "    ",
-        startDate: "Sep 8, 2014 12:00:00 AM"
-        },
-        {
-        distinctEntry: "IUBLASigned Title IV Waiver",
-        institutionDescr: "BL",
-        serviceIndicatorCode: "G14",
-        serviceIndicatorDescr: "Signed Title IV Waiver",
-        impact: "No",
-        reasonDescr: "Grandfathered",
-        startTerm: "0000",
-        startTermDescr: "Bot",
-        endTerm: "    ",
-        startDate: "May 4, 2012 12:00:00 AM"
-        }
-      ]
-    },
+      {
+      serviceIndicatorCode: "R39",
+      serviceIndicatorDescr: "Completed Verify for US Status",
+      impactBoolean: false,
+      reasonDescr: "Eligible for Benefits",
+      startTerm: "4118",
+      startTermDescr: "Fall 2011",
+      endTerm: "",
+      endTermDescr: "",
+      startDateFormatted: "2011-08-08"
+      },
+      {
+      serviceIndicatorCode: "G14",
+      serviceIndicatorDescr: "Signed Title IV Authorization",
+      impactBoolean: false,
+      reasonDescr: "Signed",
+      startTerm: "",
+      startTermDescr: "",
+      endTerm: "    ",
+      startDateFormatted: "2012-01-18"
+      }
+      ]    },
     {
       "emplid": "4786766189",
       "studentName": "Pfannerstill, Meggie Carter",
@@ -107,68 +90,8 @@
       "programGpa": "3.45",
       "iuGpa": "3.45",
       flagsStatus: true,
-      sisStudentGroupList: [
-        {
-        stdntGroup: "KDM group",
-        stdntGroupDescr: "21st Century Scholar Recipient",
-        active: true,
-        effectiveDate: "2011-03-18"
-        },
-        {
-        institutionDescr: "Bloomington",
-        stdntGroup: "BTG",
-        stdntGroupDescr: "Bloomington Tennis Club",
-        active: false,
-        effectiveDate: "2011-05-12"
-        },
-        {
-        institutionDescr: "Bloomington",
-        stdntGroup: "VC",
-        stdntGroupDescr: "Volleyball Club",
-        active: false,
-        effectiveDate: "2011-09-30"
-        }
-      ],
       negativeSisServiceIndicatorList: [ ],
-      positiveSisServiceIndicatorList: [
-        {
-        distinctEntry: "IUBLACompleted Verify for US Status",
-        institutionDescr: "BL",
-        serviceIndicatorCode: "R39",
-        serviceIndicatorDescr: "Completed Verify for US Status",
-        impact: "No",
-        reasonDescr: "Eligible for Benefits",
-        startTerm: "4118",
-        startTermDescr: "Fall 2011",
-        endTerm: "9999",
-        endTermDescr: "End Term",
-        startDate: "Dec 12, 2013 12:00:00 AM"
-        },
-        {
-        distinctEntry: "IUBLAFT State Aid-Completion Reqmts",
-        institutionDescr: "BL",
-        serviceIndicatorCode: "F02",
-        serviceIndicatorDescr: "FT State Aid-Completion Reqmts",
-        impact: "No",
-        reasonDescr: "Renewal Subj to CR Completion",
-        startTerm: "0000",
-        startTermDescr: "Bot",
-        endTerm: "    ",
-        startDate: "Sep 8, 2014 12:00:00 AM"
-        },
-        {
-        distinctEntry: "IUBLASigned Title IV Waiver",
-        institutionDescr: "BL",
-        serviceIndicatorCode: "G14",
-        serviceIndicatorDescr: "Signed Title IV Waiver",
-        impact: "No",
-        reasonDescr: "Grandfathered",
-        startTerm: "0000",
-        startTermDescr: "Bot",
-        endTerm: "    ",
-        startDate: "May 4, 2012 12:00:00 AM"
-        }
-      ]
+      positiveSisServiceIndicatorList: [ ]
     },
     {
       "emplid": "3970471366",
@@ -190,7 +113,39 @@
       "hours": "134",
       "programGpa": "3.874",
       "iuGpa": "3.874",
-      flagsStatus: false
+      flagsStatus: false,
+      sisStudentGroupList: [
+      {
+      effectiveDateFormatted: "2004-04-07",
+      effectiveStatusBoolean: true,
+      stdntGroup: "FEEX",
+      stdntGroupDescr: "Fee Exclusion"
+      }
+      ],
+      negativeSisServiceIndicatorList: [ ],
+      positiveSisServiceIndicatorList: [
+      {
+      serviceIndicatorCode: "R39",
+      serviceIndicatorDescr: "Completed Verify for US Status",
+      impactBoolean: false,
+      reasonDescr: "Eligible for Benefits",
+      startTerm: "4118",
+      startTermDescr: "Fall 2011",
+      endTerm: "",
+      endTermDescr: "",
+      startDateFormatted: "2011-11-08"
+      },
+      {
+      serviceIndicatorCode: "G14",
+      serviceIndicatorDescr: "Signed Title IV Authorization",
+      impactBoolean: false,
+      reasonDescr: "Signed",
+      startTerm: "",
+      startTermDescr: "",
+      endTerm: " ",
+      startDateFormatted: "2008-11-11"
+      }
+      ]
     },
     {
       "emplid": "7994177191",
@@ -215,25 +170,37 @@
       "iuGpa": "3.524",
       flagsStatus: false,
       sisStudentGroupList: [
-        {
-          stdntGroup: "21ST",
-          stdntGroupDescr: "21st Century Scholar Recipient",
-          active: false,
-          effectiveDate: "2015-03-01"
-        },
-        {
-          stdntGroup: "ACP",
-          stdntGroupDescr: "Advance College Project",
-          active: true,
-          effectiveDate: "2015-04-01"
-        },
-        {
-          stdntGroup: "VLC1",
-          stdntGroupDescr: "Collins Living Learning Center",
-          active: false,
-          effectiveDate: "2015-05-01"
-        }
+      {
+      effectiveDateFormatted: "2004-04-07",
+      effectiveStatusBoolean: true,
+      stdntGroup: "FEEX",
+      stdntGroupDescr: "Fee Exclusion"
+      }
       ],
+      negativeSisServiceIndicatorList: [ ],
+      positiveSisServiceIndicatorList: [
+      {
+      serviceIndicatorCode: "R39",
+      serviceIndicatorDescr: "Completed Verify for US Status",
+      impactBoolean: false,
+      reasonDescr: "Eligible for Benefits",
+      startTerm: "4118",
+      startTermDescr: "Fall 2011",
+      endTerm: "",
+      endTermDescr: "",
+      startDateFormatted: "2011-07-23"
+      },
+      {
+      serviceIndicatorCode: "G14",
+      serviceIndicatorDescr: "Signed Title IV Authorization",
+      impactBoolean: false,
+      reasonDescr: "Signed",
+      startTerm: "",
+      startTermDescr: "",
+      endTerm: " ",
+      startDateFormatted: "2010-05-10"
+      }
+      ]
     },
     {
       "emplid": "3478623139",
@@ -252,7 +219,104 @@
       "hours": "103.5",
       "programGpa": "3.446",
       "iuGpa": "3.446",
-      flagsStatus: false
+      flagsStatus: false,
+      sisStudentGroupList: [
+      {
+      effectiveDateFormatted: "2010-10-31",
+      effectiveStatusBoolean: true,
+      stdntGroup: "FGEN",
+      stdntGroupDescr: "First Generation Student"
+      },
+      {
+      effectiveDateFormatted: "2011-08-01",
+      effectiveStatusBoolean: false,
+      stdntGroup: "VB08",
+      stdntGroupDescr: "UDIV Business Intended"
+      },
+      {
+      effectiveDateFormatted: "2011-10-01",
+      effectiveStatusBoolean: false,
+      stdntGroup: "UDOP",
+      stdntGroupDescr: "UD Orientation Prg Participant"
+      }
+      ],
+      negativeSisServiceIndicatorList: [
+      {
+      serviceIndicatorCode: "V03",
+      serviceIndicatorDescr: "Advising",
+      impactBoolean: true,
+      reasonDescr: "UD Orientation",
+      startTerm: "4118",
+      startTermDescr: "Fall 2011",
+      endTerm: "4122",
+      endTermDescr: "Spr 2012",
+      startDateFormatted: "2011-04-08",
+      endDateFormatted: "2011-11-01"
+      },
+      {
+      serviceIndicatorCode: "G03",
+      serviceIndicatorDescr: "Past Due Encumbrance",
+      impactBoolean: true,
+      reasonDescr: "Past Due",
+      startTerm: "",
+      startTermDescr: "",
+      endTerm: " ",
+      startDateFormatted: "2015-02-22"
+      }
+      ],
+      positiveSisServiceIndicatorList: [
+      {
+      serviceIndicatorCode: "G14",
+      serviceIndicatorDescr: "Signed Title IV Autho",
+      impactBoolean: false,
+      reasonDescr: "Signed",
+      startTerm: "",
+      startTermDescr: "",
+      endTerm: " ",
+      startDateFormatted: "2014-06-30"
+      },
+      {
+      serviceIndicatorCode: "R39",
+      serviceIndicatorDescr: "Completed Verify for US Status",
+      impactBoolean: false,
+      reasonDescr: "Eligible for Benefits",
+      startTerm: "4118",
+      startTermDescr: "Fall 2011",
+      endTerm: "",
+      endTermDescr: "",
+      startDateFormatted: "2011-08-01"
+      },
+      {
+      serviceIndicatorCode: "G16",
+      serviceIndicatorDescr: "Consortium Agreement",
+      impactBoolean: false,
+      reasonDescr: "Consortium",
+      startTerm: "4142",
+      startTermDescr: "Spr 2014",
+      endTerm: "    ",
+      startDateFormatted: "2013-12-30"
+      },
+      {
+      serviceIndicatorCode: "G16",
+      serviceIndicatorDescr: "Consortium Agreement",
+      impactBoolean: false,
+      reasonDescr: "Consortium",
+      startTerm: "4142",
+      startTermDescr: "Spr 2014",
+      endTerm: "    ",
+      startDateFormatted: "2014-01-14"
+      },
+      {
+      serviceIndicatorCode: "G14",
+      serviceIndicatorDescr: "Signed Title IV Authorization",
+      impactBoolean: false,
+      reasonDescr: "Signed",
+      startTerm: "",
+      startTermDescr: "",
+      endTerm: "    ",
+      startDateFormatted: "2011-07-27"
+      }
+      ]
     },
     {
       "emplid": "0519535902",
@@ -276,7 +340,78 @@
       "hours": "59.5",
       "programGpa": "3.06",
       "iuGpa": "3.06",
-      flagsStatus: false
+      flagsStatus: false,
+      sisStudentGroupList: [
+      {
+      effectiveDateFormatted: "2004-04-07",
+      effectiveStatusBoolean: true,
+      stdntGroup: "FEEX",
+      stdntGroupDescr: "Fee Exclusion"
+      },
+      {
+      effectiveDateFormatted: "2012-07-23",
+      effectiveStatusBoolean: true,
+      stdntGroup: "RV3V",
+      stdntGroupDescr: "Post 9/11 GI Bill"
+      },
+      {
+      effectiveDateFormatted: "2013-08-01",
+      effectiveStatusBoolean: true,
+      stdntGroup: "RVGO",
+      stdntGroupDescr: "Go Army Ed Tuition Assistance"
+      },
+      {
+      effectiveDateFormatted: "2013-08-05",
+      effectiveStatusBoolean: true,
+      stdntGroup: "RV3A",
+      stdntGroupDescr: "Veteran"
+      }
+      ],
+      negativeSisServiceIndicatorList: [
+      {
+      serviceIndicatorCode: "G08",
+      serviceIndicatorDescr: "Do Not Refund",
+      impactBoolean: true,
+      reasonDescr: "Veteran",
+      startTerm: "",
+      startTermDescr: "",
+      endTerm: "    ",
+      startDateFormatted: "2015-01-06"
+      },
+      {
+      serviceIndicatorCode: "G36",
+      serviceIndicatorDescr: "Veteran",
+      impactBoolean: true,
+      reasonDescr: "Chapter 33",
+      startTerm: "",
+      startTermDescr: "",
+      endTerm: "    ",
+      startDateFormatted: "2012-07-27"
+      }
+      ],
+      positiveSisServiceIndicatorList: [
+      {
+      serviceIndicatorCode: "R39",
+      serviceIndicatorDescr: "Completed Verify for US Status",
+      impactBoolean: false,
+      reasonDescr: "Eligible for Benefits",
+      startTerm: "4118",
+      startTermDescr: "Fall 2011",
+      endTerm: "",
+      endTermDescr: "",
+      startDateFormatted: "2012-07-05"
+      },
+      {
+      serviceIndicatorCode: "G14",
+      serviceIndicatorDescr: "Signed Title IV Authorization",
+      impactBoolean: false,
+      reasonDescr: "Signed",
+      startTerm: "",
+      startTermDescr: "",
+      endTerm: " ",
+      startDateFormatted: "2005-10-31"
+      }
+      ]
     },
     {
       "emplid": "3594629652",
@@ -299,7 +434,32 @@
       "hours": "137",
       "programGpa": "3.088",
       "iuGpa": "3.128",
-      flagsStatus: false
+      flagsStatus: false,
+      sisStudentGroupList: [ ],
+      negativeSisServiceIndicatorList: [ ],
+      positiveSisServiceIndicatorList: [
+      {
+      serviceIndicatorCode: "R39",
+      serviceIndicatorDescr: "Completed Verify for US Status",
+      impactBoolean: false,
+      reasonDescr: "Eligible for Benefits",
+      startTerm: "4118",
+      startTermDescr: "Fall 2011",
+      endTerm: "",
+      endTermDescr: "",
+      startDateFormatted: "2011-07-24"
+      },
+      {
+      serviceIndicatorCode: "G09",
+      serviceIndicatorDescr: "Declined Title IV Autho",
+      impactBoolean: false,
+      reasonDescr: "Refused",
+      startTerm: "",
+      startTermDescr: "",
+      endTerm: " ",
+      startDateFormatted: "2009-02-26"
+      }
+      ]
     },
     {
       "emplid": "5474916620",
@@ -343,7 +503,56 @@
       "hours": "111",
       "programGpa": "3.26",
       "iuGpa": "3.26",
-      flagsStatus: true
+      flagsStatus: true,
+      sisStudentGroupList: [
+      {
+      effectiveDateFormatted: "2009-10-15",
+      effectiveStatusBoolean: true,
+      stdntGroup: "FGEN",
+      stdntGroupDescr: "First Generation Student"
+      },
+      {
+      effectiveDateFormatted: "2010-04-21",
+      effectiveStatusBoolean: true,
+      stdntGroup: "GPRE",
+      stdntGroupDescr: "Groups/Removed"
+      }
+      ],
+      negativeSisServiceIndicatorList: [
+      {
+      serviceIndicatorCode: "G03",
+      serviceIndicatorDescr: "Past Due Encumbrance",
+      impactBoolean: true,
+      reasonDescr: "Past Due",
+      startTerm: "",
+      startTermDescr: "",
+      endTerm: " ",
+      startDateFormatted: "2015-02-22"
+      }
+      ],
+      positiveSisServiceIndicatorList: [
+      {
+      serviceIndicatorCode: "R39",
+      serviceIndicatorDescr: "Completed Verify for US Status",
+      impactBoolean: false,
+      reasonDescr: "Eligible for Benefits",
+      startTerm: "4118",
+      startTermDescr: "Fall 2011",
+      endTerm: "",
+      endTermDescr: "",
+      startDateFormatted: "2011-08-08"
+      },
+      {
+      serviceIndicatorCode: "G14",
+      serviceIndicatorDescr: "Signed Title IV Authorization",
+      impactBoolean: false,
+      reasonDescr: "Signed",
+      startTerm: "",
+      startTermDescr: "",
+      endTerm: "    ",
+      startDateFormatted: "2012-01-18"
+      }
+      ]
     },
     {
       "emplid": "8242035571",

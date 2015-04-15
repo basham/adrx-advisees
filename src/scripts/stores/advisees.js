@@ -113,11 +113,12 @@ var adviseesStore = Reflux.createStore({
         if (hasGroupList) {
           sortedStudentGroupList = advisee.sisStudentGroupList
             .map(function(item) {
-              item.activeStatus = !!item.active ? "Active as of" : "Inactive as of";
-              console.log('item', item);
+              item.activeStatus = !!item.effectiveStatusBoolean ? "Active as of" : "Inactive as of";
+              item.effectiveDate = !!item.effectiveDateFormatted ? item.effectiveDateFormatted : null;
+              //console.log('item', item);
               return item;
             })
-            .sort(helpers.sortBy("active", false, "stdntGroup"));
+            .sort(helpers.sortBy("effectiveStatusBoolean", false, "stdntGroup"));
         }
 
         //--------------------------------------------------//
@@ -150,18 +151,18 @@ var adviseesStore = Reflux.createStore({
             .map(function(list) {
               list.startTermDescr = (!!list.startTermDescr && !!list.startTermDescr.trim()) ? list.startTermDescr : stringForEmptyValue;
               list.endTermDescr = (!!list.endTermDescr && !!list.endTermDescr.trim()) ? list.endTermDescr : stringForEmptyValue;
-              list.startDate = (!!list.startDate && !!list.startDate.trim()) ? list.startDate : stringForEmptyValue;
-              list.endDate = (!!list.endDate && !!list.endDate.trim()) ? list.endDate : stringForEmptyValue;
+              list.startDate = (!!list.startDateFormatted && !!list.startDateFormatted.trim()) ? list.startDateFormatted : stringForEmptyValue;
+              list.endDate = (!!list.endDateFormatted && !!list.endDateFormatted.trim()) ? list.endDateFormatted : stringForEmptyValue;
               return list;
             })
             ;
 
           positiveServiceIndicators_Impact =
-            helpers.filterBy(temp_List, {impact: "Yes"})
+            helpers.filterBy(temp_List, {impactBoolean: true})
             .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
             ;
           positiveServiceIndicators_NoImpact =
-            helpers.filterBy(temp_List, {impact: "No"})
+            helpers.filterBy(temp_List, {impactBoolean: false})
             .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
             ;
         }
@@ -176,18 +177,18 @@ var adviseesStore = Reflux.createStore({
           .map(function(list) {
             list.startTermDescr = (!!list.startTermDescr && !!list.startTermDescr.trim()) ? list.startTermDescr : stringForEmptyValue;
             list.endTermDescr = (!!list.endTermDescr && !!list.endTermDescr.trim()) ? list.endTermDescr : stringForEmptyValue;
-            list.startDate = (!!list.startDate && !!list.startDate.trim()) ? list.startDate : stringForEmptyValue;
-            list.endDate = (!!list.endDate && !!list.endDate.trim()) ? list.endDate : stringForEmptyValue;
+            list.startDate = (!!list.startDateFormatted && !!list.startDateFormatted.trim()) ? list.startDateFormatted : stringForEmptyValue;
+            list.endDate = (!!list.endDateFormatted && !!list.endDateFormatted.trim()) ? list.endDateFormatted : stringForEmptyValue;
             return list;
           })
           ;
 
           negativeServiceIndicators_Impact =
-            helpers.filterBy(temp_List, {impact: "Yes"})
+            helpers.filterBy(temp_List, {impactBoolean: true})
             .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
             ;
           negativeServiceIndicators_NoImpact =
-            helpers.filterBy(temp_List, {impact: "No"})
+            helpers.filterBy(temp_List, {impactBoolean: false})
             .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
             ;
         }
