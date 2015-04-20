@@ -29,7 +29,7 @@ module.exports = React.createClass({
 				</ul>
 				<Icon
 					className={cn}
-					name="caret-bottom"
+					name="chevron-bottom"
 					onClick={this.handleClick}/>
 			</div>
 		);
