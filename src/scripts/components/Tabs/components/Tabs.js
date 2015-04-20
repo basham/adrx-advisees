@@ -2,7 +2,6 @@
 //var React = require('react');
 var React = require('react/addons');
 //var invariant = require('react/lib/invariant');
-//var jss = require('js-stylesheet');
 var uuid = require('../helpers/uuid');
 
 // Determine if a node from event.target is a Tab element
@@ -57,7 +56,6 @@ module.exports = React.createClass({
 			tabsCount, panelsCount
 		);
 */
-		//jss(require('../helpers/styles.js'));
 	},
 
 	setSelected: function (index, focus, showPanel) {
