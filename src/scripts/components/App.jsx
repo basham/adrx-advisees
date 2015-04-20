@@ -5,7 +5,6 @@ var Reflux = require('reflux');
 var classNames = require('classnames');
 
 var ReactTabs = require('./Tabs');
-//var ReactTabs = require('react-tabs');
 var Tab = ReactTabs.Tab;
 var Tabs = ReactTabs.Tabs;
 var TabList = ReactTabs.TabList;
@@ -29,13 +28,13 @@ var App = React.createClass({
   //
   componentDidMount: function() {
     actions.getData();
-    window.addEventListener("resize", this.onWindowResized);
+    window.addEventListener('resize', this.onWindowResized);
   },
   componentWillUnmount: function() {
-    window.removeEventListener("resize", this.onWindowResized);
+    window.removeEventListener('resize', this.onWindowResized);
   },
   componentWillUpdate: function(nextProps, nextState){
-    this.state.isLongerTabLabel = (window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange) ? true : false;
+    this.state.isLongerTabLabel = ( window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange );
   },
   getInitialState: function() {
     return {
@@ -178,11 +177,6 @@ var App = React.createClass({
     var temp_List;
     var temp_Method;
 
-    //temp_List = advisee.studentGroups;
-    //temp_Method = this.renderAdviseeStudentGroupSection;
-    //temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List) : 'No Student Groups';
-    //var content_studentGroupSection = temp_List;
-
     temp_List = advisee.positiveServiceIndicators_Impact;
     temp_Method = this.renderAdviseeServiceIndicatorSection;
     temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List, "Impact") : '';
@@ -305,8 +299,8 @@ var App = React.createClass({
   },
   renderAdviseeStudentGroup: function(item) {
     var cn = classNames({
-      'adv-Tabs-item' : true,
-      'adv-Tabs-item--inactive' : !item.effectiveStatusBoolean
+      'adv-Tabs-item': true,
+      'adv-Tabs-item--inactive': !item.effectiveStatusBoolean
     });
     return (
       <dd className={cn}>
@@ -368,7 +362,7 @@ var App = React.createClass({
   handleSortByChange: function(event) {
     var key = event.target.value;
     // Reset order whenever sort field changes.
-    var isAscending = (key !== "flagsStatus") ? true : false;
+    var isAscending = (key !== "flagsStatus");
     this.setState({
       sortByKey: key,
       isAscending: isAscending
@@ -423,8 +417,6 @@ var App = React.createClass({
     {
       this.setState({
         isLongerTabLabel: !this.state.isLongerTabLabel
-      }, function() {
-        this.render();
       });
     }
   }
