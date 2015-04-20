@@ -97,8 +97,6 @@ var App = React.createClass({
   },
   renderList: function(data) {
     var count = data.length;
-    var content_orderBySection = (this.state.sortByKey !== "flagsStatus") ? this.renderOrderBySection() : null;
-
     return (
       <div>
         <div className="adv-Controls">
@@ -118,7 +116,7 @@ var App = React.createClass({
               value={this.state.sortByKey}>
               {sortStore.sortList.map(this.renderSortOption)}
             </select>
-            {content_orderBySection}
+            {this.renderOrderBySection()}
           </form>
         </div>
         <ol className="adv-AdviseeList">
@@ -143,6 +141,10 @@ var App = React.createClass({
     );
   },
   renderOrderBySection: function() {
+    if(this.state.sortByKey === "flagsStatus") {
+      return null;
+    }
+
     var orderOptions = sortStore.sortMap[this.state.sortByKey].order;
     return (
       <span>
