@@ -1,6 +1,5 @@
 /** @jsx React.DOM */
-//var React = require('react');
-var React = require('react/addons');
+var React = require('react');
 //var invariant = require('react/lib/invariant');
 var uuid = require('../helpers/uuid');
 
