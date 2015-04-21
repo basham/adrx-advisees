@@ -47,12 +47,9 @@ module.exports = React.createClass({
 		var panelsCount = this.getPanelsCount();
 
 /*
-		invariant(
-			tabsCount === panelsCount,
-			'There should be an equal number of Tabs and TabPanels. ' +
-			'Received %s Tabs and %s TabPanels.',
-			tabsCount, panelsCount
-		);
+		if(tabsCount !== panelsCount) {
+		  console.log('There should be an equal number of Tabs and TabPanels. Received', tabsCount, 'Tabs and', panelsCount, 'TabPanels.');
+		}
 */
 	},
 
