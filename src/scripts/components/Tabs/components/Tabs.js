@@ -1,6 +1,5 @@
 /** @jsx React.DOM */
 var React = require('react');
-//var invariant = require('react/lib/invariant');
 var uuid = require('../helpers/uuid');
 
 // Determine if a node from event.target is a Tab element
