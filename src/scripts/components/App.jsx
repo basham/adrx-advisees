@@ -141,7 +141,7 @@ var App = React.createClass({
     );
   },
   renderOrderBySection: function() {
-    if(this.state.sortByKey === "flagsStatus") {
+    if(this.state.sortByKey === 'flagsStatus') {
       return null;
     }
 
@@ -174,14 +174,14 @@ var App = React.createClass({
     //-- Added by Eunmee Yi on 2015/04/08
     //--------------------------------------------------//
     if (this.state.isLongerTabLabel) {
-      var TabLabel_Groups = "Student Groups";
-      var TabLabel_Positive = "Positive Service Indicators";
-      var TabLabel_Negative = "Negative Service Indicators";
+      var TabLabel_Groups = 'Student Groups';
+      var TabLabel_Positive = 'Positive Service Indicators';
+      var TabLabel_Negative = 'Negative Service Indicators';
     }
     else {
-      var TabLabel_Groups = "Groups";
-      var TabLabel_Positive = "Positive";
-      var TabLabel_Negative = "Negative";
+      var TabLabel_Groups = 'Groups';
+      var TabLabel_Positive = 'Positive';
+      var TabLabel_Negative = 'Negative';
     }
     //--------------------------------------------------//
 
@@ -217,12 +217,12 @@ var App = React.createClass({
             <dl>{studentGroups.map(this.renderAdviseeStudentGroup)}</dl>
           </TabPanel>
           <TabPanel className="adv-Tabs-panel">
-            {this.renderAdviseeServiceIndicatorSection(advisee.negativeServiceIndicators_Impact, "Impact")}
-            {this.renderAdviseeServiceIndicatorSection(advisee.negativeServiceIndicators_NoImpact, "No impact")}
+            {this.renderAdviseeServiceIndicatorSection(advisee.negativeServiceIndicators_Impact, 'Impact')}
+            {this.renderAdviseeServiceIndicatorSection(advisee.negativeServiceIndicators_NoImpact, 'No impact')}
           </TabPanel>
           <TabPanel className="adv-Tabs-panel">
-            {this.renderAdviseeServiceIndicatorSection(advisee.positiveServiceIndicators_Impact, "Impact")}
-            {this.renderAdviseeServiceIndicatorSection(advisee.positiveServiceIndicators_NoImpact, "No impact")}
+            {this.renderAdviseeServiceIndicatorSection(advisee.positiveServiceIndicators_Impact, 'Impact')}
+            {this.renderAdviseeServiceIndicatorSection(advisee.positiveServiceIndicators_NoImpact, 'No impact')}
           </TabPanel>
         </Tabs>
       </li>
@@ -337,7 +337,7 @@ var App = React.createClass({
   handleSortByChange: function(event) {
     var key = event.target.value;
     // Reset order whenever sort field changes.
-    var isAscending = (key !== "flagsStatus");
+    var isAscending = key !== 'flagsStatus';
     this.setState({
       sortByKey: key,
       isAscending: isAscending
@@ -384,7 +384,7 @@ var App = React.createClass({
   //-- Created by Eunmee Yi on 2015/04/09
   //--------------------------------------------------//
   onWindowResized: function() {
-    //console.log("----- onWindowResized: window.innerWidth = ", window.innerWidth, ", this.state.isLongerTabLabel = ", this.state.isLongerTabLabel);
+    //console.log('----- onWindowResized: window.innerWidth = ', window.innerWidth, ', this.state.isLongerTabLabel = ', this.state.isLongerTabLabel);
     if (
       ( this.state.isLongerTabLabel && window.innerWidth < this.state.windowInnerWidth_borderForTabLabelChange) ||
       (!this.state.isLongerTabLabel && window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange)

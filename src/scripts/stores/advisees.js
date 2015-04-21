@@ -62,8 +62,8 @@ var adviseesStore = Reflux.createStore({
       .map(function(advisee) {
 
         // URLs
-        var url_onFlag = adviseeFlagLink + "&EMPLID=" + advisee.emplid;
-        var url_onName = url + "&searchEmplid=" + advisee.emplid;
+        var url_onFlag = adviseeFlagLink + '&EMPLID=' + advisee.emplid;
+        var url_onName = url + '&searchEmplid=' + advisee.emplid;
 
         //
         // Handle Program and Plan
@@ -113,12 +113,12 @@ var adviseesStore = Reflux.createStore({
         if (hasGroupList) {
           sortedStudentGroupList = advisee.sisStudentGroupList
             .map(function(item) {
-              item.activeStatus = !!item.effectiveStatusBoolean ? "Active as of" : "Inactive as of";
+              item.activeStatus = !!item.effectiveStatusBoolean ? 'Active as of' : 'Inactive as of';
               item.effectiveDate = !!item.effectiveDateFormatted ? item.effectiveDateFormatted : null;
               //console.log('item', item);
               return item;
             })
-            .sort(helpers.sortBy("effectiveStatusBoolean", false, "stdntGroup"));
+            .sort(helpers.sortBy('effectiveStatusBoolean', false, 'stdntGroup'));
         }
 
         //--------------------------------------------------//
@@ -135,9 +135,9 @@ var adviseesStore = Reflux.createStore({
         var negativeServiceIndicators_Impact = [];
         var negativeServiceIndicators_NoImpact = [];
 
-        // Failed to replace null to "&mdash;" by Eunmee Yi on 2015/04/09
-        //var stringForEmptyValue = "&mdash;";
-        //var stringForEmptyValue = "-----";
+        // Failed to replace null to '&mdash;' by Eunmee Yi on 2015/04/09
+        //var stringForEmptyValue = '&mdash;';
+        //var stringForEmptyValue = '-----';
         // Chris Basham find the way to pass mdash on 2015/04/18
         var stringForEmptyValue = '\u2014';
 
@@ -159,11 +159,11 @@ var adviseesStore = Reflux.createStore({
 
           positiveServiceIndicators_Impact =
             helpers.filterBy(psList, {impactBoolean: true})
-            .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
+            .sort(helpers.sortBy('serviceIndicatorDescr', true, 'startDate'))
             ;
           positiveServiceIndicators_NoImpact =
             helpers.filterBy(psList, {impactBoolean: false})
-            .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
+            .sort(helpers.sortBy('serviceIndicatorDescr', true, 'startDate'))
             ;
         }
 
@@ -185,11 +185,11 @@ var adviseesStore = Reflux.createStore({
 
           negativeServiceIndicators_Impact =
             helpers.filterBy(nsList, {impactBoolean: true})
-            .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
+            .sort(helpers.sortBy('serviceIndicatorDescr', true, 'startDate'))
             ;
           negativeServiceIndicators_NoImpact =
             helpers.filterBy(nsList, {impactBoolean: false})
-            .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
+            .sort(helpers.sortBy('serviceIndicatorDescr', true, 'startDate'))
             ;
         }
         //--------------------------------------------------//
@@ -245,7 +245,7 @@ var adviseesStore = Reflux.createStore({
     var message = (
       <span>
         Advisees could not load.
-        Please <button className="adv-Alert-link adv-Link" onClick={actions.getData}>try again</button>.
+        Please <button className='adv-Alert-link adv-Link' onClick={actions.getData}>try again</button>.
       </span>
     );
     actions.getDataFailed(message);
