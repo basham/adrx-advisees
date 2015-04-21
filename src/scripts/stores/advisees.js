@@ -150,12 +150,12 @@ var adviseesStore = Reflux.createStore({
         if(!!temp_List) {
           temp_List =
             temp_List
-            .map(function(list) {
-              list.startTermDescr = (!!list.startTermDescr && !!list.startTermDescr.trim()) ? list.startTermDescr : stringForEmptyValue;
-              list.endTermDescr = (!!list.endTermDescr && !!list.endTermDescr.trim()) ? list.endTermDescr : stringForEmptyValue;
-              list.startDate = (!!list.startDateFormatted && !!list.startDateFormatted.trim()) ? list.startDateFormatted : stringForEmptyValue;
-              list.endDate = (!!list.endDateFormatted && !!list.endDateFormatted.trim()) ? list.endDateFormatted : stringForEmptyValue;
-              return list;
+            .map(function(item) {
+              item.startTermDescr = helpers.formatNullValue(item.startTermDescr, stringForEmptyValue);
+              item.endTermDescr = helpers.formatNullValue(item.endTermDescr, stringForEmptyValue);
+              item.startDate = helpers.formatNullValue(item.startDateFormatted, stringForEmptyValue);
+              item.endDate = helpers.formatNullValue(item.endDateFormatted, stringForEmptyValue);
+              return item;
             })
             ;
 
@@ -176,12 +176,12 @@ var adviseesStore = Reflux.createStore({
         if(!!temp_List) {
           temp_List =
           temp_List
-          .map(function(list) {
-            list.startTermDescr = (!!list.startTermDescr && !!list.startTermDescr.trim()) ? list.startTermDescr : stringForEmptyValue;
-            list.endTermDescr = (!!list.endTermDescr && !!list.endTermDescr.trim()) ? list.endTermDescr : stringForEmptyValue;
-            list.startDate = (!!list.startDateFormatted && !!list.startDateFormatted.trim()) ? list.startDateFormatted : stringForEmptyValue;
-            list.endDate = (!!list.endDateFormatted && !!list.endDateFormatted.trim()) ? list.endDateFormatted : stringForEmptyValue;
-            return list;
+          .map(function(item) {
+            item.startTermDescr = helpers.formatNullValue(item.startTermDescr, stringForEmptyValue);
+            item.endTermDescr = helpers.formatNullValue(item.endTermDescr, stringForEmptyValue);
+            item.startDate = helpers.formatNullValue(item.startDateFormatted, stringForEmptyValue);
+            item.endDate = helpers.formatNullValue(item.endDateFormatted, stringForEmptyValue);
+            return item;
           })
           ;
 

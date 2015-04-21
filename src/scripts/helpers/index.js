@@ -53,6 +53,10 @@ function filterBy(list, criteria) {
   })
 }
 
+function formatNullValue(value, newValue) {
+  return !!value && !!value.trim() ? value : newValue;
+}
+
 function getFocusableElements($el) {
   var childElementsNodeList = $el.querySelectorAll('*');
   var childElementsArray = Array.prototype.slice.call(childElementsNodeList);
@@ -145,6 +149,7 @@ module.exports = {
   api: api,
   compare: compare,
   filterBy: filterBy,
+  formatNullValue: formatNullValue,
   getFocusableElements: getFocusableElements,
   getQueryParams: getQueryParams,
   isString: isString,
