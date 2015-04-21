@@ -382,12 +382,10 @@ var App = React.createClass({
   //-- Created by Eunmee Yi on 2015/04/09
   //--------------------------------------------------//
   onWindowResized: function() {
+    var isLongerTabLabel = this.state.isLongerTabLabel;
+    var isViewportSmall = window.innerWidth < this.state.windowInnerWidth_borderForTabLabelChange;
     //console.log('----- onWindowResized: window.innerWidth = ', window.innerWidth, ', this.state.isLongerTabLabel = ', this.state.isLongerTabLabel);
-    if (
-      ( this.state.isLongerTabLabel && window.innerWidth < this.state.windowInnerWidth_borderForTabLabelChange) ||
-      (!this.state.isLongerTabLabel && window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange)
-      )
-    {
+    if((isLongerTabLabel && isViewportSmall) || (!isLongerTabLabel && !isViewportSmall)) {
       this.setState({
         isLongerTabLabel: !this.state.isLongerTabLabel
       });
