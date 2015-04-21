@@ -164,7 +164,7 @@ var App = React.createClass({
     );
   },
   renderAdvisee: function(advisee) {
-    var studentGroups = !advisee.studentGroupList ? null : advisee.studentGroupList.map(this.renderAdviseeStudentGroup);
+    var studentGroups = Array.isArray(advisee.studentGroupList) ? advisee.studentGroupList : [];
 
     //--------------------------------------------------//
     //
@@ -250,7 +250,7 @@ var App = React.createClass({
             <Tab className="adv-Tabs-tab">{TabLabel_Positive}</Tab>
           </TabList>
           <TabPanel className="adv-Tabs-panel">
-            <dl>{studentGroups}</dl>
+            <dl>{studentGroups.map(this.renderAdviseeStudentGroup)}</dl>
           </TabPanel>
           <TabPanel className="adv-Tabs-panel">
             {content_negativeServiceIndicator_Impact}
