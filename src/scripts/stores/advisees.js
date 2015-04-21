@@ -53,9 +53,9 @@ var adviseesStore = Reflux.createStore({
 
     var output = adviseeList
       .map(function(advisee) {
-        advisee.hours = parseFloat(helpers.round(advisee.hours, 1));
-        advisee.programGpa = parseFloat(helpers.round(advisee.programGpa, 2));
-        advisee.iuGpa = parseFloat(helpers.round(advisee.iuGpa, 2));
+        advisee.hours = helpers.round(advisee.hours, 1);
+        advisee.programGpa = helpers.round(advisee.programGpa, 2);
+        advisee.iuGpa = helpers.round(advisee.iuGpa, 2);
         return advisee;
       })
       .sort(helpers.sortBy(this.sortByKey, this.isAscending, sortStore.defaultSortByKey))
