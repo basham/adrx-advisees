@@ -12,6 +12,11 @@ var types = {
 
 var order = {};
 
+order[types.BOOLEAN] = [
+  'None to Presence',
+  'Presence to None'
+];
+
 order[types.DATE] = [
   'Oldest to Newest',
   'Newest to Oldest'
@@ -47,13 +52,12 @@ var sortMap = {
     order: order[types.STRING],
     type: types.STRING
   },
-  /*
-  flags: {
-    key: 'flags',
+  flagsStatus: {
+    key: 'flagsStatus',
     label: 'Flags',
+    order: order[types.BOOLEAN],
     type: types.BOOLEAN
   },
-  */
   iuGpa: {
     key: 'iuGpa',
     label: 'GPA - IU',
@@ -107,6 +111,7 @@ exports.sortMap = sortMap;
 exports.sortList = [
   sortMap.acadProgDescr,
   sortMap.advisorRoleDescr,
+  sortMap.flagsStatus,
   sortMap.iuGpa,
   sortMap.programGpa,
   sortMap.hours,

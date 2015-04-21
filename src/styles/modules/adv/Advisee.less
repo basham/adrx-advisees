@@ -1,10 +1,16 @@
 .adv-Advisee {
 
   &-header {
+    align-items: flex-start;
+    display: flex;
+    margin: 0.5em 0.5em 0;
+  }
+
+  &-nameGroup {
     align-items: baseline;
     display: flex;
+    flex: 1;
     flex-wrap: wrap;
-    margin: 0.5em 0.5em 0;
   }
 
   &-heading {
@@ -16,6 +22,19 @@
 
   &-id {
     margin: 0.5em 0.5em 0;
+  }
+
+  &-flag {
+
+    &:hover,
+    &:focus {
+      background-color: @color-Interactive--100;
+    }
+  }
+
+  &-flagIcon {
+    fill: @color-Link;
+    padding: 0.5em;
   }
 
   &-details {
@@ -45,5 +64,19 @@
 
   &-detailItem {
     margin: 0;
+  }
+
+  &-sectionHeading {
+    font-size: @scale-FontSize--05;
+    margin: 0.5em 0 0;
+    padding: 0;
+  }
+
+  &-code {
+    font-style: italic;
+
+    &::after {
+      content: ': ';
+    }
   }
 }

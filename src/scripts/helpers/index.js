@@ -23,9 +23,38 @@ function api(method, query) {
 
 function compare(a, b, isAscending) {
   var inverse = isAscending ? 1 : -1;
-  a = isString(a) ? a.toLowerCase() : a;
-  b = isString(b) ? b.toLowerCase() : b;
-  return a < b ? -1 * inverse : (a > b ? 1 * inverse : 0);
+  a = isString(a) ? a.toLowerCase().trim() : a;
+  b = isString(b) ? b.toLowerCase().trim() : b;
+
+  //--------------------------------------------------//
+  // Handle if a or b is undefined
+  // Return 0 if a and b are undefined at the same time
+  //--------------------------------------------------//
+  //-- Updated by Eunmee Yi on 2015/04/02
+  //--------------------------------------------------//
+  var value = a < b ? -1 : (a > b ? 1 : 0);
+  value = (!a && !!b) ? -1 : ((!!a && !b) ? 1 : value);
+  value *= inverse;
+  return value;
+}
+
+//--------------------------------------------------//
+// `list' and 'criteria' are required.
+// 'list' is an array and 'criteria' is an object.
+// Examples for the 'criteria': {impact: "Yes"} or {impact:"No", startTerm: "4118"}
+//--------------------------------------------------//
+//-- Added by Eunmee Yi on 2015/04/09
+//--------------------------------------------------//
+function filterBy(list, criteria) {
+  return list.filter(function(obj) {
+    return Object.keys(criteria).every(function(c) {
+      return obj[c] == criteria[c];
+    })
+  })
+}
+
+function formatNullValue(value, newValue) {
+  return !!value && !!value.trim() ? value : newValue;
 }
 
 function getFocusableElements($el) {
@@ -93,7 +122,11 @@ function requestCallback(succeedCallback, failureCallback) {
 }
 
 function round(value, exp) {
-  return parseFloat(value).toFixed(exp);
+  return parseFloat(roundToString(value, exp));
+}
+
+function roundToString(value, exp) {
+  return !!value ? parseFloat(value).toFixed(exp) : null;
 }
 
 // `key` is required. Sorts based on the key of two objects.
@@ -119,11 +152,14 @@ function sortBy(key, isAscending, secondaryKey) {
 module.exports = {
   api: api,
   compare: compare,
-  getQueryParams: getQueryParams,
+  filterBy: filterBy,
+  formatNullValue: formatNullValue,
   getFocusableElements: getFocusableElements,
+  getQueryParams: getQueryParams,
   isString: isString,
   pluralize: pluralize,
   requestCallback: requestCallback,
   round: round,
+  roundToString: roundToString,
   sortBy: sortBy
 };
