@@ -273,7 +273,9 @@ var App = React.createClass({
     return (
       <dl className={cn}>
         <dt className="adv-StudentGroup-title">
-          <dfn className="adv-StudentGroup-code">{item.stdntGroup}</dfn>
+          <dfn className="adv-Advisee-code">
+            {item.stdntGroup}
+          </dfn>
           {item.stdntGroupDescr} ({item.institutionDescr})
         </dt>
         <dd className="adv-StudentGroup-description">
@@ -289,30 +291,30 @@ var App = React.createClass({
     }
 
     return (
-      <div className="adv-Advisee-ServiceIndicators">
-        <span className="adv-Advisee-serviceIndicatorType">
+      <div>
+        <h3 className="adv-Advisee-sectionHeading">
           {impactDescription}
-        </span>
+        </h3>
         {list.map(this.renderAdviseeServiceIndicator)}
       </div>
     );
   },
   renderAdviseeServiceIndicator: function(item) {
     return (
-      <div className="adv-Advisee-serviceIndicator">
-        <span className="adv-Advisee-serviceIndicatorHeader">
-          <span className="adv-Advisee-code">
-            {item.serviceIndicatorCode}:
-          </span>
+      <dl>
+        <dt>
+          <dfn className="adv-Advisee-code">
+            {item.serviceIndicatorCode}
+          </dfn>
           {item.serviceIndicatorDescr} ({item.institutionDescr}) &middot; {item.reasonDescr}
-        </span>
-        <div className="adv-Advisee-details">
+        </dt>
+        <dd className="adv-Advisee-details">
           {this.renderAdviseeServiceIndicatorDetail('Start Term', item.startTermDescr)}
           {this.renderAdviseeServiceIndicatorDetail('End Term', item.endTermDescr)}
           {this.renderAdviseeServiceIndicatorDetail('Start Date', item.startDate)}
           {this.renderAdviseeServiceIndicatorDetail('End Date', item.endDate)}
-        </div>
-      </div>
+        </dd>
+      </dl>
     );
   },
   renderAdviseeServiceIndicatorDetail: function(title, item) {
