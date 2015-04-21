@@ -173,15 +173,13 @@ var App = React.createClass({
     //--------------------------------------------------//
     //-- Added by Eunmee Yi on 2015/04/08
     //--------------------------------------------------//
-    if (this.state.isLongerTabLabel) {
-      var TabLabel_Groups = 'Student Groups';
-      var TabLabel_Positive = 'Positive Service Indicators';
-      var TabLabel_Negative = 'Negative Service Indicators';
-    }
-    else {
-      var TabLabel_Groups = 'Groups';
-      var TabLabel_Positive = 'Positive';
-      var TabLabel_Negative = 'Negative';
+    var TabLabel_Groups = 'Groups';
+    var TabLabel_Positive = 'Positive';
+    var TabLabel_Negative = 'Negative';
+    if(this.state.isLongerTabLabel) {
+      TabLabel_Groups = 'Student Groups';
+      TabLabel_Positive = 'Positive Service Indicators';
+      TabLabel_Negative = 'Negative Service Indicators';
     }
     //--------------------------------------------------//
 
