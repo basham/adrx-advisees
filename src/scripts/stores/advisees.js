@@ -130,8 +130,6 @@ var adviseesStore = Reflux.createStore({
         //--------------------------------------------------//
         //-- Added by Eunmee Yi on 2015/04/08
         //--------------------------------------------------//
-        var temp_List;
-        //var studentGroups = [];
         var positiveServiceIndicators_Impact = [];
         var positiveServiceIndicators_NoImpact = [];
         var negativeServiceIndicators_Impact = [];
@@ -146,10 +144,10 @@ var adviseesStore = Reflux.createStore({
         //--------------------------------------------------//
         // Positive Service Indicators
         //--------------------------------------------------//
-        temp_List = advisee.positiveSisServiceIndicatorList;
-        if(!!temp_List) {
-          temp_List =
-            temp_List
+        var psList = advisee.positiveSisServiceIndicatorList;
+        if(!!psList) {
+          psList =
+            psList
             .map(function(item) {
               item.startTermDescr = helpers.formatNullValue(item.startTermDescr, stringForEmptyValue);
               item.endTermDescr = helpers.formatNullValue(item.endTermDescr, stringForEmptyValue);
@@ -160,11 +158,11 @@ var adviseesStore = Reflux.createStore({
             ;
 
           positiveServiceIndicators_Impact =
-            helpers.filterBy(temp_List, {impactBoolean: true})
+            helpers.filterBy(psList, {impactBoolean: true})
             .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
             ;
           positiveServiceIndicators_NoImpact =
-            helpers.filterBy(temp_List, {impactBoolean: false})
+            helpers.filterBy(psList, {impactBoolean: false})
             .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
             ;
         }
@@ -172,10 +170,10 @@ var adviseesStore = Reflux.createStore({
         //--------------------------------------------------//
         // Negative Service Indicators
         //--------------------------------------------------//
-        temp_List = advisee.negativeSisServiceIndicatorList;
-        if(!!temp_List) {
-          temp_List =
-          temp_List
+        var nsList = advisee.negativeSisServiceIndicatorList;
+        if(!!nsList) {
+          nsList =
+          nsList
           .map(function(item) {
             item.startTermDescr = helpers.formatNullValue(item.startTermDescr, stringForEmptyValue);
             item.endTermDescr = helpers.formatNullValue(item.endTermDescr, stringForEmptyValue);
@@ -186,11 +184,11 @@ var adviseesStore = Reflux.createStore({
           ;
 
           negativeServiceIndicators_Impact =
-            helpers.filterBy(temp_List, {impactBoolean: true})
+            helpers.filterBy(nsList, {impactBoolean: true})
             .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
             ;
           negativeServiceIndicators_NoImpact =
-            helpers.filterBy(temp_List, {impactBoolean: false})
+            helpers.filterBy(nsList, {impactBoolean: false})
             .sort(helpers.sortBy("serviceIndicatorDescr", true, "startDate"))
             ;
         }
