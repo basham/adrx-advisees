@@ -306,6 +306,7 @@ var App = React.createClass({
           <span className="adv-Advisee-code">
             {item.serviceIndicatorCode}:
           </span>
+          {item.serviceIndicatorDescr} ({item.institutionDescr}) &middot; {item.reasonDescr}
         </span>
         <div className="adv-Advisee-details">
           {this.renderAdviseeServiceIndicatorDetail('Start Term', item.startTermDescr)}
