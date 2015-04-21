@@ -122,6 +122,10 @@ function requestCallback(succeedCallback, failureCallback) {
 }
 
 function round(value, exp) {
+  return parseFloat(roundToString(value, exp));
+}
+
+function roundToString(value, exp) {
   return !!value ? parseFloat(value).toFixed(exp) : null;
 }
 
@@ -156,5 +160,6 @@ module.exports = {
   pluralize: pluralize,
   requestCallback: requestCallback,
   round: round,
+  roundToString: roundToString,
   sortBy: sortBy
 };

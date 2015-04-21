@@ -101,9 +101,9 @@ var adviseesStore = Reflux.createStore({
         //
         // Round numerical values.
         //
-        var hours = helpers.round(advisee.hours, 1);
-        var programGPA = helpers.round(advisee.programGpa, 2);
-        var universityGPA = helpers.round(advisee.iuGpa, 2);
+        var hours = helpers.roundToString(advisee.hours, 1);
+        var programGPA = helpers.roundToString(advisee.programGpa, 2);
+        var universityGPA = helpers.roundToString(advisee.iuGpa, 2);
 
         //
         // Handle Student Groups
