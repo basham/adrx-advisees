@@ -1,0 +1,29 @@
+.adv-StudentGroup {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  line-height: @scale-FontSize--10;
+
+  &--inactive {
+    color: @color-Text--400;
+  }
+
+  &-title {
+    flex-basis: 20em;
+    flex-grow: 1;
+  }
+
+  &-code {
+    font-style: italic;
+
+    &::after {
+      content: ': ';
+    }
+  }
+
+  &-description {
+    flex-grow: 2;
+    font-size: @scale-FontSize--05i;
+    margin: 0;
+  }
+}

@@ -212,7 +212,7 @@ var App = React.createClass({
             <Tab className="adv-Tabs-tab">{TabLabel_Positive}</Tab>
           </TabList>
           <TabPanel className="adv-Tabs-panel">
-            <dl>{studentGroups.map(this.renderAdviseeStudentGroup)}</dl>
+            {studentGroups.map(this.renderAdviseeStudentGroup)}
           </TabPanel>
           <TabPanel className="adv-Tabs-panel">
             {this.renderAdviseeServiceIndicatorSection(advisee.negativeServiceIndicators_Impact, 'Impact')}
@@ -267,21 +267,19 @@ var App = React.createClass({
   },
   renderAdviseeStudentGroup: function(item) {
     var cn = classNames({
-      'adv-Tabs-item': true,
-      'adv-Tabs-item--inactive': !item.effectiveStatusBoolean
+      'adv-StudentGroup': true,
+      'adv-StudentGroup--inactive': !item.effectiveStatusBoolean
     });
     return (
-      <dd className={cn}>
-        <div className="adv-Tabs-panel">
-          <div className="adv-Tabs-panel--fixed">
-            <span className="adv-Tabs-font--italic">{item.stdntGroup}: </span>
-            {item.stdntGroupDescr} ({item.institutionDescr})
-          </div>
-          <div>
-            {item.activeStatus} {item.effectiveDate}
-          </div>
-        </div>
-      </dd>
+      <dl className={cn}>
+        <dt className="adv-StudentGroup-title">
+          <dfn className="adv-StudentGroup-code">{item.stdntGroup}</dfn>
+          {item.stdntGroupDescr} ({item.institutionDescr})
+        </dt>
+        <dd className="adv-StudentGroup-description">
+          {item.activeStatus} {item.effectiveDate}
+        </dd>
+      </dl>
     );
   },
   renderAdviseeServiceIndicatorSection: function(list, impactDescription) {
