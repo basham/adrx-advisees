@@ -139,13 +139,15 @@ var adviseesStore = Reflux.createStore({
 
         // Failed to replace null to "&mdash;" by Eunmee Yi on 2015/04/09
         //var stringForEmptyValue = "&mdash;";
-        var stringForEmptyValue = "-----";
+        //var stringForEmptyValue = "-----";
+        // Chris Basham find the way to pass mdash on 2015/04/18
+        var stringForEmptyValue = '\u2014';
 
         //--------------------------------------------------//
         // Positive Service Indicators
         //--------------------------------------------------//
         temp_List = advisee.positiveSisServiceIndicatorList;
-        if (!!temp_List) {
+        if(!!temp_List) {
           temp_List =
             temp_List
             .map(function(list) {
@@ -168,10 +170,10 @@ var adviseesStore = Reflux.createStore({
         }
 
         //--------------------------------------------------//
-        // Nagative Service Indicators
+        // Negative Service Indicators
         //--------------------------------------------------//
         temp_List = advisee.negativeSisServiceIndicatorList;
-        if (!!temp_List) {
+        if(!!temp_List) {
           temp_List =
           temp_List
           .map(function(list) {
