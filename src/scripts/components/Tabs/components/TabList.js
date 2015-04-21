@@ -16,7 +16,7 @@ module.exports = React.createClass({
 	render: function () {
 		var state = this.state;
 		var cn = classNames({
-			'adv-Icon': true,
+			'adv-Icon--pad': true,
 			'adv-Icon--reversed': this.props.showPanel
 		});
 
