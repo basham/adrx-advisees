@@ -174,8 +174,6 @@ var App = React.createClass({
     //--------------------------------------------------//
     //-- Added by Eunmee Yi on 2015/04/08
     //--------------------------------------------------//
-    var content_flag = !!advisee.flag ? this.renderAdviseeFlag(advisee) : null;
-
     var temp_List;
     var temp_Method;
 
@@ -236,7 +234,7 @@ var App = React.createClass({
               {advisee.universityId}
             </p>
           </div>
-          {content_flag}
+          {this.renderAdviseeFlag(advisee)}
         </header>
         <div className="adv-Advisee-details">
           {advisee.details.map(this.renderAdviseeDetail)}
@@ -288,6 +286,10 @@ var App = React.createClass({
     );
   },
   renderAdviseeFlag: function(advisee) {
+    if(!advisee.flag) {
+      return null;
+    }
+
     return (
       <a
         className="adv-Advisee-flag"
