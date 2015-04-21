@@ -275,7 +275,7 @@ var App = React.createClass({
         <div className="adv-Tabs-panel">
           <div className="adv-Tabs-panel--fixed">
             <span className="adv-Tabs-font--italic">{item.stdntGroup}: </span>
-            {item.stdntGroupDescr}
+            {item.stdntGroupDescr} ({item.institutionDescr})
           </div>
           <div>
             {item.activeStatus} {item.effectiveDate}
@@ -299,20 +299,19 @@ var App = React.createClass({
       </div>
     );
   },
-  renderAdviseeServiceIndicator: function(list) {
+  renderAdviseeServiceIndicator: function(item) {
     return (
       <div className="adv-Advisee-serviceIndicator">
         <span className="adv-Advisee-serviceIndicatorHeader">
           <span className="adv-Advisee-code">
-            {list.serviceIndicatorCode}:
+            {item.serviceIndicatorCode}:
           </span>
-          {list.serviceIndicatorDescr} - {list.reasonDescr}
         </span>
         <div className="adv-Advisee-details">
-          {this.renderAdviseeServiceIndicatorDetail('Start Term', list.startTermDescr)}
-          {this.renderAdviseeServiceIndicatorDetail('End Term', list.endTermDescr)}
-          {this.renderAdviseeServiceIndicatorDetail('Start Date', list.startDate)}
-          {this.renderAdviseeServiceIndicatorDetail('End Date', list.endDate)}
+          {this.renderAdviseeServiceIndicatorDetail('Start Term', item.startTermDescr)}
+          {this.renderAdviseeServiceIndicatorDetail('End Term', item.endTermDescr)}
+          {this.renderAdviseeServiceIndicatorDetail('Start Date', item.startDate)}
+          {this.renderAdviseeServiceIndicatorDetail('End Date', item.endDate)}
         </div>
       </div>
     );
