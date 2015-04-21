@@ -168,40 +168,6 @@ var App = React.createClass({
 
     //--------------------------------------------------//
     //
-    // Handle flag/student group/service indicator sections
-    // and prepare messages when no rows
-    //
-    //--------------------------------------------------//
-    //-- Added by Eunmee Yi on 2015/04/08
-    //--------------------------------------------------//
-    var temp_List;
-    var temp_Method;
-
-    temp_List = advisee.positiveServiceIndicators_Impact;
-    temp_Method = this.renderAdviseeServiceIndicatorSection;
-    temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List, "Impact") : '';
-    var content_positiveServiceIndicator_Impact = temp_List;
-
-    temp_List = advisee.positiveServiceIndicators_NoImpact;
-    temp_Method = this.renderAdviseeServiceIndicatorSection;
-    temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List, "No impact") : '';
-    var content_positiveServiceIndicator_NoImpact = temp_List;
-
-    temp_List = advisee.negativeServiceIndicators_Impact;
-    temp_Method = this.renderAdviseeServiceIndicatorSection;
-    temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List, "Impact") : '';
-    var content_negativeServiceIndicator_Impact = temp_List;
-
-    temp_List = advisee.negativeServiceIndicators_NoImpact;
-    temp_Method = this.renderAdviseeServiceIndicatorSection;
-    temp_List = (!!temp_List && temp_List.length !== 0) ? temp_Method(temp_List, "No impact") : '';
-    var content_negativeServiceIndicator_NoImpact = temp_List;
-
-    content_positiveServiceIndicator_Impact = (!!content_positiveServiceIndicator_Impact || !!content_positiveServiceIndicator_NoImpact) ? content_positiveServiceIndicator_Impact : 'No Positive Service Indicators';
-    content_negativeServiceIndicator_Impact = (!!content_negativeServiceIndicator_Impact || !!content_negativeServiceIndicator_NoImpact) ? content_negativeServiceIndicator_Impact : 'No Negative Service Indicators';
-
-    //--------------------------------------------------//
-    //
     // Handle dynamic Tab label
     //
     //--------------------------------------------------//
@@ -251,12 +217,12 @@ var App = React.createClass({
             <dl>{studentGroups.map(this.renderAdviseeStudentGroup)}</dl>
           </TabPanel>
           <TabPanel className="adv-Tabs-panel">
-            {content_negativeServiceIndicator_Impact}
-            {content_negativeServiceIndicator_NoImpact}
+            {this.renderAdviseeServiceIndicatorSection(advisee.negativeServiceIndicators_Impact, "Impact")}
+            {this.renderAdviseeServiceIndicatorSection(advisee.negativeServiceIndicators_NoImpact, "No impact")}
           </TabPanel>
           <TabPanel className="adv-Tabs-panel">
-            {content_positiveServiceIndicator_Impact}
-            {content_positiveServiceIndicator_NoImpact}
+            {this.renderAdviseeServiceIndicatorSection(advisee.positiveServiceIndicators_Impact, "Impact")}
+            {this.renderAdviseeServiceIndicatorSection(advisee.positiveServiceIndicators_NoImpact, "No impact")}
           </TabPanel>
         </Tabs>
       </li>
@@ -321,6 +287,11 @@ var App = React.createClass({
     );
   },
   renderAdviseeServiceIndicatorSection: function(list, impactDescription) {
+    var hasContent = Array.isArray(list) && list.length;
+    if(!hasContent) {
+      return null;
+    }
+
     return (
       <div className="adv-Advisee-ServiceIndicators">
         <span className="adv-Advisee-serviceIndicatorType">
