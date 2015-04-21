@@ -32,10 +32,10 @@ function compare(a, b, isAscending) {
   //--------------------------------------------------//
   //-- Updated by Eunmee Yi on 2015/04/02
   //--------------------------------------------------//
-  var returnValue = a < b ? -1 : (a > b ? 1 : 0);
-  returnValue = (!a && !!b) ? -1 : ((!!a && !b) ? 1 : returnValue);
-  returnValue = returnValue * inverse;
-  return returnValue;
+  var value = a < b ? -1 : (a > b ? 1 : 0);
+  value = (!a && !!b) ? -1 : ((!!a && !b) ? 1 : value);
+  value *= inverse;
+  return value;
 }
 
 //--------------------------------------------------//
@@ -118,8 +118,7 @@ function requestCallback(succeedCallback, failureCallback) {
 }
 
 function round(value, exp) {
-  var returnValue = !!value ? parseFloat(value).toFixed(exp) : null ;
-  return returnValue;
+  return !!value ? parseFloat(value).toFixed(exp) : null;
 }
 
 // `key` is required. Sorts based on the key of two objects.
