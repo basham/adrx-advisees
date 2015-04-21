@@ -337,7 +337,7 @@ var App = React.createClass({
           </span>
           {list.serviceIndicatorDescr} - {list.reasonDescr}
         </span>
-        <div className="adv-Advisee-serviceIndicatorDetails">
+        <div className="adv-Advisee-details">
           {this.renderAdviseeServiceIndicatorDetail({title: "Start Term" , item: list.startTermDescr})}
           {this.renderAdviseeServiceIndicatorDetail({title: "End Term" , item: list.endTermDescr})}
           {this.renderAdviseeServiceIndicatorDetail({title: "Start Date" , item: list.startDate})}
@@ -348,11 +348,11 @@ var App = React.createClass({
   },
   renderAdviseeServiceIndicatorDetail: function(detail) {
     return (
-      <dl className="adv-Advisee-serviceIndicatorDetail">
-        <dt className="adv-Advisee-serviceIndicatorDetailTitle">
+      <dl className="adv-Advisee-detail">
+        <dt className="adv-Advisee-detailTitle">
           {detail.title}
         </dt>
-        <dd className="adv-Advisee-serviceIndicatorDetailItem">
+        <dd className="adv-Advisee-detailItem">
           {detail.item}
         </dd>
       </dl>
