@@ -304,7 +304,7 @@ var App = React.createClass({
   renderAdviseeServiceIndicator: function(item) {
     return (
       <dl>
-        <dt>
+        <dt className="adv-Advisee-indicatorTitle">
           <dfn className="adv-Advisee-code">
             {item.serviceIndicatorCode}
           </dfn>
