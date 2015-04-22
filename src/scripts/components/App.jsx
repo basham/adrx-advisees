@@ -33,8 +33,10 @@ var App = React.createClass({
   componentWillUnmount: function() {
     window.removeEventListener('resize', this.onWindowResized);
   },
-  componentWillUpdate: function(nextProps, nextState){
-    this.state.isLongerTabLabel = ( window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange );
+  componentWillMount: function(){
+    this.setState({
+      isLongerTabLabel: window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange
+    });
   },
   getInitialState: function() {
     return {
