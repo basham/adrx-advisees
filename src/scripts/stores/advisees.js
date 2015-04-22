@@ -98,12 +98,21 @@ var adviseesStore = Reflux.createStore({
           programPlanItems = ['None'];
         }
 
+        // Failed to replace null to '&mdash;' by Eunmee Yi on 2015/04/09
+        //var stringForEmptyValue = '&mdash;';
+        //var stringForEmptyValue = '-----';
+        // Chris Basham find the way to pass mdash on 2015/04/18
+        var stringForEmptyValue = '\u2014';
+
         //
         // Round numerical values.
         //
         var hours = helpers.roundToString(advisee.hours, 1);
         var programGPA = helpers.roundToString(advisee.programGpa, 2);
         var universityGPA = helpers.roundToString(advisee.iuGpa, 2);
+        hours = helpers.formatNullValue(hours, stringForEmptyValue);
+        programGPA = helpers.formatNullValue(programGPA, stringForEmptyValue);
+        universityGPA = helpers.formatNullValue(universityGPA, stringForEmptyValue);
 
         //
         // Handle Student Groups
@@ -134,12 +143,6 @@ var adviseesStore = Reflux.createStore({
         var positiveServiceIndicators_NoImpact = [];
         var negativeServiceIndicators_Impact = [];
         var negativeServiceIndicators_NoImpact = [];
-
-        // Failed to replace null to '&mdash;' by Eunmee Yi on 2015/04/09
-        //var stringForEmptyValue = '&mdash;';
-        //var stringForEmptyValue = '-----';
-        // Chris Basham find the way to pass mdash on 2015/04/18
-        var stringForEmptyValue = '\u2014';
 
         //--------------------------------------------------//
         // Positive Service Indicators
