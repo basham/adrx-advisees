@@ -13,12 +13,12 @@ var adviseesStore = Reflux.createStore({
   // Action methods
   //
   onGetData: function() {
-    /*
+    ///*
     setTimeout(function() {
       this.handleSuccess(require('./data.json'));
     }.bind(this), 0);
     return;
-    */
+    //*/
     var params = helpers.getQueryParams();
 
     request
@@ -38,7 +38,7 @@ var adviseesStore = Reflux.createStore({
   // Handler methods
   //
   handleSuccess: function(data) {
-    var adviseeList = data.adviseeList;
+    var adviseeList = data.memberList;
     var adviseeFlagLink = data.adviseeFlagLink;
 
     this.data = data;

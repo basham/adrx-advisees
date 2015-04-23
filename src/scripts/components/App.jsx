@@ -17,6 +17,7 @@ var helpers = require('../helpers');
 
 var Alert = require('./Alert');
 var Icon = require('./Icon');
+var GroupSelector = require('./GroupSelector');
 
 var App = React.createClass({
   mixins: [
@@ -70,6 +71,7 @@ var App = React.createClass({
         <h1 className="adv-App-heading">
           Advisees
         </h1>
+        <GroupSelector/>
         {content}
       </section>
     );

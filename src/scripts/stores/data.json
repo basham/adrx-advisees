@@ -1,5 +1,22 @@
 {
-  "adviseeList": [
+  "groupList": [
+    {
+      "id": 0,
+      "name": "Advisee",
+      "membershipList": [
+        "7496827183",
+        "4786766189"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Probation students",
+      "membershipList": [
+        "4786766189"
+      ]
+    }
+  ],
+  "memberList": [
     {
       "emplid": "7496827183",
       "studentName": "Blanda, Angelina Fannie",
@@ -18,23 +35,23 @@
       "hours": "111.5",
       "programGpa": "",
       "iuGpa": "",
-      flagsStatus: false,
-      sisStudentGroupList: [
+      "flagsStatus": false,
+      "sisStudentGroupList": [
       {
-      institution: "IUBLA",
-      effectiveDateFormatted: "2010-09-01",
-      effectiveStatusBoolean: true,
-      institutionDescr: "Bloomington",
-      stdntGroup: "PREL",
-      stdntGroupDescr: "Pre-Law Interest"
+        "institution": "IUBLA",
+        "effectiveDateFormatted": "2010-09-01",
+        "effectiveStatusBoolean": true,
+        "institutionDescr": "Bloomington",
+        "stdntGroup": "PREL",
+        "stdntGroupDescr": "Pre-Law Interest"
       },
       {
-      institution: "IUBLA",
-      effectiveDateFormatted: "2011-08-01",
-      effectiveStatusBoolean: false,
-      institutionDescr: "Bloomington",
-      stdntGroup: "VB08",
-      stdntGroupDescr: "UDIV Business Intended"
+        "institution": "IUBLA",
+        "effectiveDateFormatted": "2011-08-01",
+        "effectiveStatusBoolean": false,
+        "institutionDescr": "Bloomington",
+        "stdntGroup": "VB08",
+        "stdntGroupDescr": "UDIV Business Intended"
       },
       {
       institution: "IUBLA",

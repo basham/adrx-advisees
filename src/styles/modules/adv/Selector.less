@@ -1,0 +1,103 @@
+.adv-Selector {
+
+  &-selection {
+    .textShadow();
+    background-color: @color-Interactive--100;
+    border: unit(1/16, em) solid @color-Interactive--400;
+    border-radius: 0.25em;
+    color: @color-Interactive--750;
+    cursor: pointer;
+    padding: 0.5em;
+    min-width: 20em;
+    text-align: left;
+
+    &:focus {
+      .focus();
+    }
+
+    &--open {
+      border-radius: 0.25em 0.25em 0 0;
+    }
+
+    &--unspecified {
+      color: @color-Interactive--750;
+      font-style: italic;
+    }
+
+    &--disabled,
+    &[disabled],
+    fieldset[disabled] & {
+      background-color: @color-Interactive--100;
+      border-color: @color-Interactive--150;
+      color: @color-Interactive--400;
+      cursor: default;
+
+      .qn-CategorySelector-icon {
+        fill: @color-Interactive--400;
+      }
+    }
+
+    &Content {
+      display: flex;
+    }
+
+    &Text {
+      display: block;
+      flex: 1;
+    }
+  }
+
+  &-icon {
+    fill: @color-Interactive--750;
+    margin-left: 1em;
+  }
+
+  &-combobox {
+    .shadow();
+    background-color: @color-White;
+    border: unit(1/16, em) solid @color-Interactive--400;
+    box-sizing: border-box;
+    display: block;
+    margin: unit(-1/16, em) 0 0;
+    min-width: 20em;
+    padding: 0;
+    position: absolute;
+    z-index: 1;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &-input {
+    margin: 0.5em;
+    padding: 0.5em;
+  }
+
+  &-options {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &-option {
+    display: flex;
+    padding: 0.5em;
+
+    &:hover {
+      background-color: @color-Interactive--100;
+    }
+
+    &--selected {
+      background-color: @color-Interactive--100;
+    }
+
+    &--system {
+      font-style: italic;
+    }
+  }
+
+  &-optionLabel {
+    flex: 1;
+  }
+}
