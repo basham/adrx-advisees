@@ -138,7 +138,8 @@ var Selector = React.createClass({
     );
   },
   renderItem: function(item, index) {
-    var isPreselected = this.props.selectedIndex === index;
+    var itemIndex = this.props.items.indexOf(item);
+    var isPreselected = this.props.selectedIndex === itemIndex;
     var isSelected = this.state.selectedIndex === index;
 
     var optionLabelClasses = classNames({
