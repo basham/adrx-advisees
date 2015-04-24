@@ -16,6 +16,9 @@ var Selector = React.createClass({
   //
   // Lifecycle methods
   //
+  componentDidMount: function() {
+    this.open();
+  },
   componentWillMount: function() {
     document.addEventListener('click', this.handleBodyClick);
   },
@@ -35,7 +38,7 @@ var Selector = React.createClass({
   },
   getInitialState: function() {
     return {
-      isOpen: true,
+      isOpen: false,
       inputValue: '',
       options: [],
       selectedIndex: 0
@@ -49,6 +52,7 @@ var Selector = React.createClass({
       'adv-Selector-button': true,
       'adv-Selector-button--open': this.state.isOpen
     });
+    var buttonLabel = ['Select', this.props.optionName].join(' ');
 
     var selectedOption = this.props.options[this.props.selectedIndex];
 
@@ -60,11 +64,11 @@ var Selector = React.createClass({
       <div className="adv-Selector">
         <button
           aria-haspopup="true"
+          aria-label={buttonLabel}
           className={buttonClassNames}
           disabled={this.props.disabled}
-          id="toggleButton"
-          onClick={this.handleToggleOptions}
-          ref="toggleButton">
+          onClick={this.handleButtonClick}
+          ref="button">
           <div className="adv-Selector-buttonContent">
             <span className={selectedOptionClassNames}>
               {selectedOption.label}
@@ -100,8 +104,8 @@ var Selector = React.createClass({
             aria-owns="optionList"
             className="adv-Input"
             maxLength={this.props.labelMaxLength}
-            onChange={this.handleChange}
-            onKeyDown={this.handleKeyDown}
+            onChange={this.handleInputChange}
+            onKeyDown={this.handleInputKeyDown}
             placeholder={placeholder}
             ref="input"
             role="combobox"
@@ -132,7 +136,7 @@ var Selector = React.createClass({
         className={cn}
         id={isSelected ? 'selectedOption' : null}
         onClick={this.handleSubmit}
-        onMouseOver={this.handleMouseOver(index)}
+        onMouseOver={this.handleOptionMouseOver(index)}
         role="option">
         <span className='adv-Selector-optionLabel'>
           {option.label}
@@ -158,6 +162,7 @@ var Selector = React.createClass({
   // Handler methods
   //
   handleBodyClick: function(e) {
+    e.preventDefault();
     // Ignore if the component is closed.
     if(!this.state.isOpen) {
       return;
@@ -167,72 +172,82 @@ var Selector = React.createClass({
       return;
     }
     // Ignore if the click occurs within the button.
-    if(this.refs.toggleButton.getDOMNode().contains(e.target)) {
+    if(this.refs.button.getDOMNode().contains(e.target)) {
       return;
     }
-    // Cancel the open component.
-    this.handleCancel();
+    // Close the component and ignore returning focus to button.
+    this.close(true);
   },
-  handleToggleOptions: function(e) {
-    if(!!e && e.preventDefault) {
-      e.preventDefault();
+  handleButtonClick: function(e) {
+    e.preventDefault();
+    if(this.state.isOpen) {
+      this.close();
     }
+    else {
+      this.open();
+    }
+  },
+  handleInputChange: function(e) {
+    var inputValue = e.target.value;
+    var hasInput = !!inputValue.trim().length;
+    var hasMatch = false;
+
+    var options = this.props.options.filter(function(option) {
+      var a = option.label.toLowerCase().trim();
+      var b = inputValue.toLowerCase().trim();
+      if(!hasMatch) {
+        hasMatch = a === b;
+      }
+      return a.search(b) === 0;
+    }.bind(this));
+
+    if(hasInput && !hasMatch) {
+      options.push({
+        isNewOption: true,
+        label: this.renderCreateOption(inputValue)
+      });
+    }
+
     this.setState({
-      isOpen: !this.state.isOpen
-    }, function() {
-      if(this.state.isOpen) {
-        // Put focus on the appropriate input.
-        //var newCategoryRefId = 'input';
-        //var categoryRefId = 'category' + this.props.selectedId;
-        //var refId = !!this.props.newItem ? newCategoryRefId : categoryRefId;
-        //this.refs[refId].getDOMNode().focus();
-        this.refs.input.getDOMNode().focus();
-      }
-      //else if(!!e) {
-      else {
-        // Put focus back on the button.
-        // But ignore if user clicked away to close.
-        this.refs.toggleButton.getDOMNode().focus();
-      }
+      inputValue: inputValue,
+      options: options,
+      selectedIndex: 0
     });
   },
-  handleMouseOver: function(index) {
+  handleInputKeyDown: function(e) {
+    switch(e.key) {
+      case 'Escape':
+        this.close();
+        break;
+      case 'Tab':
+        this.changeFocus(e);
+        break;
+      case 'ArrowDown':
+      case 'ArrowRight':
+        this.selectNext();
+        break;
+      case 'ArrowUp':
+      case 'ArrowLeft':
+        this.selectPrevious();
+        break;
+    }
+  },
+  handleOptionMouseOver: function(index) {
     return function(e) {
       e.preventDefault();
       this.selectIndex(index);
     }.bind(this);
   },
-  handleBackdropClick: function(e) {
-    this.handleCancel(e);
+  handleSubmit: function(e) {
+    var option = this.state.options[this.state.selectedIndex];
+    var index = this.props.options.indexOf(option);
+    this.props.onChange(index);
+    this.close();
   },
-  handleKeyDown: function(e) {
-    switch(e.key) {
-      case 'Escape':
-        this.handleCancel(e);
-        break;
-      case 'Tab':
-        this.handleTab(e);
-        break;
-      case 'ArrowDown':
-      case 'ArrowRight':
-        this.handleSelectNext();
-        break;
-      case 'ArrowUp':
-      case 'ArrowLeft':
-        this.handleSelectPrevious();
-        break;
-    }
-  },
-  handleCancel: function(e) {
-    // Cancel any changes and close.
-    this.handleToggleOptions(e);
-    // Reset component.
-    this.setState({
-      inputValue: '',
-      options: this.props.options
-    });
-  },
-  handleTab: function(e) {
+  //
+  // Helper methods
+  //
+  changeFocus: function(e) {
     // Discover if the event target is the first or last focusable element
     // within this component.
     var overlay = this.refs.overlay.getDOMNode();
@@ -269,12 +284,30 @@ var Selector = React.createClass({
       firstFocusableEl.focus();
     }
   },
-  handleSelectNext: function() {
+  close: function(ignoreFocus) {
+    this.setState({
+      inputValue: '',
+      isOpen: false,
+      options: this.props.options
+    }, function() {
+      if(!ignoreFocus) {
+        this.refs.button.getDOMNode().focus();
+      }
+    });
+  },
+  open: function() {
+    this.setState({
+      isOpen: true
+    }, function() {
+      this.refs.input.getDOMNode().focus();
+    });
+  },
+  selectNext: function() {
     var index = this.state.selectedIndex;
     index = index + 1 >= this.state.options.length ? 0 : index + 1;
     this.selectIndex(index);
   },
-  handleSelectPrevious: function() {
+  selectPrevious: function() {
     var index = this.state.selectedIndex;
     index = index === 0 ? this.state.options.length - 1 : index - 1;
     this.selectIndex(index);
@@ -283,46 +316,7 @@ var Selector = React.createClass({
     this.setState({
       selectedIndex: index
     });
-  },
-  handleSubmit: function(e) {
-    var option = this.state.options[this.state.selectedIndex];
-    var index = this.props.options.indexOf(option);
-    this.props.onChange(index);
-    this.handleToggleOptions(e);
-    this.setState({
-      inputValue: ''
-    });
-  },
-  handleChange: function(e) {
-    var inputValue = e.target.value;
-    var hasInput = !!inputValue.trim().length;
-    var hasMatch = false;
-
-    var options = this.props.options.filter(function(option) {
-      var a = option.label.toLowerCase().trim();
-      var b = inputValue.toLowerCase().trim();
-      if(!hasMatch) {
-        hasMatch = a === b;
-      }
-      return a.search(b) === 0;
-    }.bind(this));
-
-    if(hasInput && !hasMatch) {
-      options.push({
-        isNewOption: true,
-        label: this.renderCreateOption(inputValue)
-      });
-    }
-
-    this.setState({
-      inputValue: inputValue,
-      options: options,
-      selectedIndex: 0
-    });
-  },
-  //
-  // Helper methods
-  //
+  }
 });
 
 module.exports = Selector;

@@ -39,11 +39,6 @@ var GroupSelector = React.createClass({
   render: function() {
     return (
       <div>
-        <label
-          className="adv-Label"
-          htmlFor="toggleButton">
-          Groups
-        </label>
         <Selector
           labelMaxLength={20}
           onChange={this.handleChange}
