@@ -161,6 +161,19 @@ var Selector = React.createClass({
       </li>
     );
   },
+  renderCreateOption: function(value) {
+    return (
+      <div className="adv-Selector-createOption">
+        Create{' '}
+        {this.props.itemName}:{' '}
+        <samp className="adv-Selector-createOptionValue">
+          <kbd className="adv-Selector-createOptionValue">
+            {value}
+          </kbd>
+        </samp>
+      </div>
+    );
+  },
   //
   // Handler methods
   //
@@ -326,7 +339,7 @@ var Selector = React.createClass({
     if(hasInput) {
       options.push({
         isNewItem: true,
-        label: ['Create new', this.props.itemName, 'called', inputValue].join(' ')
+        label: this.renderCreateOption(inputValue)
       });
     }
 
