@@ -5,8 +5,8 @@ var classNames = require('classnames');
 
 var Icon = require('./icon');
 
+// Store and generate unique ids.
 var _uuid = 0;
-
 function uuid() {
   return _uuid++;
 }
@@ -28,6 +28,7 @@ var Selector = React.createClass({
   },
   componentWillMount: function() {
     document.addEventListener('click', this.handleBodyClick);
+    // Set unique ids for ARIA attributes.
     this.setState({
       optionListId: 'selectorOptionListId-' + uuid(),
       selectedOptionId: 'selectorSelectedOptionId-' + uuid()
