@@ -161,25 +161,23 @@ var Selector = React.createClass({
   //
   // Handler methods
   //
-  handleBodyClick: function(e) {
-    e.preventDefault();
+  handleBodyClick: function(event) {
     // Ignore if the component is closed.
     if(!this.state.isOpen) {
       return;
     }
     // Ignore if the click occurs within the overlay.
-    if(this.refs.overlay.getDOMNode().contains(e.target)) {
+    if(this.refs.overlay.getDOMNode().contains(event.target)) {
       return;
     }
     // Ignore if the click occurs within the button.
-    if(this.refs.button.getDOMNode().contains(e.target)) {
+    if(this.refs.button.getDOMNode().contains(event.target)) {
       return;
     }
     // Close the component and ignore returning focus to button.
     this.close(true);
   },
-  handleButtonClick: function(e) {
-    e.preventDefault();
+  handleButtonClick: function() {
     if(this.state.isOpen) {
       this.close();
     }
@@ -187,8 +185,8 @@ var Selector = React.createClass({
       this.open();
     }
   },
-  handleInputChange: function(e) {
-    var inputValue = e.target.value;
+  handleInputChange: function(event) {
+    var inputValue = event.target.value;
     var hasInput = !!inputValue.trim().length;
     var hasMatch = false;
 
@@ -214,15 +212,15 @@ var Selector = React.createClass({
       selectedIndex: 0
     });
   },
-  handleInputKeyDown: function(e) {
-    switch(e.key) {
+  handleInputKeyDown: function(event) {
+    switch(event.key) {
       case 'Escape':
         this.close();
         break;
       case 'Tab':
         // Prevent changing focus,
         // since the input field is the only focusable element.
-        e.preventDefault();
+        event.preventDefault();
         break;
       case 'ArrowDown':
       case 'ArrowRight':
@@ -235,12 +233,11 @@ var Selector = React.createClass({
     }
   },
   handleOptionMouseOver: function(index) {
-    return function(e) {
-      e.preventDefault();
+    return function() {
       this.selectIndex(index);
     }.bind(this);
   },
-  handleSubmit: function(e) {
+  handleSubmit: function() {
     var option = this.state.options[this.state.selectedIndex];
     var index = this.props.options.indexOf(option);
     this.props.onChange(index);
