@@ -233,9 +233,10 @@ var Selector = React.createClass({
   handleCancel: function(e) {
     // Cancel any changes and close.
     this.handleToggleOptions(e);
-    // Reset new category name to previously entered value.
+    // Reset component.
     this.setState({
-      newItem: this.props.newItem
+      inputValue: '',
+      options: this.props.items
     });
   },
   handleTab: function(e) {
