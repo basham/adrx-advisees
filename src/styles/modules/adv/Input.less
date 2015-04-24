@@ -1,0 +1,42 @@
+.adv-Input[type], // Fix for specificity issues.
+.adv-Input {
+  border: unit(1/16, em) solid @color-Interactive--400;
+  box-sizing: border-box;
+  line-height: @scale-FontSize--05;
+  padding: 0.5em;
+  width: 100%;
+  // Fixes for specificity issues.
+  border-radius: 0;
+  box-shadow: none;
+  color: inherit;
+  font-size: 16px;
+  height: auto;
+  margin: 0;
+
+  &:focus {
+    .focus();
+    // Fixes for specificity issues.
+    border-color: @color-Interactive--400;
+  }
+}
+
+.adv-Input {
+
+  &--disabled[type], // Fix for specificity issues.
+  &[disabled][type], // Fix for specificity issues.
+  fieldset[disabled] &[type], // Fix for specificity issues.
+  &--disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    color: @color-Text--400;
+    background-color: inherit;
+    // Override Safari wanting to lighten the text color value.
+    -webkit-text-fill-color: @color-Text--400;
+  }
+
+  &--textarea[type], // Fix for specificity issues.
+  &--textarea {
+    line-height: @scale-FontSize--20;
+    min-height: 10em;
+  }
+}

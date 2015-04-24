@@ -113,21 +113,23 @@ var Selector = React.createClass({
         onSubmit={this.handleSubmit}
         ref="overlay"
         tabIndex="0">
-        <input
-          aria-activedescendant="selectedItem"
-          aria-autocomplete="list"
-          aria-expanded="true"
-          aria-label={placeholder}
-          aria-owns="optionList"
-          className="adv-Selector-input adv-Input"
-          maxLength={this.props.labelMaxLength}
-          onChange={this.handleChange}
-          onKeyDown={this.handleKeyDown}
-          placeholder={placeholder}
-          ref="input"
-          role="combobox"
-          type="text"
-          value={this.state.inputValue}/>
+        <div className="adv-Selector-inputBox">
+          <input
+            aria-activedescendant="selectedItem"
+            aria-autocomplete="list"
+            aria-expanded="true"
+            aria-label={placeholder}
+            aria-owns="optionList"
+            className="adv-Input"
+            maxLength={this.props.labelMaxLength}
+            onChange={this.handleChange}
+            onKeyDown={this.handleKeyDown}
+            placeholder={placeholder}
+            ref="input"
+            role="combobox"
+            type="text"
+            value={this.state.inputValue}/>
+        </div>
         <ul
           className="adv-Selector-options"
           id="optionList"
