@@ -220,7 +220,9 @@ var Selector = React.createClass({
         this.close();
         break;
       case 'Tab':
-        this.changeFocus(e);
+        // Prevent changing focus,
+        // since the input field is the only focusable element.
+        e.preventDefault();
         break;
       case 'ArrowDown':
       case 'ArrowRight':
@@ -247,43 +249,6 @@ var Selector = React.createClass({
   //
   // Helper methods
   //
-  changeFocus: function(e) {
-    // Discover if the event target is the first or last focusable element
-    // within this component.
-    var overlay = this.refs.overlay.getDOMNode();
-    var childElementsNodeList = overlay.querySelectorAll('*');
-    var childElementsArray = Array.prototype.slice.call(childElementsNodeList);
-    var focusableEl = childElementsArray.filter(function(el) {
-      var index = null;
-      // Rely on the tabIndex value if one is explicitly set.
-      if(el.hasAttribute('tabindex')) {
-        index = el.tabIndex;
-      }
-      // Because IE doesn't return proper tabIndex values, we have to be explicit.
-      // http://nemisj.com/focusable/
-      else {
-        var focusable = 'a body button frame iframe img input object select textarea'.split(' ');
-        var nodeName = el.nodeName.toLowerCase();
-        var isFocusable = focusable.indexOf(nodeName) !== -1;
-        index = isFocusable ? 0 : -1;
-      }
-      return index === 0;
-    });
-    var firstFocusableEl = focusableEl[0];
-    var lastFocusableEl = focusableEl[focusableEl.length-1];
-    var isTargetFirst = e.target === firstFocusableEl;
-    var isTargetLast = e.target === lastFocusableEl;
-    // Loop to the last element if shift-tabbing from the first element.
-    if(isTargetFirst && e.shiftKey) {
-      e.preventDefault();
-      lastFocusableEl.focus();
-    }
-    // Loop to the first element if tabbing from the last element.
-    else if(isTargetLast && !e.shiftKey) {
-      e.preventDefault();
-      firstFocusableEl.focus();
-    }
-  },
   close: function(ignoreFocus) {
     this.setState({
       inputValue: '',
