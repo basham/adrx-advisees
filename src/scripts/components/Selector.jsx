@@ -151,7 +151,8 @@ var Selector = React.createClass({
       <li
         className={optionLabelClasses}
         id={isSelected ? 'selectedItem' : null}
-        onClick={this.handleClick(index)}
+        onClick={this.handleSubmit}
+        onMouseOver={this.handleMouseOver(index)}
         role="option">
         <span className='adv-Selector-optionLabel'>
           {item.label}
@@ -202,11 +203,10 @@ var Selector = React.createClass({
       }
     });
   },
-  handleClick: function(selectedId) {
+  handleMouseOver: function(index) {
     return function(e) {
       e.preventDefault();
-      this.props.onChange(selectedId);
-      this.handleToggleOptions(e);
+      this.selectIndex(index);
     }.bind(this);
   },
   handleBackdropClick: function(e) {
