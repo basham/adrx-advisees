@@ -329,14 +329,18 @@ var Selector = React.createClass({
   handleChange: function(e) {
     var inputValue = e.target.value;
     var hasInput = !!inputValue.trim().length;
+    var hasMatch = false;
 
     var options = this.props.items.filter(function(item) {
       var a = item.label.toLowerCase().trim();
       var b = inputValue.toLowerCase().trim();
+      if(!hasMatch) {
+        hasMatch = a === b;
+      }
       return a.search(b) === 0;
     }.bind(this));
 
-    if(hasInput) {
+    if(hasInput && !hasMatch) {
       options.push({
         isNewItem: true,
         label: this.renderCreateOption(inputValue)
