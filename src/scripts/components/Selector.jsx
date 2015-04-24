@@ -5,10 +5,10 @@ var classNames = require('classnames');
 
 var Icon = require('./icon');
 
-var uuid = 0;
+var _uuid = 0;
 
 function uuid() {
-  return uuid++;
+  return _uuid++;
 }
 
 var Selector = React.createClass({
