@@ -8,7 +8,7 @@ var Icon = require('./icon');
 var Selector = React.createClass({
   propTypes: {
     disabled: React.PropTypes.bool,
-    items: React.PropTypes.array,
+    options: React.PropTypes.array,
     //inputValue: React.PropTypes.string,
     selectedIndex: React.PropTypes.number,
     labelMaxLength: React.PropTypes.number
@@ -27,7 +27,7 @@ var Selector = React.createClass({
       });
     }
     this.setState({
-      options: nextProps.items
+      options: nextProps.options
     });
   },
   componentWillUnmount: function() {
@@ -73,10 +73,10 @@ var Selector = React.createClass({
     }
     */
 
-    //var selectedItem = this.props.items.filter(function(item) {
+    //var selectedItem = this.props.options.filter(function(item) {
     //  return item.id === this.props.selectedId;
     //}.bind(this))[0];
-    var selectedName = this.props.items[this.props.selectedIndex].label;
+    var selectedName = this.props.options[this.props.selectedIndex].label;
 
     return (
       <div className="adv-Selector">
@@ -105,7 +105,7 @@ var Selector = React.createClass({
       return null;
     }
 
-    var placeholder = ['Find or create a', this.props.itemName].join(' ');
+    var placeholder = ['Find or create a', this.props.optionName].join(' ');
 
     return (
       <form
@@ -140,7 +140,7 @@ var Selector = React.createClass({
     );
   },
   renderItem: function(item, index) {
-    var itemIndex = this.props.items.indexOf(item);
+    var itemIndex = this.props.options.indexOf(item);
     var isPreselected = this.props.selectedIndex === itemIndex;
     var isSelected = this.state.selectedIndex === index;
 
@@ -167,7 +167,7 @@ var Selector = React.createClass({
     return (
       <div className="adv-Selector-createOption">
         Create{' '}
-        {this.props.itemName}:{' '}
+        {this.props.optionName}:{' '}
         <samp className="adv-Selector-createOptionValue">
           <kbd className="adv-Selector-createOptionValue">
             {value}
@@ -251,7 +251,7 @@ var Selector = React.createClass({
     // Reset component.
     this.setState({
       inputValue: '',
-      options: this.props.items
+      options: this.props.options
     });
   },
   handleTab: function(e) {
@@ -308,7 +308,7 @@ var Selector = React.createClass({
   },
   handleSubmit: function(e) {
     var item = this.state.options[this.state.selectedIndex];
-    var index = this.props.items.indexOf(item);
+    var index = this.props.options.indexOf(item);
     this.props.onChange(index);
     this.handleToggleOptions(e);
     this.setState({
@@ -333,7 +333,7 @@ var Selector = React.createClass({
     var hasInput = !!inputValue.trim().length;
     var hasMatch = false;
 
-    var options = this.props.items.filter(function(item) {
+    var options = this.props.options.filter(function(item) {
       var a = item.label.toLowerCase().trim();
       var b = inputValue.toLowerCase().trim();
       if(!hasMatch) {

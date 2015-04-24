@@ -16,7 +16,7 @@ var GroupSelector = React.createClass({
   getInitialState: function() {
     return {
       selectedIndex: 0,
-      items: [
+      options: [
         {
           label: 'One'
         },
@@ -45,10 +45,10 @@ var GroupSelector = React.createClass({
           Groups
         </label>
         <Selector
-          items={this.state.items}
-          itemName="group"
           labelMaxLength={20}
           onChange={this.handleChange}
+          optionName="group"
+          options={this.state.options}
           selectedIndex={this.state.selectedIndex}/>
       </div>
     );
