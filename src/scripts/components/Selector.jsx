@@ -115,7 +115,7 @@ var Selector = React.createClass({
         tabIndex="0">
         <div className="adv-Selector-inputBox">
           <input
-            aria-activedescendant="selectedItem"
+            aria-activedescendant="selectedOption"
             aria-autocomplete="list"
             aria-expanded="true"
             aria-label={placeholder}
@@ -134,30 +134,30 @@ var Selector = React.createClass({
           className="adv-Selector-options"
           id="optionList"
           role="listbox">
-          {this.state.options.map(this.renderItem)}
+          {this.state.options.map(this.renderOption)}
         </ul>
       </form>
     );
   },
-  renderItem: function(item, index) {
-    var itemIndex = this.props.options.indexOf(item);
-    var isPreselected = this.props.selectedIndex === itemIndex;
+  renderOption: function(option, index) {
+    var optionIndex = this.props.options.indexOf(option);
+    var isPreselected = this.props.selectedIndex === optionIndex;
     var isSelected = this.state.selectedIndex === index;
 
     var optionLabelClasses = classNames({
       'adv-Selector-option': true,
       'adv-Selector-option--selected': isSelected
-    }, item.classNames);
+    }, option.classNames);
 
     return (
       <li
         className={optionLabelClasses}
-        id={isSelected ? 'selectedItem' : null}
+        id={isSelected ? 'selectedOption' : null}
         onClick={this.handleSubmit}
         onMouseOver={this.handleMouseOver(index)}
         role="option">
         <span className='adv-Selector-optionLabel'>
-          {item.label}
+          {option.label}
         </span>
         {isPreselected ? <Icon name="check"/> : null}
       </li>
@@ -307,8 +307,8 @@ var Selector = React.createClass({
     });
   },
   handleSubmit: function(e) {
-    var item = this.state.options[this.state.selectedIndex];
-    var index = this.props.options.indexOf(item);
+    var option = this.state.options[this.state.selectedIndex];
+    var index = this.props.options.indexOf(option);
     this.props.onChange(index);
     this.handleToggleOptions(e);
     this.setState({
@@ -333,8 +333,8 @@ var Selector = React.createClass({
     var hasInput = !!inputValue.trim().length;
     var hasMatch = false;
 
-    var options = this.props.options.filter(function(item) {
-      var a = item.label.toLowerCase().trim();
+    var options = this.props.options.filter(function(option) {
+      var a = option.label.toLowerCase().trim();
       var b = inputValue.toLowerCase().trim();
       if(!hasMatch) {
         hasMatch = a === b;
@@ -344,7 +344,7 @@ var Selector = React.createClass({
 
     if(hasInput && !hasMatch) {
       options.push({
-        isNewItem: true,
+        isNewOption: true,
         label: this.renderCreateOption(inputValue)
       });
     }
