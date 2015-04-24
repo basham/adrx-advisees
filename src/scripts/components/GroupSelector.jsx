@@ -40,7 +40,7 @@ var GroupSelector = React.createClass({
     return (
       <div>
         <Selector
-          labelMaxLength={20}
+          maxLength={20}
           onChange={this.handleChange}
           optionName="group"
           options={this.state.options}

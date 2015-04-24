@@ -8,10 +8,11 @@ var Icon = require('./icon');
 var Selector = React.createClass({
   propTypes: {
     disabled: React.PropTypes.bool,
+    maxLength: React.PropTypes.number,
+    onChange: React.PropTypes.func,
     options: React.PropTypes.array,
-    //inputValue: React.PropTypes.string,
-    selectedIndex: React.PropTypes.number,
-    labelMaxLength: React.PropTypes.number
+    optionName: React.PropTypes.string,
+    selectedIndex: React.PropTypes.number
   },
   //
   // Lifecycle methods
@@ -41,6 +42,7 @@ var Selector = React.createClass({
       isOpen: false,
       inputValue: '',
       options: [],
+      optionName: 'option',
       selectedIndex: 0
     };
   },
@@ -103,7 +105,7 @@ var Selector = React.createClass({
             aria-label={placeholder}
             aria-owns="optionList"
             className="adv-Input"
-            maxLength={this.props.labelMaxLength}
+            maxLength={this.props.maxLength}
             onChange={this.handleInputChange}
             onKeyDown={this.handleInputKeyDown}
             placeholder={placeholder}
@@ -240,7 +242,9 @@ var Selector = React.createClass({
   handleSubmit: function() {
     var option = this.state.options[this.state.selectedIndex];
     var index = this.props.options.indexOf(option);
-    this.props.onChange(index);
+    if(this.props.onChange) {
+      this.props.onChange(index);
+    }
     this.close();
   },
   //
