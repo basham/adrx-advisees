@@ -34,14 +34,9 @@ var Selector = React.createClass({
     });
   },
   componentWillReceiveProps: function(nextProps) {
-    var isNewSelectedIndex = nextProps.selectedIndex !== this.props.selectedIndex;
-    if(isNewSelectedIndex) {
-      this.setState({
-        selectedIndex: nextProps.selectedIndex
-      });
-    }
     this.setState({
-      options: nextProps.options
+      options: nextProps.options,
+      selectedIndex: nextProps.selectedIndex
     });
   },
   componentWillUnmount: function() {
