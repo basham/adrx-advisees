@@ -315,11 +315,11 @@ var Selector = React.createClass({
   },
   handleChange: function(e) {
     var inputValue = e.target.value;
-    var hasInput = !!inputValue.length;
+    var hasInput = !!inputValue.trim().length;
 
     var options = this.props.items.filter(function(item) {
-      var a = item.label.toLowerCase();
-      var b = inputValue.toLowerCase();
+      var a = item.label.toLowerCase().trim();
+      var b = inputValue.toLowerCase().trim();
       return a.search(b) === 0;
     }.bind(this));
 
