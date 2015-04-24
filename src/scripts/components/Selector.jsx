@@ -5,6 +5,12 @@ var classNames = require('classnames');
 
 var Icon = require('./icon');
 
+var uuid = 0;
+
+function uuid() {
+  return uuid++;
+}
+
 var Selector = React.createClass({
   propTypes: {
     disabled: React.PropTypes.bool,
@@ -22,6 +28,10 @@ var Selector = React.createClass({
   },
   componentWillMount: function() {
     document.addEventListener('click', this.handleBodyClick);
+    this.setState({
+      optionListId: 'selectorOptionListId-' + uuid(),
+      selectedOptionId: 'selectorSelectedOptionId-' + uuid()
+    });
   },
   componentWillReceiveProps: function(nextProps) {
     var isNewSelectedIndex = nextProps.selectedIndex !== this.props.selectedIndex;
@@ -80,11 +90,11 @@ var Selector = React.createClass({
               name="caret-bottom"/>
           </div>
         </button>
-        {this.renderCombobox()}
+        {this.renderForm()}
       </div>
     );
   },
-  renderCombobox: function() {
+  renderForm: function() {
     if(!this.state.isOpen) {
       return null;
     }
@@ -93,17 +103,17 @@ var Selector = React.createClass({
 
     return (
       <form
-        className="adv-Selector-combobox"
+        className="adv-Selector-form"
         onSubmit={this.handleSubmit}
         ref="overlay"
         tabIndex="0">
         <div className="adv-Selector-inputBox">
           <input
-            aria-activedescendant="selectedOption"
+            aria-activedescendant={this.state.selectedOptionId}
             aria-autocomplete="list"
             aria-expanded="true"
             aria-label={placeholder}
-            aria-owns="optionList"
+            aria-owns={this.state.optionListId}
             className="adv-Input"
             maxLength={this.props.maxLength}
             onChange={this.handleInputChange}
@@ -115,8 +125,8 @@ var Selector = React.createClass({
             value={this.state.inputValue}/>
         </div>
         <ul
-          className="adv-Selector-options"
-          id="optionList"
+          className="adv-Selector-optionList"
+          id={this.state.optionListId}
           role="listbox">
           {this.state.options.map(this.renderOption)}
         </ul>
@@ -136,7 +146,7 @@ var Selector = React.createClass({
     return (
       <li
         className={cn}
-        id={isSelected ? 'selectedOption' : null}
+        id={isSelected ? this.state.selectedOptionId : null}
         onClick={this.handleSubmit}
         onMouseOver={this.handleOptionMouseOver(index)}
         role="option">
