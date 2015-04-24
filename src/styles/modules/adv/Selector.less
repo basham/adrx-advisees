@@ -1,6 +1,6 @@
 .adv-Selector {
 
-  &-selection {
+  &-button {
     .textShadow();
     background-color: @color-Interactive--100;
     border: unit(1/16, em) solid @color-Interactive--400;
@@ -36,15 +36,15 @@
         fill: @color-Interactive--400;
       }
     }
+  }
 
-    &Content {
-      display: flex;
-    }
+  &-buttonContent {
+    display: flex;
+  }
 
-    &Text {
-      display: block;
-      flex: 1;
-    }
+  &-buttonLabel {
+    display: block;
+    flex: 1;
   }
 
   &-icon {
@@ -91,10 +91,10 @@
     &--selected {
       background-color: @color-Interactive--100;
     }
+  }
 
-    &--system {
-      font-style: italic;
-    }
+  &-systemOption {
+    font-style: italic;
   }
 
   &-optionLabel {

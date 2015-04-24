@@ -45,51 +45,29 @@ var Selector = React.createClass({
   // Render methods
   //
   render: function() {
-    //var isNewCategorySelected = !!this.props.newItem;
-    //var isUncategoriedSelected = !isNewCategorySelected && !this.props.selectedId;
-
-    var selectionClasses = classNames({
-      'adv-Selector-selection': true,
-      'adv-Selector-selection--open': this.state.isOpen//,
-      //'adv-Selector-selection--unspecified': isUncategoriedSelected
+    var buttonClassNames = classNames({
+      'adv-Selector-button': true,
+      'adv-Selector-button--open': this.state.isOpen
     });
 
-    /*
-    // Determine category name.
-    var selectedName = null;
-    if(isNewCategorySelected) {
-      selectedName = this.props.newItem;
-    }
-    else if(isUncategoriedSelected) {
-      var unspecifiedCategory = this.state.categorizedNotes.uncategorized;
-      selectedName = unspecifiedCategory.name;
-    }
-    else {
-      var categoryList = this.state.categorizedNotes.categorized;
-      var selectedCategory = categoryList.filter(function(category) {
-        return category.categoryId == this.props.selectedId;
-      }.bind(this))[0];
-      selectedName = selectedCategory.name;
-    }
-    */
+    var selectedOption = this.props.options[this.props.selectedIndex];
 
-    //var selectedItem = this.props.options.filter(function(item) {
-    //  return item.id === this.props.selectedId;
-    //}.bind(this))[0];
-    var selectedName = this.props.options[this.props.selectedIndex].label;
+    var selectedOptionClassNames = classNames({
+      'adv-Selector-buttonLabel': true
+    }, selectedOption.classNames);
 
     return (
       <div className="adv-Selector">
         <button
           aria-haspopup="true"
-          className={selectionClasses}
+          className={buttonClassNames}
           disabled={this.props.disabled}
           id="toggleButton"
           onClick={this.handleToggleOptions}
           ref="toggleButton">
-          <div className="adv-Selector-selectionContent">
-            <span className="adv-Selector-selectionText">
-              {selectedName}
+          <div className="adv-Selector-buttonContent">
+            <span className={selectedOptionClassNames}>
+              {selectedOption.label}
             </span>
             <Icon
               className="adv-Selector-icon"
@@ -144,14 +122,14 @@ var Selector = React.createClass({
     var isPreselected = this.props.selectedIndex === optionIndex;
     var isSelected = this.state.selectedIndex === index;
 
-    var optionLabelClasses = classNames({
+    var cn = classNames({
       'adv-Selector-option': true,
       'adv-Selector-option--selected': isSelected
     }, option.classNames);
 
     return (
       <li
-        className={optionLabelClasses}
+        className={cn}
         id={isSelected ? 'selectedOption' : null}
         onClick={this.handleSubmit}
         onMouseOver={this.handleMouseOver(index)}

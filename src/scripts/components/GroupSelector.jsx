@@ -22,7 +22,7 @@ var GroupSelector = React.createClass({
         },
         {
           label: 'Advisee',
-          classNames: 'adv-Selector-option--system'
+          classNames: 'adv-Selector-systemOption'
         },
         {
           label: 'Probation'
