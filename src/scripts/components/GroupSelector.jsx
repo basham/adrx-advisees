@@ -55,6 +55,8 @@ var GroupSelector = React.createClass({
 console.log('handleChange index', index);
   var options = this.state.options;
   if (option.isNewOption) {
+    option.isNewOption = false;
+    option.label = option.value;
     options.push(option);
 
   }

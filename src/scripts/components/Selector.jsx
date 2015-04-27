@@ -215,11 +215,10 @@ console.log('render selectedIndex', this.props.selectedIndex);
     if(hasInput && !hasMatch) {
       options2.push({
         isNewOption: true,
-//        label: this.renderCreateOption(inputValue)
-        label: inputValue
+        label: this.renderCreateOption(inputValue),
+        value: inputValue
       });
     }
-
 
     var indexKdm = 0;
 console.log('handleInputChange inputValue ', inputValue);
