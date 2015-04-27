@@ -62,7 +62,11 @@ var Selector = React.createClass({
     });
     var buttonLabel = ['Select', this.props.optionName].join(' ');
 
+console.log('render options', this.props.options);
+console.log('render selectedIndex', this.props.selectedIndex);
+
     var selectedOption = this.props.options[this.props.selectedIndex];
+//    var selectedOption = this.state.options[this.state.selectedIndex];
 
     var selectedOptionClassNames = classNames({
       'adv-Selector-buttonLabel': true
@@ -154,6 +158,7 @@ var Selector = React.createClass({
     );
   },
   renderCreateOption: function(value) {
+    console.log('renderCreateOption value', value);
     return (
       <div className="adv-Selector-createOption">
         Create{' '}
@@ -198,7 +203,7 @@ var Selector = React.createClass({
     var hasInput = !!inputValue.trim().length;
     var hasMatch = false;
 
-    var options = this.props.options.filter(function(option) {
+    var options2 = this.props.options.filter(function(option) {
       var a = option.label.toLowerCase().trim();
       var b = inputValue.toLowerCase().trim();
       if(!hasMatch) {
@@ -208,17 +213,24 @@ var Selector = React.createClass({
     }.bind(this));
 
     if(hasInput && !hasMatch) {
-      options.push({
+      options2.push({
         isNewOption: true,
-        label: this.renderCreateOption(inputValue)
+//        label: this.renderCreateOption(inputValue)
+        label: inputValue
       });
     }
 
+
+    var indexKdm = 0;
+console.log('handleInputChange inputValue ', inputValue);
+console.log('handleInputChange options2 ', options2);
+console.log('handleInputChange selectedIndex ', indexKdm);
     this.setState({
       inputValue: inputValue,
-      options: options,
-      selectedIndex: 0
+      options: options2,
+      selectedIndex: indexKdm
     });
+console.log('handleInputChange options2BBB ', options2);
   },
   handleInputKeyDown: function(event) {
     switch(event.key) {
@@ -241,15 +253,21 @@ var Selector = React.createClass({
     }
   },
   handleOptionMouseOver: function(index) {
+    console.log('handleOptionMouseOver index', index);
     return function() {
       this.selectIndex(index);
     }.bind(this);
   },
   handleSubmit: function() {
     var option = this.state.options[this.state.selectedIndex];
-    var index = this.props.options.indexOf(option);
+    var index = this.state.options.indexOf(option);
+console.log('handleSubmit selectedIndex', this.state.selectedIndex);
+console.log('handleSubmit state.options', this.state.options);
+console.log('handleSubmit props.options', this.props.options);
+console.log('handleSubmit option', option);
+console.log('handleSubmit index', index);
     if(this.props.onChange) {
-      this.props.onChange(index);
+      this.props.onChange(option, index);
     }
     this.close();
   },
@@ -275,11 +293,13 @@ var Selector = React.createClass({
     });
   },
   selectNext: function() {
+    console.log('selectNext this.state.selectedIndex', this.state.selectedIndex);
     var index = this.state.selectedIndex;
     index = index + 1 >= this.state.options.length ? 0 : index + 1;
     this.selectIndex(index);
   },
   selectPrevious: function() {
+    console.log('selectPrevious this.state.selectedIndex', this.state.selectedIndex);
     var index = this.state.selectedIndex;
     index = index === 0 ? this.state.options.length - 1 : index - 1;
     this.selectIndex(index);
