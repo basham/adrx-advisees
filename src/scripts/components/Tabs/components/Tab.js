@@ -1,8 +1,11 @@
 /** @jsx React.DOM */
 var React = require('react');
+var classNames = require('classnames');
+
+var Icon = require('../../Icon');
 
 function syncNodeAttributes(node, props) {
-	if (props.selected) {
+	if (props.selected && !props.disabled) {
 		node.setAttribute('tabindex', 0);
 		node.setAttribute('selected', 'selected');
 		if (props.focus) {
@@ -35,19 +38,34 @@ module.exports = React.createClass({
 	},
 
 	render: function () {
-		// Attributes
-		var ariaSelected = this.props.selected ? 'true' : 'false',
-			ariaExpanded = this.props.selected ? 'true' : 'false',
-			ariaControls = this.props.panelId;
-
 		return (
 			<li
 				{...this.props}
 				role="tab"
 				id={this.props.id}
-				aria-selected={ariaSelected}
-				aria-expanded={ariaExpanded}
-				aria-controls={ariaControls}>{this.props.children}</li>
+				aria-selected={this.props.selected}
+				aria-expanded={this.props.expanded}
+				aria-controls={this.props.panelId}>
+				{this.props.children}
+			</li>
+		);
+	},
+	renderIcon: function() {
+		if(!this.props.expandable) {
+			return null;
+		}
+
+		var isSelectedAndExpanded = this.props.selected && this.props.expanded;
+		var cn = classNames({
+			'adv-Tabs-expandedIcon': true,
+			'adv-Tabs-expandedIcon--selected': this.props.selected,
+			'adv-Tabs-expandedIcon--reversed': isSelectedAndExpanded
+		});
+
+		return (
+			<Icon
+				className={cn}
+				name="chevron-bottom"/>
 		);
 	}
 });

@@ -183,6 +183,10 @@ var App = React.createClass({
     }
     //--------------------------------------------------//
 
+    var hasStudentGroups = !!studentGroups.length;
+    var hasPSI = advisee.positiveServiceIndicators_Impact.length || advisee.positiveServiceIndicators_NoImpact.length;
+    var hasNSI = advisee.negativeServiceIndicators_Impact.length || advisee.negativeServiceIndicators_NoImpact.length;
+
     return (
       <li className="adv-AdviseeList-item adv-Advisee">
         <header className="adv-Advisee-header">
@@ -207,9 +211,21 @@ var App = React.createClass({
           className="adv-Tabs"
           selectedIndex={0}>
           <TabList className="adv-Tabs-list">
-            <Tab className="adv-Tabs-tab">{TabLabel_Groups}</Tab>
-            <Tab className="adv-Tabs-tab">{TabLabel_Negative}</Tab>
-            <Tab className="adv-Tabs-tab">{TabLabel_Positive}</Tab>
+            <Tab
+              className="adv-Tabs-tab"
+              disabled={!hasStudentGroups}>
+              {TabLabel_Groups}
+            </Tab>
+            <Tab
+              className="adv-Tabs-tab"
+              disabled={!hasNSI}>
+              {TabLabel_Negative}
+            </Tab>
+            <Tab
+              className="adv-Tabs-tab"
+              disabled={!hasPSI}>
+              {TabLabel_Positive}
+            </Tab>
           </TabList>
           <TabPanel className="adv-Tabs-panel">
             {studentGroups.map(this.renderAdviseeStudentGroup)}

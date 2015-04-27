@@ -1,9 +1,8 @@
 .adv-Tabs {
-  margin: 0 1em;
+  margin: 0 1em 1em;
 
   &-controls {
     align-items: center;
-    box-shadow: 0 unit(1/16, em) 0 0 @color-Border;
     display: flex;
   }
 
@@ -16,17 +15,55 @@
 
   //[role=tab],
   &-tab {
-    cursor: pointer;
-    padding: 0.75em 0.5em;
+    color: @color-Link;
+    cursor: default;
+    padding: 0.5em 0.5em;
 
-    &[aria-selected=true],
+    &[aria-selected=true][aria-expanded=true],
     &--active {
-      box-shadow: inset 0 unit(-4/16, em) 0 0 @color-Interactive--750;
+      box-shadow: 0 unit(4/16, em) 0 0 @color-Interactive--750;
     }
 
     &:focus,
     &:hover {
       background-color: @color-Interactive--100;
+    }
+
+    &[disabled],
+    &--disabled {
+      color: @color-Text--400;
+
+      &:focus,
+      &:hover {
+        background-color: inherit;
+      }
+    }
+  }
+
+  &-expandedIcon {
+    fill: @color-Interactive--400;
+    padding: 0 0 0 0.5em;
+
+    &--reversed {
+      padding: 0 0.5em 0 0;
+      transform: rotate(180deg);
+    }
+
+    &--selected {
+      fill: @color-Interactive--750;
+    }
+  }
+
+  &-icon {
+    fill: @color-Interactive--750;
+    padding: 0.5em;
+
+    &:hover {
+      background-color: @color-Interactive--100;
+    }
+
+    &--reversed {
+      transform: rotate(180deg);
     }
   }
 
