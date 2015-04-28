@@ -1,17 +1,19 @@
 'use strict';
 
 var React = require('react');
+var classNames = require('classnames');
 
 var Icon = React.createClass({
   render: function() {
-    var classNames = [
+    var cn = classNames(
       'adv-Icon',
-      'adv-Icon--' + this.props.name
-    ].join(' ');
+      'adv-Icon--' + this.props.name,
+      this.props.className
+    );
 
-    return this.transferPropsTo(
+    return (
       <svg
-        className={classNames}
+        className={cn}
         dangerouslySetInnerHTML={{__html:
           "<use xlink:href=\"#adv-Icon--" + this.props.name + "\"></use>"
         }}>
