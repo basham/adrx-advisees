@@ -3,11 +3,15 @@
 var React = require('react');
 var Router = require('react-router');
 var Route = Router.Route;
+var DefaultRoute = Router.DefaultRoute;
 
 var App = require('./components/App');
+var GroupView = require('./components/Group.view');
 
 var routes = (
-  <Route handler={App} ignoreScrollBehavior />
+  <Route handler={App} ignoreScrollBehavior>
+    <DefaultRoute name="group.view" handler={GroupView} />
+  </Route>
 );
 
 Router.run(routes, function(Handler, state) {

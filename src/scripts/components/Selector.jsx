@@ -244,7 +244,8 @@ var Selector = React.createClass({
       this.selectIndex(index);
     }.bind(this);
   },
-  handleSubmit: function() {
+  handleSubmit: function(event) {
+    event.preventDefault();
     var option = this.state.options[this.state.selectedIndex];
     if(option.isNewOption) {
       if(this.props.onCreate) {

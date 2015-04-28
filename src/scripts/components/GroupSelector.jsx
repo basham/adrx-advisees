@@ -7,6 +7,9 @@ var Selector = require('./Selector');
 var groupListStore = require('../stores/groups');
 
 var GroupSelector = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.func
+  },
   mixins: [
     Reflux.connect(groupListStore, 'groupList')
   ],
@@ -56,6 +59,7 @@ var GroupSelector = React.createClass({
     this.setState({
       selectedIndex: index
     });
+    this.context.router.transitionTo('group.view', {}, { id: index });
   },
   handleCreate: function(value) {
     var options = this.state.options;
