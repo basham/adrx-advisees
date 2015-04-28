@@ -11,7 +11,7 @@ var TabList = ReactTabs.TabList;
 var TabPanel = ReactTabs.TabPanel;
 
 var actions = require('../actions');
-var adviseesStore = require('../stores/advisees');
+var groupStore = require('../stores/group');
 var sortStore = require('../stores/sort');
 var helpers = require('../helpers');
 
@@ -21,14 +21,19 @@ var GroupSelector = require('./GroupSelector');
 
 var GroupView = React.createClass({
   mixins: [
-    Reflux.listenTo(adviseesStore, 'onStoreChange'),
+    Reflux.listenTo(groupStore, 'onStoreChange'),
     Reflux.listenToMany(actions)
   ],
+  statics: {
+    // Get the group by its id when transitioning to this component.
+    willTransitionTo: function(transition, params, query) {
+      actions.getGroup(query.id);
+    }
+  },
   //
   // Lifecycle methods
   //
   componentDidMount: function() {
-    actions.getData();
     window.addEventListener('resize', this.onWindowResized);
   },
   componentWillUnmount: function() {
@@ -41,7 +46,9 @@ var GroupView = React.createClass({
   },
   getInitialState: function() {
     return {
-      adviseesStore: [],
+      data: {
+        memberList: []
+      },
       isAscending: sortStore.defaultIsAscending,
       isLongerTabLabel: true,
       requesting: true,
@@ -53,7 +60,7 @@ var GroupView = React.createClass({
   // Render methods
   //
   render: function() {
-    var data = this.state.adviseesStore;
+    var data = this.state.data.memberList;
     var content = null;
 
     if(this.state.requesting) {
@@ -71,7 +78,7 @@ var GroupView = React.createClass({
         <h1 className="adv-App-heading">
           Advisees
         </h1>
-        <GroupSelector/>
+        <GroupSelector selectedId={this.props.query.id}/>
         {content}
       </section>
     );
@@ -105,7 +112,7 @@ var GroupView = React.createClass({
       <div>
         <div className="adv-Controls">
           <p className="adv-Controls-count">
-            {count} {helpers.pluralize(count, 'advisee')}
+            {count} {helpers.pluralize(count, 'student')}
           </p>
           <form className="adv-Controls-form">
             <label
@@ -358,7 +365,7 @@ var GroupView = React.createClass({
   //
   onStoreChange: function(data) {
    this.setState({
-     adviseesStore: data,
+     data: data,
      requesting: false
    });
   },

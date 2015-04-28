@@ -1,23 +1,32 @@
 {
-  "groupList": [
-    {
-      "id": 0,
-      "name": "Advisee",
+  "defaultGroupId": "0",
+  "groupMap": {
+    "0": {
+      "id": "0",
+      "name": "Advisees",
       "membershipList": [
         "7496827183",
-        "4786766189"
+        "4786766189",
+        "3970471366",
+        "7994177191",
+        "3478623139",
+        "0519535902",
+        "3594629652",
+        "5474916620",
+        "8795173306",
+        "8242035571"
       ]
     },
-    {
-      "id": 1,
+    "1": {
+      "id": "1",
       "name": "Probation students",
       "membershipList": [
         "4786766189"
       ]
     }
-  ],
-  "memberList": [
-    {
+  },
+  "memberMap": {
+    "7496827183": {
       "emplid": "7496827183",
       "studentName": "Blanda, Angelina Fannie",
       "institution": "IUBLA",
@@ -136,7 +145,7 @@
         }
       ]
     },
-    {
+    "4786766189": {
       "emplid": "4786766189",
       "studentName": "Pfannerstill, Meggie Carter",
       "institution": "IUBLA",
@@ -161,7 +170,7 @@
       "negativeSisServiceIndicatorList": [],
       "positiveSisServiceIndicatorList": []
     },
-    {
+    "3970471366": {
       "emplid": "3970471366",
       "studentName": "Wolff, Ewald Jerad",
       "institution": "IUBLA",
@@ -282,7 +291,7 @@
         }
       ]
     },
-    {
+    "7994177191": {
       "emplid": "7994177191",
       "studentName": "Tillman, Zoey Dolores",
       "institution": "IUBLA",
@@ -360,7 +369,7 @@
         }
       ]
     },
-    {
+    "3478623139": {
       "emplid": "3478623139",
       "studentName": "Gleichner, Zander Zane",
       "institution": "IUBLA",
@@ -382,7 +391,7 @@
       "negativeSisServiceIndicatorList": [],
       "positiveSisServiceIndicatorList": []
     },
-    {
+    "0519535902": {
       "emplid": "0519535902",
       "studentName": "Nienow, Madaline Jadon",
       "institution": "IUBLA",
@@ -409,7 +418,7 @@
       "negativeSisServiceIndicatorList": [],
       "positiveSisServiceIndicatorList": []
     },
-    {
+    "3594629652": {
       "emplid": "3594629652",
       "studentName": "Kohler, Stacey Phyllis",
       "institution": "IUBLA",
@@ -435,7 +444,7 @@
       "negativeSisServiceIndicatorList": [],
       "positiveSisServiceIndicatorList": []
     },
-    {
+    "5474916620": {
       "emplid": "5474916620",
       "studentName": "Funk, Clemmie Mercedes",
       "institution": "IUBLA",
@@ -457,7 +466,7 @@
       "iuGpa": "3.41",
       "flagsStatus": false
     },
-    {
+    "8795173306": {
       "emplid": "8795173306",
       "studentName": "Hermann, Georgianna Francesco",
       "institution": "IUBLA",
@@ -479,7 +488,7 @@
       "iuGpa": "3.26",
       "flagsStatus": true,
     },
-    {
+    "8242035571": {
       "emplid": "8242035571",
       "studentName": "Schuster, Catharine Lizeth",
       "institution": "IUBLA",
@@ -501,6 +510,6 @@
       "iuGpa": "3.222",
       "flagsStatus": true
     }
-  ],
+  },
   "adviseeFlagLink": "https://es-ps-env1.iu.edu/login/login?instance=PS1DEV&cassvc=PS8&url=https://es-ps-env1.iu.edu/psp/PS1DEV/IU/HRMS/c/SA_LEARNING_MANAGEMENT.IU_SPF_FLAG.GBL?Page=IU_SPF_FLAGS&Action=A&ExactKeys=Y&TargetFrameName=None"
 }

@@ -4,36 +4,25 @@ var React = require('react');
 var Reflux = require('reflux');
 
 var Selector = require('./Selector');
-var groupListStore = require('../stores/groups');
+var groupListStore = require('../stores/groupList');
 
 var GroupSelector = React.createClass({
   contextTypes: {
     router: React.PropTypes.func
   },
   mixins: [
-    Reflux.connect(groupListStore, 'groupList')
+    Reflux.listenTo(groupListStore, 'onStoreChange'),
   ],
+  propTypes: {
+    selectedId: React.PropTypes.string,
+  },
   //
   // Lifecycle methods
   //
   getInitialState: function() {
     return {
       selectedIndex: 0,
-      options: [
-        {
-          label: 'One'
-        },
-        {
-          label: 'Advisee',
-          classNames: 'adv-Selector-systemOption'
-        },
-        {
-          label: 'Probation'
-        },
-        {
-          label: 'Admits'
-        }
-      ]
+      options: []
     };
   },
   //
@@ -75,6 +64,27 @@ var GroupSelector = React.createClass({
     this.setState({
       options: options,
       selectedIndex: index
+    });
+  },
+  //
+  // Store methods
+  //
+  onStoreChange: function(data) {
+    var selectedId = this.props.selectedId ? this.props.selectedId : data.defaultId;
+    var selectedIndex = this.state.selectedIndex;
+    // Generate an array of options, appropriate for the Selector component.
+    var options = data.items.map(function(group, index) {
+      if(selectedId == group.id) {
+        selectedIndex = index;
+      }
+      return {
+        label: group.name
+      };
+    });
+    // Set state.
+    this.setState({
+      options: options,
+      selectedIndex: selectedIndex
     });
   }
 });

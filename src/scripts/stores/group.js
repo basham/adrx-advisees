@@ -5,29 +5,48 @@ var request = require('superagent');
 
 var actions = require('../actions');
 var helpers = require('../helpers');
+var dataStore = require('./data');
 var sortStore = require('./sort');
 
-var adviseesStore = Reflux.createStore({
+var actionQueue = [];
+
+var groupStore = Reflux.createStore({
   listenables: actions,
+  init: function() {
+    this.listenTo(dataStore, this.onStoreChange);
+  },
+  //
+  // Store methods
+  //
+  onStoreChange: function(status) {
+    // Execute and remove all queued actions.
+    while(actionQueue.length) {
+      var action = actionQueue.pop();
+      action();
+    }
+  },
   //
   // Action methods
   //
-  onGetData: function() {
-    ///*
-    setTimeout(function() {
-      this.handleSuccess(require('./data.json'));
-    }.bind(this), 0);
-    return;
-    //*/
-    var params = helpers.getQueryParams();
+  onGetGroup: function(id) {
+    var data = dataStore.data;
+    // If there's no data, then queue the action to be called later,
+    // once there's data.
+    if(!data) {
+      actionQueue.push(function() {
+        this.onGetGroup(id);
+      }.bind(this));
+      return;
+    }
 
-    request
-      .get(helpers.api('myAdvisees_JSON'))
-      .query({
-        sr: params.sr,
-        backdoorId: params.backdoorId
-      })
-      .end(helpers.requestCallback(this.handleSuccess, this.handleFail));
+    id = id ? id : data.defaultGroupId;
+    var hasGroup = !!data.groupMap[id];
+    if(!hasGroup) {
+      console.log('ERROR: Group not found (id:', id + ')');
+      return;
+    }
+
+    this.handleSuccess(data, id);
   },
   onSortBy: function(key, isAscending) {
     this.sortByKey = key;
@@ -37,8 +56,8 @@ var adviseesStore = Reflux.createStore({
   //
   // Handler methods
   //
-  handleSuccess: function(data) {
-    var adviseeList = data.memberList;
+  handleSuccess: function(data, groupId) {
+    //var adviseeList = data.memberList;
     var adviseeFlagLink = data.adviseeFlagLink;
 
     this.data = data;
@@ -51,12 +70,15 @@ var adviseesStore = Reflux.createStore({
       sr: params.sr
     });
 
-    var output = adviseeList
-      .map(function(advisee) {
-        advisee.hours = helpers.round(advisee.hours, 1);
-        advisee.programGpa = helpers.round(advisee.programGpa, 2);
-        advisee.iuGpa = helpers.round(advisee.iuGpa, 2);
-        return advisee;
+    var group = data.groupMap[groupId];
+    group.memberList = group.membershipList
+    //var output = adviseeList
+      .map(function(id) {
+        var member = data.memberMap[id];
+        member.hours = helpers.round(member.hours, 1);
+        member.programGpa = helpers.round(member.programGpa, 2);
+        member.iuGpa = helpers.round(member.iuGpa, 2);
+        return member;
       })
       .sort(helpers.sortBy(this.sortByKey, this.isAscending, sortStore.defaultSortByKey))
       .map(function(advisee) {
@@ -242,7 +264,7 @@ var adviseesStore = Reflux.createStore({
         };
       });
 
-    this.trigger(output);
+    this.trigger(group);
   },
   handleFail: function() {
     var message = (
@@ -255,4 +277,4 @@ var adviseesStore = Reflux.createStore({
   }
 });
 
-module.exports = adviseesStore;
+module.exports = groupStore;

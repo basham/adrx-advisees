@@ -60,7 +60,11 @@ var Selector = React.createClass({
     });
     var buttonLabel = ['Select', this.props.optionName].join(' ');
     var selectedOption = this.props.options[this.props.selectedIndex];
-
+    if(!selectedOption) {
+      selectedOption = {
+        label: ''
+      }
+    }
     var selectedOptionClassNames = classNames({
       'adv-Selector-buttonLabel': true
     }, selectedOption.classNames);

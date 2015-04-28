@@ -15,7 +15,12 @@ var routes = (
 );
 
 Router.run(routes, function(Handler, state) {
-  React.render(<Handler params={state.params} />, document.getElementById('adrx-advisees-app'));
+  React.render(
+    <Handler
+      params={state.params}
+      query={state.query} />,
+    document.getElementById('adrx-advisees-app')
+  );
 });
 
 // Eliminate 300ms click delay on mobile.
