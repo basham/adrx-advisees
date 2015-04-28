@@ -16,6 +16,7 @@ var Selector = React.createClass({
     disabled: React.PropTypes.bool,
     maxLength: React.PropTypes.number,
     onChange: React.PropTypes.func,
+    onCreate: React.PropTypes.func,
     options: React.PropTypes.array,
     optionName: React.PropTypes.string,
     selectedIndex: React.PropTypes.number
@@ -248,9 +249,16 @@ var Selector = React.createClass({
   },
   handleSubmit: function() {
     var option = this.state.options[this.state.selectedIndex];
-    var index = this.state.options.indexOf(option);
-    if(this.props.onChange) {
-      this.props.onChange(option, index);
+    if(option.isNewOption) {
+      if(this.props.onCreate) {
+        this.props.onCreate(option.value);
+      }
+    }
+    else {
+      if(this.props.onChange) {
+        var index = this.props.options.indexOf(option);
+        this.props.onChange(index);
+      }
     }
     this.close();
   },

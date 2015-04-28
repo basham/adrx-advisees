@@ -42,6 +42,7 @@ var GroupSelector = React.createClass({
         <Selector
           maxLength={20}
           onChange={this.handleChange}
+          onCreate={this.handleCreate}
           optionName="group"
           options={this.state.options}
           selectedIndex={this.state.selectedIndex}/>
@@ -51,15 +52,22 @@ var GroupSelector = React.createClass({
   //
   // Handler methods
   //
-  handleChange: function(option) {
+  handleChange: function(index) {
+    this.setState({
+      selectedIndex: index
+    });
+  },
+  handleCreate: function(value) {
     var options = this.state.options;
-    if (option.isNewOption) {
-      option.isNewOption = false;
-      option.label = option.value;
-      options.push(option);
-
-    }
-    var index = this.state.options.indexOf(option);
+    // Create new option.
+    var newOption = {
+      label: value
+    };
+    // Add the new option to the option list.
+    options.push(newOption);
+    // Get the index of the new option.
+    var index = options.indexOf(newOption);
+    // Update state and select the new option.
     this.setState({
       options: options,
       selectedIndex: index
