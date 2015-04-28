@@ -61,12 +61,7 @@ var Selector = React.createClass({
       'adv-Selector-button--open': this.state.isOpen
     });
     var buttonLabel = ['Select', this.props.optionName].join(' ');
-
-console.log('render options', this.props.options);
-console.log('render selectedIndex', this.props.selectedIndex);
-
     var selectedOption = this.props.options[this.props.selectedIndex];
-//    var selectedOption = this.state.options[this.state.selectedIndex];
 
     var selectedOptionClassNames = classNames({
       'adv-Selector-buttonLabel': true
@@ -158,7 +153,6 @@ console.log('render selectedIndex', this.props.selectedIndex);
     );
   },
   renderCreateOption: function(value) {
-    console.log('renderCreateOption value', value);
     return (
       <div className="adv-Selector-createOption">
         Create{' '}
@@ -203,7 +197,7 @@ console.log('render selectedIndex', this.props.selectedIndex);
     var hasInput = !!inputValue.trim().length;
     var hasMatch = false;
 
-    var options2 = this.props.options.filter(function(option) {
+    var options = this.props.options.filter(function(option) {
       var a = option.label.toLowerCase().trim();
       var b = inputValue.toLowerCase().trim();
       if(!hasMatch) {
@@ -213,23 +207,19 @@ console.log('render selectedIndex', this.props.selectedIndex);
     }.bind(this));
 
     if(hasInput && !hasMatch) {
-      options2.push({
+      options.push({
         isNewOption: true,
         label: this.renderCreateOption(inputValue),
         value: inputValue
       });
     }
 
-    var indexKdm = 0;
-console.log('handleInputChange inputValue ', inputValue);
-console.log('handleInputChange options2 ', options2);
-console.log('handleInputChange selectedIndex ', indexKdm);
+    var index = 0;
     this.setState({
       inputValue: inputValue,
-      options: options2,
-      selectedIndex: indexKdm
+      options: options,
+      selectedIndex: index
     });
-console.log('handleInputChange options2BBB ', options2);
   },
   handleInputKeyDown: function(event) {
     switch(event.key) {
@@ -252,7 +242,6 @@ console.log('handleInputChange options2BBB ', options2);
     }
   },
   handleOptionMouseOver: function(index) {
-    console.log('handleOptionMouseOver index', index);
     return function() {
       this.selectIndex(index);
     }.bind(this);
@@ -260,11 +249,6 @@ console.log('handleInputChange options2BBB ', options2);
   handleSubmit: function() {
     var option = this.state.options[this.state.selectedIndex];
     var index = this.state.options.indexOf(option);
-console.log('handleSubmit selectedIndex', this.state.selectedIndex);
-console.log('handleSubmit state.options', this.state.options);
-console.log('handleSubmit props.options', this.props.options);
-console.log('handleSubmit option', option);
-console.log('handleSubmit index', index);
     if(this.props.onChange) {
       this.props.onChange(option, index);
     }
@@ -292,13 +276,11 @@ console.log('handleSubmit index', index);
     });
   },
   selectNext: function() {
-    console.log('selectNext this.state.selectedIndex', this.state.selectedIndex);
     var index = this.state.selectedIndex;
     index = index + 1 >= this.state.options.length ? 0 : index + 1;
     this.selectIndex(index);
   },
   selectPrevious: function() {
-    console.log('selectPrevious this.state.selectedIndex', this.state.selectedIndex);
     var index = this.state.selectedIndex;
     index = index === 0 ? this.state.options.length - 1 : index - 1;
     this.selectIndex(index);

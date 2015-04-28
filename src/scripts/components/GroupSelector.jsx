@@ -52,18 +52,14 @@ var GroupSelector = React.createClass({
   // Handler methods
   //
   handleChange: function(option) {
-console.log('handleChange index', index);
-  var options = this.state.options;
-  if (option.isNewOption) {
-    option.isNewOption = false;
-    option.label = option.value;
-    options.push(option);
+    var options = this.state.options;
+    if (option.isNewOption) {
+      option.isNewOption = false;
+      option.label = option.value;
+      options.push(option);
 
-  }
-  var index = this.state.options.indexOf(option);
-console.log('GroupSelector.handleChange options', options);
-console.log('GroupSelector.handleChange index', index);
-
+    }
+    var index = this.state.options.indexOf(option);
     this.setState({
       options: options,
       selectedIndex: index
