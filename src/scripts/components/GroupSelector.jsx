@@ -19,6 +19,11 @@ var GroupSelector = React.createClass({
   //
   // Lifecycle methods
   //
+  componentDidMount: function() {
+    if(groupListStore.data) {
+      this.onStoreChange(groupListStore.data);
+    }
+  },
   getInitialState: function() {
     return {
       selectedIndex: 0,
@@ -48,7 +53,7 @@ var GroupSelector = React.createClass({
     this.setState({
       selectedIndex: index
     });
-    this.context.router.transitionTo('group.view', {}, { id: index });
+    this.context.router.transitionTo('group.view', { id: index });
   },
   handleCreate: function(value) {
     var options = this.state.options;

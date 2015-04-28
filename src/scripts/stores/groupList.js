@@ -15,10 +15,11 @@ var groupListStore = Reflux.createStore({
     var groupList = Object.keys(data.groupMap).map(function(key) {
       return data.groupMap[key];
     });
-    this.trigger({
+    this.data = {
       defaultId: data.defaultGroupId,
       items: groupList
-    });
+    };
+    this.trigger(this.data);
   }
 });
 

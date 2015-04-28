@@ -26,8 +26,8 @@ var GroupView = React.createClass({
   ],
   statics: {
     // Get the group by its id when transitioning to this component.
-    willTransitionTo: function(transition, params, query) {
-      actions.getGroup(query.id);
+    willTransitionTo: function(transition, params) {
+      actions.getGroup(params.id);
     }
   },
   //
@@ -78,7 +78,7 @@ var GroupView = React.createClass({
         <h1 className="adv-App-heading">
           Advisees
         </h1>
-        <GroupSelector selectedId={this.props.query.id}/>
+        <GroupSelector selectedId={this.props.params.id}/>
         {content}
       </section>
     );
