@@ -24,9 +24,6 @@ var Selector = React.createClass({
   //
   // Lifecycle methods
   //
-  componentDidMount: function() {
-    this.open();
-  },
   componentWillMount: function() {
     document.addEventListener('click', this.handleBodyClick);
     // Set unique ids for ARIA attributes.
