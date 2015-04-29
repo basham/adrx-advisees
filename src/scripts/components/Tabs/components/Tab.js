@@ -41,13 +41,13 @@ module.exports = React.createClass({
   render: function() {
     return (
       <li
-        className={this.props.className}
-        role="tab"
-        id={this.props.id}
+        aria-controls={this.props.panelId}
         aria-disabled={this.props.disabled}
-        aria-selected={!!this.props.selected}
         aria-expanded={!!this.props.expanded && !!this.props.selected}
-        aria-controls={this.props.panelId}>
+        aria-selected={!!this.props.selected}
+        className={this.props.className}
+        id={this.props.id}
+        role="tab">
         {this.props.children}
       </li>
     );

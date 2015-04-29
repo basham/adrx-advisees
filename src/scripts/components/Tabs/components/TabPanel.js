@@ -21,11 +21,13 @@ module.exports = React.createClass({
     };
     return (
       <div
-        className={this.props.className}
-        role="tabpanel"
-        id={this.props.id}
         aria-labeledby={this.props.tabId}
-        style={style}>{this.props.children}</div>
+        className={this.props.className}
+        id={this.props.id}
+        role="tabpanel"
+        style={style}>
+        {this.props.children}
+      </div>
     );
   }
 });
