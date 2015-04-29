@@ -40,7 +40,7 @@ module.exports = React.createClass({
 	render: function () {
 		return (
 			<li
-				{...this.props}
+				className={this.props.className}
 				role="tab"
 				id={this.props.id}
 				aria-disabled={this.props.disabled}
