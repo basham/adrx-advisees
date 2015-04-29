@@ -14,30 +14,33 @@ module.exports = React.createClass({
 	},
 
 	render: function () {
-		var state = this.state;
-		var cn = classNames({
-			'adv-Tabs-icon': true,
-			'adv-Tabs-icon--reversed': this.props.showPanel
-		});
-
 		return (
 			<div className="adv-Tabs-controls">
 				<ul
 					className={this.props.className}
 					role="tablist">
-					{React.Children.map(this.props.children, this.renderChildren)}
+					{React.Children.map(this.props.children, this.renderChild)}
 				</ul>
-				<Icon
-					className={cn}
-					name="chevron-bottom"
-					onClick={this.handleClick}/>
+				{this.renderIcon()}
 			</div>
 		);
 	},
-	renderChildren: function(child) {
+	renderChild: function(child) {
 		child.props.expandable = true;
 		child.props.expanded = this.props.showPanel;
 		return child;
+	},
+	renderIcon: function() {
+		var cn = classNames({
+			'adv-Tabs-icon': true,
+			'adv-Tabs-icon--reversed': this.props.showPanel
+		});
+		return (
+			<Icon
+				className={cn}
+				name="chevron-bottom"
+				onClick={this.handleClick}/>
+		);
 	},
 
 	//KDM 20150403 Passing parm back to Tabs parent component
