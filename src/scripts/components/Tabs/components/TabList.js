@@ -23,7 +23,7 @@ module.exports = React.createClass({
 		return (
 			<div className="adv-Tabs-controls">
 				<ul
-					{...this.props}
+					className={this.props.className}
 					role="tablist">
 					{React.Children.map(this.props.children, this.renderChildren)}
 				</ul>
