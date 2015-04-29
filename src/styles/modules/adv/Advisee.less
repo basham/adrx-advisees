@@ -11,6 +11,9 @@
     display: flex;
     flex: 1;
     flex-wrap: wrap;
+    &--fixed {
+      max-width: 40em;
+    }
   }
 
   &-heading {
@@ -82,6 +85,15 @@
 
     &::after {
       content: ': ';
+    }
+  }
+
+  &-controls {
+    &-remove {
+      color: @color-Link;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 }

@@ -6,7 +6,8 @@ var actions = Reflux.createActions([
   'getData',
   'getDataFailed',
   'getGroup',
-  'sortBy'
+  'sortBy',
+  'removeMember'
 ]);
 
 module.exports = actions;

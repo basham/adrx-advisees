@@ -14,6 +14,9 @@ var groupStore = Reflux.createStore({
   listenables: actions,
   init: function() {
     this.listenTo(dataStore, this.onStoreChange);
+    this.group = {
+      membershipList: []
+    };
   },
   //
   // Store methods
@@ -53,11 +56,17 @@ var groupStore = Reflux.createStore({
     this.isAscending = isAscending;
     this.handleSuccess(this.data);
   },
+  onRemoveMember: function(index) {
+    var selectedGroup = this.group;
+    selectedGroup.membershipList.splice(index, 1);
+    selectedGroup.membershipStudentList.splice(index, 1);
+    this.trigger(this.group);
+  },
   //
   // Handler methods
   //
   handleSuccess: function(data, groupId) {
-    //var adviseeList = data.memberList;
+    //var adviseeList = data.membershipStudentList;
     var adviseeFlagLink = data.adviseeFlagLink;
 
     this.data = data;
@@ -71,7 +80,7 @@ var groupStore = Reflux.createStore({
     });
 
     var group = data.groupMap[groupId];
-    group.memberList = group.membershipList
+    group.membershipStudentList = group.membershipList
     //var output = adviseeList
       .map(function(id) {
         var member = data.memberMap[id];
@@ -146,7 +155,6 @@ var groupStore = Reflux.createStore({
             .map(function(item) {
               item.activeStatus = !!item.effectiveStatusBoolean ? 'Active as of' : 'Inactive as of';
               item.effectiveDate = !!item.effectiveDateFormatted ? item.effectiveDateFormatted : null;
-              //console.log('item', item);
               return item;
             })
             .sort(helpers.sortBy('effectiveStatusBoolean', false, 'stdntGroup'));
@@ -264,6 +272,7 @@ var groupStore = Reflux.createStore({
         };
       });
 
+    this.group = group;
     this.trigger(group);
   },
   handleFail: function() {

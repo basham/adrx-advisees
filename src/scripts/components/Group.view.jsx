@@ -2,7 +2,9 @@
 
 var React = require('react');
 var Reflux = require('reflux');
+var Router = require('react-router');
 var classNames = require('classnames');
+var Link = Router.Link;
 
 var ReactTabs = require('./Tabs');
 var Tab = ReactTabs.Tab;
@@ -47,7 +49,7 @@ var GroupView = React.createClass({
   getInitialState: function() {
     return {
       data: {
-        memberList: []
+        membershipStudentList: []
       },
       isAscending: sortStore.defaultIsAscending,
       isLongerTabLabel: true,
@@ -60,7 +62,7 @@ var GroupView = React.createClass({
   // Render methods
   //
   render: function() {
-    var data = this.state.data.memberList;
+    var data = this.state.data.membershipStudentList;
     var content = null;
 
     if(this.state.requesting) {
@@ -76,9 +78,10 @@ var GroupView = React.createClass({
     return (
       <section className="adv-App">
         <h1 className="adv-App-heading">
-          Advisees
+          Caseload
         </h1>
         <GroupSelector selectedId={this.props.params.id}/>
+        <Link to="group.membership" className="qn-Header-headingLink" params={{ id: this.props.params.id}}>Edit membership</Link>
         {content}
       </section>
     );
