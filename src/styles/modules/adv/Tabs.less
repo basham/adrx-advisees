@@ -6,32 +6,27 @@
     display: flex;
   }
 
-  //[role=tablist],
-  &-list {
+  [role=tablist] {
     display: flex;
     list-style-type: none;
     padding: 0;
   }
 
-  //[role=tab],
-  &-tab {
+  [role=tab] {
     color: @color-Link;
     cursor: default;
     padding: 0.5em 0.5em;
-
-    &[aria-selected=true][aria-expanded=true],
-    &--active {
-      box-shadow: 0 unit(4/16, em) 0 0 @color-Interactive--750;
-    }
 
     &:focus,
     &:hover {
       background-color: @color-Interactive--100;
     }
 
-    &[aria-disabled=true],
-    &[disabled],
-    &--disabled {
+    &[aria-selected=true][aria-expanded=true] {
+      box-shadow: 0 unit(4/16, em) 0 0 @color-Interactive--750;
+    }
+
+    &[aria-disabled=true] {
       color: @color-Text--400;
 
       &:focus,
@@ -68,8 +63,7 @@
     }
   }
 
-  //[role=tabpanel],
-  &-panel {
+  [role=tabpanel] {
     padding: 0.5em;
   }
 }

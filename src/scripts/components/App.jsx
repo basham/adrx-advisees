@@ -210,31 +210,25 @@ var App = React.createClass({
         <Tabs
           className="adv-Tabs"
           selectedIndex={0}>
-          <TabList className="adv-Tabs-list">
-            <Tab
-              className="adv-Tabs-tab"
-              disabled={!hasStudentGroups}>
+          <TabList>
+            <Tab disabled={!hasStudentGroups}>
               {TabLabel_Groups}
             </Tab>
-            <Tab
-              className="adv-Tabs-tab"
-              disabled={!hasNSI}>
+            <Tab disabled={!hasNSI}>
               {TabLabel_Negative}
             </Tab>
-            <Tab
-              className="adv-Tabs-tab"
-              disabled={!hasPSI}>
+            <Tab disabled={!hasPSI}>
               {TabLabel_Positive}
             </Tab>
           </TabList>
-          <TabPanel className="adv-Tabs-panel">
+          <TabPanel>
             {studentGroups.map(this.renderAdviseeStudentGroup)}
           </TabPanel>
-          <TabPanel className="adv-Tabs-panel">
+          <TabPanel>
             {this.renderAdviseeServiceIndicatorSection(advisee.negativeServiceIndicators_Impact, 'Impact')}
             {this.renderAdviseeServiceIndicatorSection(advisee.negativeServiceIndicators_NoImpact, 'No impact')}
           </TabPanel>
-          <TabPanel className="adv-Tabs-panel">
+          <TabPanel>
             {this.renderAdviseeServiceIndicatorSection(advisee.positiveServiceIndicators_Impact, 'Impact')}
             {this.renderAdviseeServiceIndicatorSection(advisee.positiveServiceIndicators_NoImpact, 'No impact')}
           </TabPanel>
