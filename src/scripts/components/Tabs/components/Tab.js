@@ -43,8 +43,8 @@ module.exports = React.createClass({
 				{...this.props}
 				role="tab"
 				id={this.props.id}
-				aria-selected={this.props.selected}
-				aria-expanded={this.props.expanded}
+				aria-selected={!!this.props.selected}
+				aria-expanded={!!this.props.expanded && !!this.props.selected}
 				aria-controls={this.props.panelId}>
 				{this.props.children}
 			</li>
