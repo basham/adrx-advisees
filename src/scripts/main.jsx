@@ -6,12 +6,10 @@ var Route = Router.Route;
 var DefaultRoute = Router.DefaultRoute;
 
 var App = require('./components/App');
-var Group = require('./components/Group');
 var GroupView = require('./components/Group.view');
 
 var routes = (
   <Route handler={App} ignoreScrollBehavior>
-    <DefaultRoute handler={Group} />
     <Route name="group.view" handler={GroupView} path=":id" />
   </Route>
 );

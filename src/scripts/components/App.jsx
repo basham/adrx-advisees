@@ -5,8 +5,15 @@ var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 
 var actions = require('../actions');
+var dataStore = require('../stores/data');
 
 var App = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.func
+  },
+  mixins: [
+    Reflux.listenTo(dataStore, 'onStoreChange')
+  ],
   //
   // Lifecycle methods
   //
@@ -20,6 +27,13 @@ var App = React.createClass({
     return (
       <RouteHandler {...this.props} />
     );
+  },
+  //
+  // Store methods
+  //
+  onStoreChange: function(data) {
+    var id = data.defaultGroupId;
+    this.context.router.transitionTo('group.view', { id: id });
   }
 });
 
