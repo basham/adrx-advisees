@@ -16,16 +16,15 @@ module.exports = React.createClass({
   // Render methods
   //
   render: function() {
-    // Attributes
-    var style = {display: this.props.selected && this.props.show ? '' : 'none'},
-      ariaLabeledBy = this.props.tabId;
-
+    var style = {
+      display: this.props.selected && this.props.show ? '' : 'none'
+    };
     return (
       <div
-        {...this.props}
+        className={this.props.className}
         role="tabpanel"
         id={this.props.id}
-        aria-labeledby={ariaLabeledBy}
+        aria-labeledby={this.props.tabId}
         style={style}>{this.props.children}</div>
     );
   }
