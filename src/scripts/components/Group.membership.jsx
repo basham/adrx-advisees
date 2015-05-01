@@ -55,7 +55,8 @@ var GroupMembership = React.createClass({
       isLongerTabLabel: true,
       requesting: true,
       sortByKey: sortStore.defaultSortByKey,
-      windowInnerWidth_borderForTabLabelChange: 700
+      windowInnerWidth_borderForTabLabelChange: 700,
+      inputValue: ''
     }
   },
   //
@@ -82,6 +83,9 @@ var GroupMembership = React.createClass({
         </h1>
         <Link to="group.edit" className="adv-Header-headingLink" params={{ id: this.props.params.id}}>Edit group</Link>
         <Link to="group.view" className="adv-Header-headingLink" params={{ id: this.props.params.id}}>Return to Caseload</Link>
+        <div>
+          {this.renderAddMember()}
+        </div>
         {content}
       </section>
     );
@@ -109,6 +113,27 @@ var GroupMembership = React.createClass({
         type="error"/>
     );
   },
+  renderAddMember: function() {
+    return (
+      <div className="adv-Advisee-nameGroup adv-Advisee-nameGroup--fixed">
+        <h2 className="adv-Advisee-heading">
+          Student
+        </h2>
+        <p className="adv-Advisee-id">
+          <input
+            className="adv-Input"
+            onChange={this.handleTitleInputChange}
+            maxLength="10"
+            type="text"/>
+          <button
+            className="qn-ActionBar-item qn-Button"
+            onClick={this.handleAddMemberButtonClick}>
+            Add
+          </button>
+        </p>
+      </div>
+    );
+  },
   renderList: function(data) {
     var count = data.length;
     return (
@@ -117,13 +142,6 @@ var GroupMembership = React.createClass({
           <p className="adv-Controls-count">
             {count} {helpers.pluralize(count, 'student')}
           </p>
-          <form className="adv-Controls-form">
-            <label
-              className="adv-Controls-label"
-              htmlFor="sortByInput">
-              Sort by
-            </label>
-          </form>
         </div>
         <ol className="adv-AdviseeList">
           {data.map(this.renderAdvisee)}
@@ -159,6 +177,16 @@ var GroupMembership = React.createClass({
   handleRemoveButtonClick: function(event) {
     var index = event.target.getAttribute("data-index");
     actions.removeMember(index);
+  },
+  handleTitleInputChange: function(e) {
+    this.setState({
+      memberId: e.target.value
+    });
+  },
+  handleAddMemberButtonClick: function(event) {
+    var value = event.target.value;
+console.log('---add member', this.state.memberId);
+    actions.addMember(value);
   },
   //
   // Store methods

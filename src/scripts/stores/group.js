@@ -61,6 +61,26 @@ var groupStore = Reflux.createStore({
     selectedGroup.membershipList.splice(index, 1);
     selectedGroup.membershipStudentList.splice(index, 1);
     this.trigger(this.group);
+
+    var query = this.getQueryParams();
+    query.action = 'removeMember';
+    query.groupId = {selectedGroup.id};
+
+
+    var success = function(json) {
+      this.data = json;
+      actions.removeMemberSucceeded();
+      this.output();
+    }.bind(this);
+
+    var fail = function() {
+      actions.removeMemberFailed('Could not remove member. Please try again.');
+    };
+
+    var req = request
+      .post(this.api('removeMember'))
+      .query(query)
+      .end(requestCallback(success, fail));
   },
   //
   // Handler methods
