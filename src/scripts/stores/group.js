@@ -33,6 +33,9 @@ var groupStore = Reflux.createStore({
   //
   onGetGroup: function(id) {
     var data = dataStore.data;
+
+console.log(id, data);
+
     // If there's no data, then queue the action to be called later,
     // once there's data.
     if(!data) {
@@ -64,7 +67,7 @@ var groupStore = Reflux.createStore({
 
     var query = this.getQueryParams();
     query.action = 'removeMember';
-    query.groupId = {selectedGroup.id};
+    query.groupId = selectedGroup.id;
 
 
     var success = function(json) {

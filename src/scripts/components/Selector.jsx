@@ -144,6 +144,7 @@ var Selector = React.createClass({
       <li
         className={cn}
         id={isSelected ? this.state.selectedOptionId : null}
+        data-id={option.id}
         onClick={this.handleSubmit}
         onMouseOver={this.handleOptionMouseOver(index)}
         role="option">
@@ -250,6 +251,7 @@ var Selector = React.createClass({
   },
   handleSubmit: function(event) {
     event.preventDefault();
+console.log('---', this.state.selectedIndex, this.state.options);
     var option = this.state.options[this.state.selectedIndex];
     if(option.isNewOption) {
       if(this.props.onCreate) {
@@ -259,7 +261,8 @@ var Selector = React.createClass({
     else {
       if(this.props.onChange) {
         var index = this.props.options.indexOf(option);
-        this.props.onChange(index);
+console.log('%%%', index, option.id, this.props.options);
+        this.props.onChange(index, option.id);
       }
     }
     this.close();

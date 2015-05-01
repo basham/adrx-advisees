@@ -49,11 +49,11 @@ var GroupSelector = React.createClass({
   //
   // Handler methods
   //
-  handleChange: function(index) {
+  handleChange: function(index, id) {
     this.setState({
       selectedIndex: index
     });
-    this.context.router.transitionTo('group.view', { id: index });
+    this.context.router.transitionTo('group.view', { id: id });
   },
   handleCreate: function(value) {
     var options = this.state.options;
@@ -83,7 +83,8 @@ var GroupSelector = React.createClass({
         selectedIndex = index;
       }
       return {
-        label: group.name
+        label: group.name,
+        id: group.id
       };
     });
     // Set state.
