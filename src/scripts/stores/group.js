@@ -5,12 +5,32 @@ var request = require('superagent');
 
 var actions = require('../actions');
 var helpers = require('../helpers');
+var mixins = require('./mixins');
 var dataStore = require('./data');
 var sortStore = require('./sort');
 
 var actionQueue = [];
 
+function requestCallback(succeedCallback, failureCallback) {
+  return function(err, res) {
+    if(err || !res.ok) {
+      if(!!failureCallback) {
+        failureCallback(err, res);
+      }
+      return;
+    }
+    if(!!succeedCallback) {
+      var value = res.text;
+      if(res.type == 'application/json') {
+        value = JSON.parse(value);
+      }
+      succeedCallback(value);
+    }
+  }
+}
+
 var groupStore = Reflux.createStore({
+  mixins: [mixins],
   listenables: actions,
   init: function() {
     this.listenTo(dataStore, this.onStoreChange);
@@ -33,8 +53,6 @@ var groupStore = Reflux.createStore({
   //
   onGetGroup: function(id) {
     var data = dataStore.data;
-
-console.log(id, data);
 
     // If there's no data, then queue the action to be called later,
     // once there's data.
@@ -61,13 +79,14 @@ console.log(id, data);
   },
   onRemoveMember: function(index) {
     var selectedGroup = this.group;
-    selectedGroup.membershipList.splice(index, 1);
+    var member = selectedGroup.membershipList.splice(index, 1);
     selectedGroup.membershipStudentList.splice(index, 1);
     this.trigger(this.group);
 
     var query = this.getQueryParams();
     query.action = 'removeMember';
     query.groupId = selectedGroup.id;
+    query.emplid = member;
 
 
     var success = function(json) {
@@ -81,7 +100,7 @@ console.log(id, data);
     };
 
     var req = request
-      .post(this.api('removeMember'))
+      .post(this.api('handleAdHocGroup'))
       .query(query)
       .end(requestCallback(success, fail));
   },
