@@ -1,11 +1,6 @@
 .adv-Tabs {
   margin: 0 1em 1em;
 
-  &-controls {
-    align-items: center;
-    display: flex;
-  }
-
   [role=tablist] {
     display: flex;
     list-style-type: none;
@@ -33,33 +28,6 @@
       &:hover {
         background-color: inherit;
       }
-    }
-  }
-
-  &-expandedIcon {
-    fill: @color-Interactive--400;
-    padding: 0 0 0 0.5em;
-
-    &--reversed {
-      padding: 0 0.5em 0 0;
-      transform: rotate(180deg);
-    }
-
-    &--selected {
-      fill: @color-Interactive--750;
-    }
-  }
-
-  &-icon {
-    fill: @color-Interactive--750;
-    padding: 0.5em;
-
-    &:hover {
-      background-color: @color-Interactive--100;
-    }
-
-    &--reversed {
-      transform: rotate(180deg);
     }
   }
 
