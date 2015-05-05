@@ -10,6 +10,7 @@ function isTabNode(node) {
 module.exports = React.createClass({
   displayName: 'Tabs',
   propTypes: {
+    className: React.PropTypes.string,
     focus: React.PropTypes.bool,
     onSelect: React.PropTypes.func,
     selectedIndex: React.PropTypes.number
@@ -105,7 +106,7 @@ module.exports = React.createClass({
 
     return (
       <div
-        {...this.props}
+        className={this.props.className}
         onClick={this.handleClick}
         onKeyDown={this.handleKeyDown}>
         {tabList}
