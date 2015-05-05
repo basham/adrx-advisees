@@ -2,15 +2,8 @@ var React = require('react');
 var classNames = require('classnames');
 
 function syncNodeAttributes(node, props) {
-  if (props.selected && !props.disabled) {
-    node.setAttribute('tabindex', 0);
-    node.setAttribute('selected', 'selected');
-    if (props.focus) {
-      node.focus();
-    }
-  } else {
-    node.removeAttribute('tabindex');
-    node.removeAttribute('selected');
+  if(props.selected && !props.disabled && props.focus) {
+    node.focus();
   }
 }
 
@@ -54,7 +47,8 @@ module.exports = React.createClass({
         aria-selected={!!this.props.selected}
         className={this.props.className}
         id={this.props.id}
-        role="tab">
+        role="tab"
+        tabIndex={this.props.selected && !this.props.disabled ? 0 : null}>
         {this.props.children}
       </li>
     );
