@@ -2,14 +2,9 @@ var React = require('react');
 
 module.exports = React.createClass({
   displayName: 'TabList',
-  //
-  // Lifecycle methods
-  //
-  getInitialState: function() {
-    return {
-      //KDM #28 Receiving showPanel from Tabs parent component
-      showPanel: this.props.showPanel
-    };
+  propTypes: {
+    className: React.PropTypes.string,
+    showPanel: React.PropTypes.bool
   },
   //
   // Render methods
@@ -24,7 +19,6 @@ module.exports = React.createClass({
     );
   },
   renderChild: function(child) {
-    child.props.expandable = true;
     child.props.expanded = this.props.showPanel;
     return child;
   }

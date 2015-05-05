@@ -2,13 +2,19 @@ var React = require('react');
 
 module.exports = React.createClass({
   displayName: 'TabPanel',
+  propTypes: {
+    className: React.PropTypes.string,
+    id: React.PropTypes.string,
+    selected: React.PropTypes.bool,
+    tabId: React.PropTypes.string
+  },
   //
   // Lifecycle methods
   //
   getDefaultProps: function() {
     return {
-      selected: false,
       id: null,
+      selected: false,
       tabId: null
     };
   },

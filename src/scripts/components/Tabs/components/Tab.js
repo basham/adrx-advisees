@@ -1,8 +1,6 @@
 var React = require('react');
 var classNames = require('classnames');
 
-var Icon = require('../../Icon');
-
 function syncNodeAttributes(node, props) {
   if (props.selected && !props.disabled) {
     node.setAttribute('tabindex', 0);
@@ -18,6 +16,15 @@ function syncNodeAttributes(node, props) {
 
 module.exports = React.createClass({
   displayName: 'Tab',
+  propTypes: {
+    className: React.PropTypes.string,
+    disabled: React.PropTypes.bool,
+    expanded: React.PropTypes.bool,
+    focus: React.PropTypes.bool,
+    id: React.PropTypes.string,
+    panelId: React.PropTypes.string,
+    selected: React.PropTypes.bool
+  },
   //
   // Lifecycle methods
   //
@@ -30,9 +37,9 @@ module.exports = React.createClass({
   getDefaultProps: function() {
     return {
       focus: false,
-      selected: false,
       id: null,
-      panelId: null
+      panelId: null,
+      selected: false
     };
   },
   //
@@ -50,24 +57,6 @@ module.exports = React.createClass({
         role="tab">
         {this.props.children}
       </li>
-    );
-  },
-  renderIcon: function() {
-    if(!this.props.expandable) {
-      return null;
-    }
-
-    var isSelectedAndExpanded = this.props.selected && this.props.expanded;
-    var cn = classNames({
-      'adv-Tabs-expandedIcon': true,
-      'adv-Tabs-expandedIcon--selected': this.props.selected,
-      'adv-Tabs-expandedIcon--reversed': isSelectedAndExpanded
-    });
-
-    return (
-      <Icon
-        className={cn}
-        name="chevron-bottom"/>
     );
   }
 });

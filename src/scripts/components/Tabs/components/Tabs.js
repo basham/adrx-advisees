@@ -10,9 +10,9 @@ function isTabNode(node) {
 module.exports = React.createClass({
   displayName: 'Tabs',
   propTypes: {
-    selectedIndex: React.PropTypes.number,
+    focus: React.PropTypes.bool,
     onSelect: React.PropTypes.func,
-    focus: React.PropTypes.bool
+    selectedIndex: React.PropTypes.number
   },
   //
   // Lifecycle methods
@@ -29,9 +29,9 @@ module.exports = React.createClass({
   },
   getDefaultProps: function() {
     return {
+      focus: false,
       selectedIndex: 0,
-      showPanel: false,
-      focus: false
+      showPanel: false
     };
   },
   getInitialState: function() {
