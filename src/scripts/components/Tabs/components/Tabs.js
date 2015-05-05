@@ -45,10 +45,10 @@ module.exports = React.createClass({
     });
 
     return {
-      selectedIndex: this.props.selectedIndex,
       focus: this.props.focus,
-      tabIds: tabIds,
-      panelIds: panelIds
+      panelIds: panelIds,
+      selectedIndex: this.props.selectedIndex,
+      tabIds: tabIds
     };
   },
   //
