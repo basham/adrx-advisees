@@ -65,10 +65,6 @@ module.exports = React.createClass({
       ref: 'tablist',
       //KDM #39 20150403 Passing showPanel to TabPanel child component
       showPanel: this.state.showPanel,
-      onTogglePanel: function() {
-        //KDM #28 20150403 updating showPanel when toggle icon is clicked
-        this.setState({showPanel: !this.state.showPanel});
-      }.bind(this),
       children: React.Children.map(this.getTabChildren(), function(tab) {
         var ref = 'tabs-' + index;
         var id = state.tabIds[index];
