@@ -62,11 +62,14 @@ module.exports = React.createClass({
     var state = this.state;
 
     var tabListEl = this.getTabListChild();
-    var tabList = React.addons.cloneWithProps(tabListEl, {
-      ref: 'tablist',
-      //KDM #39 20150403 Passing showPanel to TabPanel child component
-      showPanel: this.state.showPanel,
-      children: React.Children.map(this.getTabChildren(), function(tab) {
+    var tabList = React.cloneElement(
+      tabListEl,
+      {
+        ref: 'tablist',
+        //KDM #39 20150403 Passing showPanel to TabPanel child component
+        showPanel: this.state.showPanel
+      },
+      React.Children.map(this.getTabChildren(), function(tab) {
         var ref = 'tabs-' + index;
         var id = state.tabIds[index];
         var panelId = state.panelIds[index];
@@ -75,7 +78,7 @@ module.exports = React.createClass({
 
         index++;
 
-        return React.addons.cloneWithProps(tab, {
+        return React.cloneElement(tab, {
           ref: ref,
           id: id,
           panelId: panelId,
@@ -83,7 +86,7 @@ module.exports = React.createClass({
           focus: focus
         });
       })
-    });
+    );
 
     index = 0;
 
@@ -95,7 +98,7 @@ module.exports = React.createClass({
 
       index ++;
 
-      return React.addons.cloneWithProps(panel, {
+      return React.cloneElement(panel, {
         ref: ref,
         id: id,
         tabId: tabId,
