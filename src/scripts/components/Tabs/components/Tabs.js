@@ -200,7 +200,6 @@ module.exports = React.createClass({
     function getDescendants(component) {
       var el = [];
       // Updated by Eunmee Yi on 2015/04/09
-      //var children = component.props.children;
       var children = (!!component && !!component.props) ? component.props.children : [];
       var hasChildren = Array.isArray(children) && children.length;
       if(hasChildren) {
@@ -227,7 +226,6 @@ module.exports = React.createClass({
   getDescendantsByType: function(type) {
     return this.getDescendants().filter(function(component) {
       // Updated by Eunmee Yi on 2015/04/09
-      //return component.type.displayName === type;
       return (!!component && !!component.type) ? component.type.displayName === type : false;
     });
   },
@@ -242,11 +240,9 @@ module.exports = React.createClass({
   },
   getTabsCount: function() {
     return this.getTabChildren().length;
-    //return React.Children.count(this.props.children[0].props.children);
   },
   getPanelsCount: function() {
     return this.getPanelChildren().length;
-    //return React.Children.count(this.props.children.slice(1));
   },
   getTabList: function() {
     return this.refs.tablist;
