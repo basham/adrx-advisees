@@ -1,5 +1,4 @@
 var React = require('react');
-var classNames = require('classnames');
 
 function syncNodeAttributes(node, props) {
   if(props.selected && !props.disabled && props.focus) {
