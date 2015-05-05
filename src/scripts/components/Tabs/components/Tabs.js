@@ -190,8 +190,8 @@ module.exports = React.createClass({
     });
 
     // Call change event handler
-    if(typeof this.props.onSelect2 === 'function') {
-      this.props.onSelect2(index, last);
+    if(typeof this.props.onSelect === 'function') {
+      this.props.onSelect(index, last);
     }
   },
   getDescendants: function() {
