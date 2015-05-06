@@ -13,16 +13,6 @@ module.exports = React.createClass({
   //
   // Lifecycle methods
   //
-  componentWillMount: function() {
-    var tabsCount = this.getTabsCount();
-    var panelsCount = this.getPanelsCount();
-
-/*
-    if(tabsCount !== panelsCount) {
-      console.log('There should be an equal number of Tabs and TabPanels. Received', tabsCount, 'Tabs and', panelsCount, 'TabPanels.');
-    }
-*/
-  },
   getDefaultProps: function() {
     return {
       focus: false,
@@ -52,7 +42,7 @@ module.exports = React.createClass({
   //
   render: function() {
     var tabs = React.Children.map(
-      this.getTabChildren(),
+      this.getTabs(),
       function(tab, index) {
         var isSelected = this.state.selectedIndex === index;
         return React.cloneElement(tab, {
@@ -68,17 +58,16 @@ module.exports = React.createClass({
     );
 
     var tabList = React.cloneElement(
-      this.getTabListChild(),
+      this.getTabList(),
       {
         ref: 'tablist',
-        //KDM #39 20150403 Passing showPanel to TabPanel child component
         showPanel: this.state.showPanel
       },
       tabs
     );
 
     var tabPanels = React.Children.map(
-      this.getPanelChildren(),
+      this.getPanels(),
       function(panel, index) {
         return React.cloneElement(panel, {
           id: this.state.panelIds[index],
@@ -135,7 +124,6 @@ module.exports = React.createClass({
 
     function getDescendants(component) {
       var el = [];
-      // Updated by Eunmee Yi on 2015/04/09
       var children = (!!component && !!component.props) ? component.props.children : [];
       var hasChildren = Array.isArray(children) && children.length;
       if(hasChildren) {
@@ -146,14 +134,6 @@ module.exports = React.createClass({
           el = el.concat(getDescendants(child));
         })
       }
-      // Added by Eunmee Yi on 2015/04/09
-      // For debugging
-      //if(!!component && !!component.type) {
-      /*
-      if(!!component && !!component.type && !!component.type.displayName) {
-        console.log('----- in function getDescendants() ', component.type, '---' , component.type.displayName);
-      }
-      */
       return el;
     }
 
@@ -161,44 +141,28 @@ module.exports = React.createClass({
   },
   getDescendantsByType: function(type) {
     return this.getDescendants().filter(function(component) {
-      // Updated by Eunmee Yi on 2015/04/09
       return (!!component && !!component.type) ? component.type.displayName === type : false;
     });
   },
-  getTabListChild: function() {
+  getTabList: function() {
     return this.getDescendantsByType('TabList')[0];
   },
-  getTabChildren: function() {
+  getTabs: function() {
     return this.getDescendantsByType('Tab');
   },
-  getPanelChildren: function() {
+  getPanels: function() {
     return this.getDescendantsByType('TabPanel');
-  },
-  getTabsCount: function() {
-    return this.getTabChildren().length;
-  },
-  getPanelsCount: function() {
-    return this.getPanelChildren().length;
-  },
-  getTabList: function() {
-    return this.refs.tablist;
-  },
-  getTab: function(index) {
-    return this.refs['tabs-' + index];
-  },
-  getPanel: function(index) {
-    return this.refs['panels-' + index];
   },
   modifyAndSelectIndex: function(modifier) {
     var index = this.state.selectedIndex;
-    var count = this.getTabsCount();
+    var count = this.getTabs().length;
     // Loop through each tab.
     for(var i = 0; i < count; i++) {
       // Modify current index value.
       // Used to abstract the next/previous algorithm.
       index = modifier(index, count);
       // Skip disabled tabs.
-      if(this.getTab(index).props.disabled) {
+      if(this.refs['tabs-' + index].props.disabled) {
         continue;
       }
       // Select index.
