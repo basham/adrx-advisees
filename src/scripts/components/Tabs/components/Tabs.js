@@ -42,6 +42,7 @@ module.exports = React.createClass({
       this.getTabs(),
       function(tab, index) {
         return React.cloneElement(tab, {
+          expanded: this.state.showPanel,
           id: this.state.tabIds[index],
           onClick: this.handleClick(index, tab.props.disabled),
           onKeyDown: this.handleKeyDown,
@@ -52,13 +53,7 @@ module.exports = React.createClass({
       }.bind(this)
     );
 
-    var tabList = React.cloneElement(
-      this.getTabList(),
-      {
-        showPanel: this.state.showPanel
-      },
-      tabs
-    );
+    var tabList = React.cloneElement(this.getTabList(), {}, tabs);
 
     var tabPanels = React.Children.map(
       this.getPanels(),

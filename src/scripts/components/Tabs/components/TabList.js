@@ -3,8 +3,7 @@ var React = require('react');
 module.exports = React.createClass({
   displayName: 'TabList',
   propTypes: {
-    className: React.PropTypes.string,
-    showPanel: React.PropTypes.bool
+    className: React.PropTypes.string
   },
   //
   // Render methods
@@ -14,13 +13,8 @@ module.exports = React.createClass({
       <ul
         className={this.props.className}
         role="tablist">
-        {React.Children.map(this.props.children, this.renderChild)}
+        {this.props.children}
       </ul>
     );
-  },
-  renderChild: function(child) {
-    return React.cloneElement(child, {
-      expanded: this.props.showPanel
-    });
   }
 });
