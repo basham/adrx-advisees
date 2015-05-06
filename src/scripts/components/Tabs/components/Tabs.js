@@ -60,7 +60,6 @@ module.exports = React.createClass({
     var tabList = React.cloneElement(
       this.getTabList(),
       {
-        ref: 'tablist',
         showPanel: this.state.showPanel
       },
       tabs
@@ -71,7 +70,6 @@ module.exports = React.createClass({
       function(panel, index) {
         return React.cloneElement(panel, {
           id: this.state.panelIds[index],
-          ref: 'panels-' + index,
           selected: this.state.selectedIndex === index,
           show: this.state.showPanel,
           tabId: this.state.tabIds[index]
