@@ -14,6 +14,8 @@ module.exports = React.createClass({
     expanded: React.PropTypes.bool,
     focus: React.PropTypes.bool,
     id: React.PropTypes.string,
+    onClick: React.PropTypes.func,
+    onKeyDown: React.PropTypes.func,
     panelId: React.PropTypes.string,
     selected: React.PropTypes.bool
   },
@@ -46,6 +48,8 @@ module.exports = React.createClass({
         aria-selected={!!this.props.selected}
         className={this.props.className}
         id={this.props.id}
+        onClick={this.props.onClick}
+        onKeyDown={this.props.onKeyDown}
         role="tab"
         tabIndex={this.props.selected && !this.props.disabled ? 0 : null}>
         {this.props.children}

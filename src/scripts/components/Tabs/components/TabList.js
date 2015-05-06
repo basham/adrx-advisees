@@ -19,7 +19,8 @@ module.exports = React.createClass({
     );
   },
   renderChild: function(child) {
-    child.props.expanded = this.props.showPanel;
-    return child;
+    return React.cloneElement(child, {
+      expanded: this.props.showPanel
+    });
   }
 });

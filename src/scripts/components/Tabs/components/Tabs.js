@@ -56,62 +56,47 @@ module.exports = React.createClass({
   // Render methods
   //
   render: function() {
-    var index = 0;
-    var count = 0;
-    var children;
-    var state = this.state;
+    var tabs = React.Children.map(
+      this.getTabChildren(),
+      function(tab, index) {
+        var isSelected = this.state.selectedIndex === index;
+        return React.cloneElement(tab, {
+          focus: isSelected && this.state.focus,
+          id: this.state.tabIds[index],
+          onClick: this.handleClick(index),
+          onKeyDown: this.handleKeyDown,
+          panelId: this.state.panelIds[index],
+          ref: 'tabs-' + index,
+          selected: isSelected
+        });
+      }.bind(this)
+    );
 
-    var tabListEl = this.getTabListChild();
     var tabList = React.cloneElement(
-      tabListEl,
+      this.getTabListChild(),
       {
         ref: 'tablist',
         //KDM #39 20150403 Passing showPanel to TabPanel child component
         showPanel: this.state.showPanel
       },
-      React.Children.map(this.getTabChildren(), function(tab) {
-        var ref = 'tabs-' + index;
-        var id = state.tabIds[index];
-        var panelId = state.panelIds[index];
-        var selected = state.selectedIndex === index;
-        var focus = selected && state.focus;
-
-        index++;
-
-        return React.cloneElement(tab, {
-          ref: ref,
-          id: id,
-          panelId: panelId,
-          selected: selected,
-          focus: focus
-        });
-      })
+      tabs
     );
 
-    index = 0;
-
-    var tabPanels = React.Children.map(this.getPanelChildren(), function(panel) {
-      var ref = 'panels-' + index;
-      var id = state.panelIds[index];
-      var tabId = state.tabIds[index];
-      var selected = state.selectedIndex === index;
-
-      index ++;
-
-      return React.cloneElement(panel, {
-        ref: ref,
-        id: id,
-        tabId: tabId,
-        selected: selected,
-        show: state.showPanel
-      });
-    });
+    var tabPanels = React.Children.map(
+      this.getPanelChildren(),
+      function(panel, index) {
+        return React.cloneElement(panel, {
+          id: this.state.panelIds[index],
+          ref: 'panels-' + index,
+          selected: this.state.selectedIndex === index,
+          show: this.state.showPanel,
+          tabId: this.state.tabIds[index]
+        });
+      }.bind(this)
+    );
 
     return (
-      <div
-        className={this.props.className}
-        onClick={this.handleClick}
-        onKeyDown={this.handleKeyDown}>
+      <div className={this.props.className}>
         {tabList}
         {tabPanels}
       </div>
@@ -120,84 +105,32 @@ module.exports = React.createClass({
   //
   // Handler methods
   //
-  handleClick: function(event) {
-    var node = event.target;
-    do {
-      if(isTabNode(node)) {
-        var index = [].slice.call(node.parentNode.children).indexOf(node);
-        var show = index === this.state.selectedIndex ? !this.state.showPanel : true;
-        this.setSelected(index, true, show);
-        return;
-      }
-    } while(node = node.parentNode);
+  handleClick: function(index) {
+    return function(event) {
+      var show = index === this.state.selectedIndex ? !this.state.showPanel : true;
+      this.selectIndex(index, show);
+    }.bind(this);
   },
   handleKeyDown: function(event) {
-    if(isTabNode(event.target)) {
-      var index = this.state.selectedIndex,
-        showPanel = this.state.showPanel,
-        max = this.getTabsCount() - 1,
-        preventDefault = false;
-
-      // Select next tab to the left
-      if(event.keyCode === 37 || event.keyCode === 38) {
-        index -= 1;
-        preventDefault = true;
-
-        // Wrap back to last tab if index is negative
-        if(index < 0) {
-          index = max;
-        }
-      }
-      // Select next tab to the right
-      else if(event.keyCode === 39 || event.keyCode === 40) {
-        index += 1;
-        preventDefault = true;
-
-        // Wrap back to first tab if index exceeds max
-        if(index > max) {
-          index = 0;
-        }
-      }
-      // Keyed Enter or Space.
-      else if(event.keyCode === 13 || event.keyCode === 32) {
-        //console.log('---', event.key, event.keyCode, event);
-        showPanel = !showPanel;
-        preventDefault = true;
-      }
-
-      // This prevents scrollbars from moving around
-      if(preventDefault) {
+    switch(event.key) {
+      case 'ArrowDown':
+      case 'ArrowRight':
+        this.selectNext();
+        break;
+      case 'ArrowUp':
+      case 'ArrowLeft':
+        this.selectPrevious();
+        break;
+      case 'Enter':
+      case ' ':
         event.preventDefault();
-      }
-
-      this.setSelected(index, true, showPanel);
+        this.toggleOpen();
+        break;
     }
   },
   //
   // Helper methods
   //
-  setSelected: function(index, focus, showPanel) {
-    // Don't do anything if nothing has changed
-    //if(index === this.state.selectedIndex) return;
-    // Check index boundary
-    //if(index < 0 || index >= this.getTabsCount()) return;
-
-    // Keep reference to last index for event handler
-    var last = this.state.selectedIndex;
-    showPanel = showPanel === undefined ? true : showPanel;
-
-    // Update selected index
-    this.setState({
-      selectedIndex: index,
-      showPanel: showPanel,
-      focus: focus === true
-    });
-
-    // Call change event handler
-    if(typeof this.props.onSelect === 'function') {
-      this.props.onSelect(index, last);
-    }
-  },
   getDescendants: function() {
 
     function getDescendants(component) {
@@ -255,5 +188,47 @@ module.exports = React.createClass({
   },
   getPanel: function(index) {
     return this.refs['panels-' + index];
+  },
+  selectIndex: function(index, showPanel) {
+    // Open the panel unless explicitly set.
+    showPanel = showPanel === undefined ? this.state.showPanel : showPanel;
+    var lastSelectedIndex = this.state.selectedIndex;
+
+    this.setState(
+      {
+        selectedIndex: index,
+        showPanel: showPanel,
+        focus: true
+      },
+      function() {
+        var hasCallback = typeof this.props.onSelect === 'function';
+        var isNewIndex = index !== lastSelectedIndex;
+        // Callback change event handler.
+        if(hasCallback && isNewIndex && showPanel) {
+          this.props.onSelect(index, lastSelectedIndex);
+        }
+      }
+    );
+  },
+  selectNext: function() {
+    var index = this.state.selectedIndex + 1;
+    var maxIndex = this.getTabsCount() - 1;
+    if(index > maxIndex) {
+      index = 0;
+    }
+    this.selectIndex(index);
+  },
+  selectPrevious: function() {
+    var index = this.state.selectedIndex - 1;
+    var maxIndex = this.getTabsCount() - 1;
+    if(index < 0) {
+      index = maxIndex;
+    }
+    this.selectIndex(index);
+  },
+  toggleOpen: function() {
+    this.setState({
+      showPanel: !this.state.showPanel
+    });
   }
 });
