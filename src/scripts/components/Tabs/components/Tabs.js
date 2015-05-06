@@ -113,10 +113,12 @@ module.exports = React.createClass({
     switch(event.key) {
       case 'ArrowDown':
       case 'ArrowRight':
+        event.preventDefault();
         this.selectNext();
         break;
       case 'ArrowUp':
       case 'ArrowLeft':
+        event.preventDefault();
         this.selectPrevious();
         break;
       case 'Enter':
