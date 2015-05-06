@@ -187,6 +187,25 @@ module.exports = React.createClass({
   getPanel: function(index) {
     return this.refs['panels-' + index];
   },
+  modifyAndSelectIndex: function(modifier) {
+    var index = this.state.selectedIndex;
+    var count = this.getTabsCount();
+    // Loop through each tab.
+    for(var i = 0; i < count; i++) {
+      // Modify current index value.
+      // Used to abstract the next/previous algorithm.
+      index = modifier(index, count);
+      // Skip disabled tabs.
+      if(this.getTab(index).props.disabled) {
+        continue;
+      }
+      // Select index.
+      else {
+        this.selectIndex(index);
+        break;
+      }
+    }
+  },
   selectIndex: function(index, showPanel) {
     // Open the panel unless explicitly set.
     showPanel = showPanel === undefined ? this.state.showPanel : showPanel;
@@ -209,20 +228,22 @@ module.exports = React.createClass({
     );
   },
   selectNext: function() {
-    var index = this.state.selectedIndex + 1;
-    var maxIndex = this.getTabsCount() - 1;
-    if(index > maxIndex) {
-      index = 0;
-    }
-    this.selectIndex(index);
+    this.modifyAndSelectIndex(function(index, count) {
+      index++;
+      if(index >= count) {
+        index = 0;
+      }
+      return index;
+    });
   },
   selectPrevious: function() {
-    var index = this.state.selectedIndex - 1;
-    var maxIndex = this.getTabsCount() - 1;
-    if(index < 0) {
-      index = maxIndex;
-    }
-    this.selectIndex(index);
+    this.modifyAndSelectIndex(function(index, count) {
+      index--;
+      if(index < 0) {
+        index = count - 1;
+      }
+      return index;
+    });
   },
   toggleOpen: function() {
     this.setState({
