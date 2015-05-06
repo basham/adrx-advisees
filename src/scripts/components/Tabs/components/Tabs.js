@@ -58,7 +58,7 @@ module.exports = React.createClass({
         return React.cloneElement(tab, {
           focus: isSelected && this.state.focus,
           id: this.state.tabIds[index],
-          onClick: this.handleClick(index),
+          onClick: this.handleClick(index, tab.props.disabled),
           onKeyDown: this.handleKeyDown,
           panelId: this.state.panelIds[index],
           ref: 'tabs-' + index,
@@ -100,8 +100,11 @@ module.exports = React.createClass({
   //
   // Handler methods
   //
-  handleClick: function(index) {
+  handleClick: function(index, isDisabled) {
     return function(event) {
+      if(isDisabled) {
+        return;
+      }
       var show = index === this.state.selectedIndex ? !this.state.showPanel : true;
       this.selectIndex(index, show);
     }.bind(this);
