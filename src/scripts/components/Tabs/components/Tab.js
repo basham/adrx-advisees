@@ -1,7 +1,7 @@
 var React = require('react');
 
 function syncNodeAttributes(node, props) {
-  if(props.selected && !props.disabled && props.focus) {
+  if(props.selected && !props.disabled) {
     node.focus();
   }
 }
@@ -12,7 +12,6 @@ module.exports = React.createClass({
     className: React.PropTypes.string,
     disabled: React.PropTypes.bool,
     expanded: React.PropTypes.bool,
-    focus: React.PropTypes.bool,
     id: React.PropTypes.string,
     onClick: React.PropTypes.func,
     onKeyDown: React.PropTypes.func,
@@ -30,7 +29,6 @@ module.exports = React.createClass({
   },
   getDefaultProps: function() {
     return {
-      focus: false,
       id: null,
       panelId: null,
       selected: false

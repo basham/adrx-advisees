@@ -6,7 +6,6 @@ module.exports = React.createClass({
   displayName: 'Tabs',
   propTypes: {
     className: React.PropTypes.string,
-    focus: React.PropTypes.bool,
     onSelect: React.PropTypes.func,
     selectedIndex: React.PropTypes.number
   },
@@ -15,7 +14,6 @@ module.exports = React.createClass({
   //
   getDefaultProps: function() {
     return {
-      focus: false,
       selectedIndex: 0,
       showPanel: false
     };
@@ -31,7 +29,6 @@ module.exports = React.createClass({
     });
 
     return {
-      focus: this.props.focus,
       panelIds: panelIds,
       selectedIndex: this.props.selectedIndex,
       tabIds: tabIds
@@ -44,15 +41,13 @@ module.exports = React.createClass({
     var tabs = React.Children.map(
       this.getTabs(),
       function(tab, index) {
-        var isSelected = this.state.selectedIndex === index;
         return React.cloneElement(tab, {
-          focus: isSelected && this.state.focus,
           id: this.state.tabIds[index],
           onClick: this.handleClick(index, tab.props.disabled),
           onKeyDown: this.handleKeyDown,
           panelId: this.state.panelIds[index],
           ref: 'tabs-' + index,
-          selected: isSelected
+          selected: this.state.selectedIndex === index
         });
       }.bind(this)
     );
@@ -178,8 +173,7 @@ module.exports = React.createClass({
     this.setState(
       {
         selectedIndex: index,
-        showPanel: showPanel,
-        focus: true
+        showPanel: showPanel
       },
       function() {
         var hasCallback = typeof this.props.onSelect === 'function';
