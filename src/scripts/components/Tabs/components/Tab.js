@@ -27,13 +27,6 @@ module.exports = React.createClass({
   componentDidUpdate: function() {
     syncNodeAttributes(this.getDOMNode(), this.props);
   },
-  getDefaultProps: function() {
-    return {
-      id: null,
-      panelId: null,
-      selected: false
-    };
-  },
   //
   // Render methods
   //
