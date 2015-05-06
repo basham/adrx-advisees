@@ -14,8 +14,7 @@ module.exports = React.createClass({
   //
   getDefaultProps: function() {
     return {
-      selectedIndex: 0,
-      showPanel: false
+      selectedIndex: 0
     };
   },
   getInitialState: function() {
