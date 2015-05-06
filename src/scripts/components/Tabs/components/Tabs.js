@@ -2,11 +2,6 @@ var React = require('react');
 
 var uuid = require('../helpers/uuid');
 
-// Determine if a node from event.target is a Tab element
-function isTabNode(node) {
-  return node.nodeName === 'LI' && node.getAttribute('role') === 'tab';
-}
-
 module.exports = React.createClass({
   displayName: 'Tabs',
   propTypes: {
