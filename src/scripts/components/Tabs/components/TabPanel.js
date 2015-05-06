@@ -6,17 +6,8 @@ module.exports = React.createClass({
     className: React.PropTypes.string,
     id: React.PropTypes.string,
     selected: React.PropTypes.bool,
+    show: React.PropTypes.bool,
     tabId: React.PropTypes.string
-  },
-  //
-  // Lifecycle methods
-  //
-  getDefaultProps: function() {
-    return {
-      id: null,
-      selected: false,
-      tabId: null
-    };
   },
   //
   // Render methods
