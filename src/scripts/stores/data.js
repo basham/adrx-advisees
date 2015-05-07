@@ -12,18 +12,23 @@ var dataStore = Reflux.createStore({
   // Action methods
   //
   onGetData: function() {
-    ///*
+    /*
     setTimeout(function() {
       this.handleSuccess(require('./data.json'));
     }.bind(this), 0);
     return;
-    //*/
+    */
     var params = helpers.getQueryParams();
 
     request
-      .get(helpers.api('myAdvisees_JSON'))
+      .post(helpers.api('handleAdHocGroup'))
       .query({
         sr: params.sr,
+        action: 'getGroupsAndMembers'
+      })
+      .send({
+        sr: params.sr,
+        action: 'getGroupsAndMembers',
         backdoorId: params.backdoorId
       })
       .end(helpers.requestCallback(this.handleSuccess, this.handleFail));

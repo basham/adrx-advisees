@@ -56,7 +56,8 @@ var GroupMembership = React.createClass({
       requesting: true,
       sortByKey: sortStore.defaultSortByKey,
       windowInnerWidth_borderForTabLabelChange: 700,
-      inputValue: ''
+      inputValue: '',
+      isBulkUpload: false
     }
   },
   //
@@ -81,8 +82,8 @@ var GroupMembership = React.createClass({
         <h1 className="adv-App-heading">
         Edit Membership
         </h1>
-        <Link to="group.edit" className="adv-Header-headingLink" params={{ id: this.props.params.id}}>Edit group</Link>
-        <Link to="group.view" className="adv-Header-headingLink" params={{ id: this.props.params.id}}>Return to Caseload</Link>
+        <Link to="group.edit" className="adv-Link--underlined" params={{ id: this.props.params.id}}>Edit group</Link>
+        <Link to="group.view" className="adv-Link--underlined" params={{ id: this.props.params.id}}>Return to Caseload</Link>
         <div>
           {this.renderAddMember()}
         </div>
@@ -114,23 +115,41 @@ var GroupMembership = React.createClass({
     );
   },
   renderAddMember: function() {
+    var addMemberInput;
+    if(this.state.isBulkUpload == true)
+      addMemberInput = (<p>
+                          <textarea
+                            className="adv-Input"
+                            onChange={this.handleTitleInputChange}
+                            rows="5"
+                            cols="50" />
+                          Separate student usernames or University IDs with a space, a return, or a comma.
+                        </p>);
+
+    else
+      addMemberInput = (<p>
+                          <input
+                            className="adv-Input"
+                            onChange={this.handleTitleInputChange}
+                            maxLength="10"
+                            type="text"/>
+                          <a
+                            className="adv-Link--underlined"
+                            onClick={this.handleBulkButtonClick}>
+                            Add students in bulk
+                          </a>
+                        </p>);
     return (
       <div className="adv-Advisee-nameGroup adv-Advisee-nameGroup--fixed">
         <h2 className="adv-Advisee-heading">
           Student
         </h2>
-        <p className="adv-Advisee-id">
-          <input
-            className="adv-Input"
-            onChange={this.handleTitleInputChange}
-            maxLength="10"
-            type="text"/>
+          {addMemberInput}
           <button
             className="qn-ActionBar-item qn-Button"
             onClick={this.handleAddMemberButtonClick}>
             Add
           </button>
-        </p>
       </div>
     );
   },
@@ -187,6 +206,11 @@ var GroupMembership = React.createClass({
     var value = event.target.value;
 console.log('---add member', this.state.memberId);
     actions.addMember(value);
+  },
+  handleBulkButtonClick: function(event) {
+    this.setState({
+      isBulkUpload: true
+    });
   },
   //
   // Store methods
