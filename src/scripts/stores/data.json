@@ -2,8 +2,8 @@
   "defaultGroupId": "0",
   "groupMap": {
     "0": {
-      "id": "0",
-      "name": "Advisees",
+      "groupId": "0",
+      "groupName": "Advisees",
       "membershipList": [
         "7496827183",
         "4786766189",
@@ -18,8 +18,8 @@
       ]
     },
     "1": {
-      "id": "1",
-      "name": "Probation students",
+      "groupId": "1",
+      "groupName": "Probation students",
       "membershipList": [
         "4786766189"
       ]

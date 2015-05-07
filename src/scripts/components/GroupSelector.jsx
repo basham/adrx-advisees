@@ -79,12 +79,12 @@ var GroupSelector = React.createClass({
     var selectedIndex = this.state.selectedIndex;
     // Generate an array of options, appropriate for the Selector component.
     var options = data.items.map(function(group, index) {
-      if(selectedId == group.id) {
+      if(selectedId == group.groupId) {
         selectedIndex = index;
       }
       return {
-        label: group.name,
-        id: group.id
+        label: group.groupName,
+        id: group.groupId
       };
     });
     // Set state.
