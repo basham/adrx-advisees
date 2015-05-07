@@ -7,6 +7,11 @@ var actions = Reflux.createActions([
   'getDataFailed',
   'getGroup',
   'sortBy',
+  // Group actions
+  'createGroup',
+  'createGroupCompleted',
+  'createGroupFailed',
+  // Member actions
   'removeMember',
   'addMember'
 ]);

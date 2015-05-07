@@ -5,6 +5,7 @@ var Reflux = require('reflux');
 
 var Selector = require('./Selector');
 var groupListStore = require('../stores/groupList');
+var actions = require('../actions');
 
 var GroupSelector = React.createClass({
   contextTypes: {
@@ -12,6 +13,7 @@ var GroupSelector = React.createClass({
   },
   mixins: [
     Reflux.listenTo(groupListStore, 'onStoreChange'),
+    Reflux.listenToMany(actions)
   ],
   propTypes: {
     selectedId: React.PropTypes.string,
@@ -70,6 +72,8 @@ var GroupSelector = React.createClass({
       options: options,
       selectedIndex: index
     });
+
+    actions.createGroup(value);
   },
   //
   // Store methods
@@ -92,6 +96,18 @@ var GroupSelector = React.createClass({
       options: options,
       selectedIndex: selectedIndex
     });
+  },
+  //
+  // Action methods
+  //
+  onCreateGroupCompleted: function(id) {
+    var option = this.state.options.filter(function(option) {
+      return option.id === id;
+    })[0];
+    // Get the index of the created option.
+    var index = this.state.options.indexOf(option);
+    // Change to the created option.
+    this.handleChange(index, id);
   }
 });
 
