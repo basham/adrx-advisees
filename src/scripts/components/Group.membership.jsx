@@ -49,7 +49,7 @@ var GroupMembership = React.createClass({
   getInitialState: function() {
     return {
       data: {
-        membershipStudentList: []
+        memberDetailList: []
       },
       isAscending: sortStore.defaultIsAscending,
       isLongerTabLabel: true,
@@ -64,7 +64,7 @@ var GroupMembership = React.createClass({
   // Render methods
   //
   render: function() {
-    var data = this.state.data.membershipStudentList;
+    var data = this.state.data.memberDetailList;
     var content = null;
 
     if(this.state.requesting) {

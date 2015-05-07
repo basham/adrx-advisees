@@ -80,7 +80,7 @@ var groupStore = Reflux.createStore({
   onRemoveMember: function(index) {
     var selectedGroup = this.group;
     var member = selectedGroup.membershipList.splice(index, 1);
-    selectedGroup.membershipStudentList.splice(index, 1);
+    selectedGroup.memberDetailList.splice(index, 1);
     this.trigger(this.group);
 
     var query = this.getQueryParams();
@@ -108,7 +108,7 @@ var groupStore = Reflux.createStore({
   // Handler methods
   //
   handleSuccess: function(data, groupId) {
-    //var adviseeList = data.membershipStudentList;
+console.log('~~~', data)
     var adviseeFlagLink = data.adviseeFlagLink;
 
     this.data = data;
@@ -122,7 +122,8 @@ var groupStore = Reflux.createStore({
     });
 
     var group = data.groupMap[groupId];
-    group.membershipStudentList = group.membershipList
+console.log('***', groupId, group)
+    group.memberDetailList = group.memberList
     //var output = adviseeList
       .map(function(id) {
         var member = data.memberMap[id];

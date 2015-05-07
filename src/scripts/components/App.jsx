@@ -32,7 +32,9 @@ var App = React.createClass({
   // Store methods
   //
   onStoreChange: function(data) {
-    var id = data.defaultGroupId;
+    var id = data.defautGroupId;
+
+console.log('```id=', data);
     this.context.router.transitionTo('group.view', { id: id });
   }
 });
