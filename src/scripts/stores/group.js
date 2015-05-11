@@ -77,6 +77,7 @@ var groupStore = Reflux.createStore({
     this.isAscending = isAscending;
     this.handleSuccess(this.data);
   },
+  onAddMember: require('./group/addMember')(this),
   onRemoveMember: function(index) {
     var selectedGroup = this.group;
     var member = selectedGroup.membershipList.splice(index, 1);

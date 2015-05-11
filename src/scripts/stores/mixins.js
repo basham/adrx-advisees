@@ -35,5 +35,22 @@ module.exports = {
     return Object.keys(obj).map(function(key) {
       return obj[key];
     });
+  },
+  requestCallback: function(succeedCallback, failureCallback) {
+    return function(err, res) {
+      if(err || !res.ok) {
+        if(!!failureCallback) {
+          failureCallback(err, res);
+        }
+        return;
+      }
+      if(!!succeedCallback) {
+        var value = res.text;
+        if(res.type == 'application/json') {
+          value = JSON.parse(value);
+        }
+        succeedCallback(value);
+      }
+    }
   }
 }

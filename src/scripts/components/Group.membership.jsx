@@ -115,42 +115,48 @@ var GroupMembership = React.createClass({
     );
   },
   renderAddMember: function() {
-    var addMemberInput;
-    if(this.state.isBulkUpload == true)
-      addMemberInput = (<p>
-                          <textarea
-                            className="adv-Input"
-                            onChange={this.handleTitleInputChange}
-                            rows="5"
-                            cols="50" />
-                          Separate student usernames or University IDs with a space, a return, or a comma.
-                        </p>);
-
-    else
-      addMemberInput = (<p>
-                          <input
-                            className="adv-Input"
-                            onChange={this.handleTitleInputChange}
-                            maxLength="10"
-                            type="text"/>
-                          <a
-                            className="adv-Link--underlined"
-                            onClick={this.handleBulkButtonClick}>
-                            Add students in bulk
-                          </a>
-                        </p>);
     return (
-      <div className="adv-Advisee-nameGroup adv-Advisee-nameGroup--fixed">
+      <form
+        className="adv-Advisee-nameGroup adv-Advisee-nameGroup--fixed"
+        onSubmit={this.handleSubmit}>
         <h2 className="adv-Advisee-heading">
           Student
         </h2>
-          {addMemberInput}
-          <button
-            className="qn-ActionBar-item qn-Button"
-            onClick={this.handleAddMemberButtonClick}>
-            Add
-          </button>
-      </div>
+        {this.state.isBulkUpload ? this.renderTextareaField() : this.renderInputField()}
+        <button
+          className="qn-ActionBar-item qn-Button"
+          type="submit">
+          Add
+        </button>
+      </form>
+    );
+  },
+  renderInputField: function() {
+    return (
+      <p>
+        <input
+          className="adv-Input"
+          onChange={this.handleTitleInputChange}
+          maxLength="10"
+          type="text"/>
+        <a
+          className="adv-Link--underlined"
+          onClick={this.handleBulkButtonClick}>
+          Add students in bulk
+        </a>
+      </p>
+    );
+  },
+  renderTextareaField: function() {
+    return (
+      <p>
+        <textarea
+          className="adv-Input"
+          onChange={this.handleTitleInputChange}
+          rows="5"
+          cols="50" />
+        Separate student usernames or University IDs with a space, a return, or a comma.
+      </p>
     );
   },
   renderList: function(data) {
@@ -202,10 +208,13 @@ var GroupMembership = React.createClass({
       memberId: e.target.value
     });
   },
-  handleAddMemberButtonClick: function(event) {
-    var value = event.target.value;
-console.log('---add member', this.state.memberId);
-    actions.addMember(value);
+  handleSubmit: function(event) {
+    event.preventDefault();
+    var groupId = this.state.data.groupId;
+    var value = this.state.memberId;
+
+console.log('---add member', groupId, value);
+    actions.addMember(groupId, value);
   },
   handleBulkButtonClick: function(event) {
     this.setState({

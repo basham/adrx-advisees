@@ -13,7 +13,8 @@ var actions = Reflux.createActions([
   'createGroupFailed',
   // Member actions
   'removeMember',
-  'addMember'
+  'addMember',
+  'addMemberFailed'
 ]);
 
 module.exports = actions;
