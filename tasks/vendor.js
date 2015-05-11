@@ -9,7 +9,7 @@ var config = require('./config');
 gulp.task('vendor', function() {
   var src = gulp.src([
       './bower_components/classnames/index.js',
-      './bower_components/react/react-with-addons.min.js',
+      './bower_components/react/react.min.js',
       './bower_components/react-router/build/umd/ReactRouter.min.js',
       './bower_components/reflux/dist/reflux.min.js',
       './bower_components/fastclick/lib/fastclick.js'

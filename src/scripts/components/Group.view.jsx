@@ -197,6 +197,10 @@ var GroupView = React.createClass({
     }
     //--------------------------------------------------//
 
+    var hasStudentGroups = !!studentGroups.length;
+    var hasPSI = advisee.positiveServiceIndicators_Impact.length || advisee.positiveServiceIndicators_NoImpact.length;
+    var hasNSI = advisee.negativeServiceIndicators_Impact.length || advisee.negativeServiceIndicators_NoImpact.length;
+
     return (
       <li className="adv-AdviseeList-item adv-Advisee">
         <header className="adv-Advisee-header">
@@ -220,19 +224,25 @@ var GroupView = React.createClass({
         <Tabs
           className="adv-Tabs"
           selectedIndex={0}>
-          <TabList className="adv-Tabs-list">
-            <Tab className="adv-Tabs-tab">{TabLabel_Groups}</Tab>
-            <Tab className="adv-Tabs-tab">{TabLabel_Negative}</Tab>
-            <Tab className="adv-Tabs-tab">{TabLabel_Positive}</Tab>
+          <TabList>
+            <Tab disabled={!hasStudentGroups}>
+              {TabLabel_Groups}
+            </Tab>
+            <Tab disabled={!hasNSI}>
+              {TabLabel_Negative}
+            </Tab>
+            <Tab disabled={!hasPSI}>
+              {TabLabel_Positive}
+            </Tab>
           </TabList>
-          <TabPanel className="adv-Tabs-panel">
+          <TabPanel>
             {studentGroups.map(this.renderAdviseeStudentGroup)}
           </TabPanel>
-          <TabPanel className="adv-Tabs-panel">
+          <TabPanel>
             {this.renderAdviseeServiceIndicatorSection(advisee.negativeServiceIndicators_Impact, 'Impact')}
             {this.renderAdviseeServiceIndicatorSection(advisee.negativeServiceIndicators_NoImpact, 'No impact')}
           </TabPanel>
-          <TabPanel className="adv-Tabs-panel">
+          <TabPanel>
             {this.renderAdviseeServiceIndicatorSection(advisee.positiveServiceIndicators_Impact, 'Impact')}
             {this.renderAdviseeServiceIndicatorSection(advisee.positiveServiceIndicators_NoImpact, 'No impact')}
           </TabPanel>
