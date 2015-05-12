@@ -64,8 +64,6 @@ var dataStore = Reflux.createStore({
   // Handler methods
   //
   handleSuccess: function(data) {
-console.log('+++SUCCESS');
-
     this.data = data;
     this.trigger(data);
   },

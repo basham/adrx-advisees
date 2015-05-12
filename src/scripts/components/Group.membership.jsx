@@ -67,6 +67,8 @@ var GroupMembership = React.createClass({
     var data = this.state.data.memberDetailList;
     var content = null;
 
+console.log('###', this.state.data);
+
     if(this.state.requesting) {
       content = this.renderLoading();
     }
