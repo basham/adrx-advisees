@@ -1,36 +1,13 @@
 'use strict';
 
 var Reflux = require('reflux');
-var request = require('superagent');
 
 var actions = require('../actions');
 var helpers = require('../helpers');
-var mixins = require('./mixins');
 var dataStore = require('./data');
 var sortStore = require('./sort');
 
-var actionQueue = [];
-
-function requestCallback(succeedCallback, failureCallback) {
-  return function(err, res) {
-    if(err || !res.ok) {
-      if(!!failureCallback) {
-        failureCallback(err, res);
-      }
-      return;
-    }
-    if(!!succeedCallback) {
-      var value = res.text;
-      if(res.type == 'application/json') {
-        value = JSON.parse(value);
-      }
-      succeedCallback(value);
-    }
-  }
-}
-
-var groupStore = Reflux.createStore({
-  mixins: [mixins],
+module.exports = Reflux.createStore({
   listenables: actions,
   init: function() {
     this.listenTo(dataStore, this.onStoreChange);
@@ -41,95 +18,33 @@ var groupStore = Reflux.createStore({
   //
   // Store methods
   //
-  onStoreChange: function(status) {
-    // Execute and remove all queued actions.
-    while(actionQueue.length) {
-      var action = actionQueue.pop();
-      action();
-    }
+  onStoreChange: function(data) {
+    this.data = data;
+    this.output();
   },
   //
   // Action methods
   //
-  onGetGroup: function(id) {
-    var data = dataStore.data;
-
-    // If there's no data, then queue the action to be called later,
-    // once there's data.
-    if(!data) {
-      actionQueue.push(function() {
-        this.onGetGroup(id);
-      }.bind(this));
-      return;
-    }
-
-    id = id ? id : data.defaultGroupId;
-    var hasGroup = !!data.groupMap[id];
-    if(!hasGroup) {
-      console.log('ERROR: Group not found (id:', id + ')');
-      return;
-    }
-
-    this.handleSuccess(data, id);
+  onGetGroupCompleted: function(data, id) {
+    this.data = data;
+    this.groupId = id;
+    this.output();
   },
   onSortBy: function(key, isAscending) {
     this.sortByKey = key;
     this.isAscending = isAscending;
-    this.handleSuccess(this.data);
-  },
-  onAddMember: function (groupId, value) {
-    var query = this.getQueryParams();
-    query.action = 'addMember';
-    query.groupId = groupId;
-    //
-    // TO DO:
-    // Remove `query.emplids` once backend accepts `send` parameters.
-    //
-    query.emplids = value;
-
-    var req = request
-      .post(this.api('handleAdHocGroup'))
-      .query(query)
-      .send({
-        emplids: value
-      })
-      .end(requestCallback(this.handleAddMemberSuccess, this.handleAddMemberFailure));
-  },
-  onRemoveMember: function(index) {
-    var selectedGroup = this.group;
-    var member = selectedGroup.membershipList.splice(index, 1);
-    selectedGroup.memberDetailList.splice(index, 1);
-    this.trigger(this.group);
-
-    var query = this.getQueryParams();
-    query.action = 'removeMember';
-    query.groupId = selectedGroup.id;
-    query.emplid = member;
-
-
-    var success = function(json) {
-      this.data = json;
-      actions.removeMemberSucceeded();
-      this.output();
-    }.bind(this);
-
-    var fail = function() {
-      actions.removeMemberFailed('Could not remove member. Please try again.');
-    };
-
-    var req = request
-      .post(this.api('handleAdHocGroup'))
-      .query(query)
-      .end(requestCallback(success, fail));
+    this.output();
   },
   //
   // Handler methods
   //
-  handleSuccess: function(data, groupId) {
-console.log('~~~', data)
-    var adviseeFlagLink = data.adviseeFlagLink;
+  output: function() {
+    if(!this.data || this.groupId === undefined) {
+      return;
+    }
 
-    this.data = data;
+    var adviseeFlagLink = this.data.adviseeFlagLink;
+
     this.sortByKey = !!this.sortByKey ? this.sortByKey : sortStore.defaultSortByKey;
     this.isAscending = this.isAscending !== undefined ? this.isAscending : sortStore.defaultIsAscending;
 
@@ -139,21 +54,18 @@ console.log('~~~', data)
       sr: params.sr
     });
 
-    var group = data.groupMap[groupId];
-console.log('***', groupId, group)
+    var group = this.data.groupMap[this.groupId];
     group.memberDetailList = group.memberList
-    //var output = adviseeList
       .map(function(id) {
-        var member = data.memberMap[id];
+        var member = this.data.memberMap[id];
         member.hours = helpers.round(member.hours, 1);
         member.programGpa = helpers.round(member.programGpa, 2);
         member.iuGpa = helpers.round(member.iuGpa, 2);
         return member;
-      })
+      }, this)
       .sort(helpers.sortBy(this.sortByKey, this.isAscending, sortStore.defaultSortByKey))
       .map(this.formatMemberDetail, this);
 
-    this.group = group;
     this.trigger(group);
   },
   formatMemberDetail: function(advisee) {
@@ -335,47 +247,5 @@ console.log('***', groupId, group)
         }
       ]
     };
-  },
-  handleFail: function() {
-    var message = (
-      <span>
-        Advisees could not load.
-        Please <button className='adv-Alert-link adv-Link' onClick={actions.getData}>try again</button>.
-      </span>
-    );
-    actions.getDataFailed(message);
-  },
-  handleAddMemberSuccess: function(json) {
-    var data = dataStore.data;
-
-    console.log('**', json, data);
-    // Store group.
-//    var newMemberDetailMap = json.memberMap.map(this.formatMemberDetail, this);
-
-    var newMemberDetailMap = json.memberMap;
-
-    for (var key in newMemberDetailMap) {
-      if (newMemberDetailMap.hasOwnProperty(key)) {
-        newMemberDetailMap[key] = this.formatMemberDetail(newMemberDetailMap[key]);
-      }
-    }
-
-    console.log('*$*', newMemberDetailMap);
-
-    for (var key in newMemberDetailMap) {
-      if (newMemberDetailMap.hasOwnProperty(key)) {
-        this.data.memberMap[key] = newMemberDetailMap[key];
-      }
-    }
-
-console.log('^^^', this.data.memberMap);
-
-    // Broadcast changes.
-    this.trigger(this.data);
-  },
-  handleAddMemberFailure: function(json) {
-    actions.addMemberFailed('Could not add member. Please try again.');
   }
 });
-
-module.exports = groupStore;

@@ -100,7 +100,8 @@ var GroupSelector = React.createClass({
   //
   // Action methods
   //
-  onCreateGroupCompleted: function(id) {
+  onCreateGroupCompleted: function(group) {
+    var id = group.groupId;
     var option = this.state.options.filter(function(option) {
       return option.id === id;
     })[0];

@@ -4,7 +4,7 @@ var Reflux = require('reflux');
 
 var dataStore = require('./data');
 
-var groupListStore = Reflux.createStore({
+module.exports = Reflux.createStore({
   init: function() {
     this.listenTo(dataStore, this.onStoreChange);
   },
@@ -27,5 +27,3 @@ var groupListStore = Reflux.createStore({
     this.trigger(this.data);
   }
 });
-
-module.exports = groupListStore;
