@@ -9,8 +9,8 @@ module.exports = Reflux.createStore({
   //
   // Action methods
   //
-  onGetDataCompleted: function(data) {
-    this.data = data;
+  onGetDataCompleted: function(json) {
+    this.data = json;
     this.output();
   },
   onCreateGroupCompleted: function(group) {

@@ -25,8 +25,8 @@ actions.addMember.listen(function(groupId, value) {
 });
 
 function completed(groupId) {
-  return function(data) {
-    actions.addMember.completed(groupId, data);
+  return function(json) {
+    actions.addMember.completed(groupId, json);
   }
 }
 

@@ -20,9 +20,9 @@ actions.createGroup.listen(function(name) {
     .end(helpers.requestCallback(completed, failed));
 });
 
-function completed(data) {
+function completed(json) {
   // Prepare group object.
-  var key = Object.keys(data.groupMap)[0];
+  var key = Object.keys(json.groupMap)[0];
   var group = data.groupMap[key];
   group.memberList = [];
 

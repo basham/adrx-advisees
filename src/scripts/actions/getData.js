@@ -29,8 +29,8 @@ function local() {
   }, 0);
 }
 
-function completed(data) {
-  actions.getData.completed(data);
+function completed(json) {
+  actions.getData.completed(json);
 }
 
 function failed() {
