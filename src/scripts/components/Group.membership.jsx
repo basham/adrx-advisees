@@ -188,12 +188,11 @@ console.log('###', this.state.data);
               {advisee.universityId}
             </p>
           </div>
-          <span
-            data-index={index}
+          <button
             className="adv-Advisee-controls-remove"
-            onClick={this.handleRemoveButtonClick}>
+            onClick={this.handleRemoveButtonClick(advisee)}>
             {"\u2716"}
-          </span>
+          </button>
         </header>
       </li>
     );
@@ -201,9 +200,10 @@ console.log('###', this.state.data);
   //
   // Handler methods
   //
-  handleRemoveButtonClick: function(event) {
-    var index = event.target.getAttribute("data-index");
-    actions.removeMember(index);
+  handleRemoveButtonClick: function(member) {
+    return function(event) {
+      actions.removeMember(this.state.data.groupId, member.universityId);
+    }.bind(this);
   },
   handleTitleInputChange: function(e) {
     this.setState({

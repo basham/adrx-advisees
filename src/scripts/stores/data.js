@@ -30,10 +30,9 @@ module.exports = Reflux.createStore({
     this.output();
   },
   onRemoveMemberCompleted: function(groupId, memberId) {
-    //var selectedGroup = this.group;
-    //var member = selectedGroup.membershipList.splice(index, 1);
-    //selectedGroup.memberDetailList.splice(index, 1);
-    //this.output();
+    var list = this.data.groupMap[groupId].memberList;
+    list = list.splice(list.indexOf(memberId), 1);
+    this.output();
   },
   //
   // Helper methods
