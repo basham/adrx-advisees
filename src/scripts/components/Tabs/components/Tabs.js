@@ -6,17 +6,11 @@ module.exports = React.createClass({
   displayName: 'Tabs',
   propTypes: {
     className: React.PropTypes.string,
-    onSelect: React.PropTypes.func,
-    selectedIndex: React.PropTypes.number
+    onSelect: React.PropTypes.func
   },
   //
   // Lifecycle methods
   //
-  getDefaultProps: function() {
-    return {
-      selectedIndex: 0
-    };
-  },
   getInitialState: function() {
     var tabIds = [];
     var panelIds = [];
@@ -27,9 +21,22 @@ module.exports = React.createClass({
       panelIds.push(uuid());
     });
 
+    // Get the index of the first non-disabled tab.
+    var tabs = this.getTabs();
+    var index = 0;
+    var count = tabs.length;
+    // Loop through each tab.
+    for(; index < count; index++) {
+      // Skip disabled tabs.
+      if(tabs[index].props.disabled) {
+        continue;
+      }
+      break;
+    }
+
     return {
       panelIds: panelIds,
-      selectedIndex: this.props.selectedIndex,
+      selectedIndex: index,
       tabIds: tabIds
     };
   },

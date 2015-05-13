@@ -221,9 +221,7 @@ var GroupView = React.createClass({
         <div className="adv-Advisee-details">
           {advisee.details.map(this.renderAdviseeDetail)}
         </div>
-        <Tabs
-          className="adv-Tabs"
-          selectedIndex={0}>
+        <Tabs className="adv-Tabs">
           <TabList>
             <Tab disabled={!hasStudentGroups}>
               {TabLabel_Groups}

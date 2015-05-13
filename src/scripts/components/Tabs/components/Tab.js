@@ -1,11 +1,5 @@
 var React = require('react');
 
-function syncNodeAttributes(node, props) {
-  if(props.selected && !props.disabled) {
-    node.focus();
-  }
-}
-
 module.exports = React.createClass({
   displayName: 'Tab',
   propTypes: {
@@ -21,11 +15,8 @@ module.exports = React.createClass({
   //
   // Lifecycle methods
   //
-  componentDidMount: function() {
-    syncNodeAttributes(this.getDOMNode(), this.props);
-  },
   componentDidUpdate: function() {
-    syncNodeAttributes(this.getDOMNode(), this.props);
+    this.focus();
   },
   //
   // Render methods
@@ -46,5 +37,13 @@ module.exports = React.createClass({
         {this.props.children}
       </li>
     );
+  },
+  //
+  // Helper methods
+  //
+  focus: function() {
+    if(this.props.selected && !this.props.disabled) {
+      this.getDOMNode().focus();
+    }
   }
 });
