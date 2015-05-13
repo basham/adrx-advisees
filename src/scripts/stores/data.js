@@ -20,11 +20,12 @@ module.exports = Reflux.createStore({
   onAddMemberCompleted: function(groupId, json) {
     Object.keys(json.emplidsResultMap).forEach(function(key) {
       var status = json.emplidsResultMap[key];
+      var emplid = status[0];
       var isAdded = status[1] === 'Added';
       if(isAdded) {
-        var member = json.memberMap[key];
-        this.data.memberMap[key] = member;
-        this.data.groupMap[groupId].memberList.push(key);
+        var member = json.memberMap[emplid];
+        this.data.memberMap[emplid] = member;
+        this.data.groupMap[groupId].memberList.push(emplid);
       }
     }.bind(this));
     this.output();
