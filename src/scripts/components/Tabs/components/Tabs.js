@@ -37,6 +37,7 @@ module.exports = React.createClass({
     return {
       panelIds: panelIds,
       selectedIndex: index,
+      shouldFocus: false,
       tabIds: tabIds
     };
   },
@@ -54,7 +55,8 @@ module.exports = React.createClass({
           onKeyDown: this.handleKeyDown,
           panelId: this.state.panelIds[index],
           ref: 'tabs-' + index,
-          selected: this.state.selectedIndex === index
+          selected: this.state.selectedIndex === index,
+          shouldFocus: this.state.shouldFocus
         });
       }.bind(this)
     );
@@ -174,6 +176,7 @@ module.exports = React.createClass({
     this.setState(
       {
         selectedIndex: index,
+        shouldFocus: true,
         showPanel: showPanel
       },
       function() {

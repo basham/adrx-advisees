@@ -10,13 +10,16 @@ module.exports = React.createClass({
     onClick: React.PropTypes.func,
     onKeyDown: React.PropTypes.func,
     panelId: React.PropTypes.string,
-    selected: React.PropTypes.bool
+    selected: React.PropTypes.bool,
+    shouldFocus: React.PropTypes.bool
   },
   //
   // Lifecycle methods
   //
   componentDidUpdate: function() {
-    this.focus();
+    if(this.props.shouldFocus && this.props.selected && !this.props.disabled) {
+      this.getDOMNode().focus();
+    }
   },
   //
   // Render methods
@@ -37,13 +40,5 @@ module.exports = React.createClass({
         {this.props.children}
       </li>
     );
-  },
-  //
-  // Helper methods
-  //
-  focus: function() {
-    if(this.props.selected && !this.props.disabled) {
-      this.getDOMNode().focus();
-    }
   }
 });
