@@ -2,24 +2,43 @@ var restify = require('restify');
 
 var data = require('./data.json');
 
-function respond(req, res, next) {
-  res.send({ hello: req.params.name });
-  next();
-}
-
 var server = restify.createServer();
 
+// Improves how the server responds to `curl` requests.
 server.pre(restify.pre.userAgentConnection());
 
-server.get('/data', function(req, res, next) {
-  res.send(data);
+// Parse query string for use in `req.query`.
+server.use(restify.queryParser());
+
+// Print each request.
+server.use(function(req, res, next) {
+  console.log(req.method, req.url, req.query);
   next();
 });
 
-// curl -is http://localhost:8080/hello/mark | json
-server.get('/hello/:name', respond);
-server.head('/hello/:name', respond);
+// Redirect production-style API calls to more ideal routes.
+server.post('/sisaarex-dev/adrx/portal.do', function(req, res, next) {
+  switch(req.query.action) {
+    // curl -isX POST http://localhost:8000/sisaarex-dev/adrx/portal.do?action=getGroupsAndMembers | json
+    case 'getGroupsAndMembers':
+      req.method = 'GET';
+      next('data');
+      break;
+  }
+  next();
+});
 
-server.listen(8080, function() {
+// curl -is http://localhost:8000/data | json
+server.get(
+  {
+    name: 'data',
+    path: '/data'
+  },
+  function(req, res, next) {
+    res.send(data);
+    next();
+  });
+
+server.listen(8000, function() {
   console.log('%s listening at %s', server.name, server.url);
 });
