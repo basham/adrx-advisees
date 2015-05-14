@@ -1,0 +1,103 @@
+.adv-Selector {
+
+  &-button {
+    .textShadow();
+    background-color: @color-Interactive--100;
+    border: unit(1/16, em) solid @color-Interactive--400;
+    border-radius: 0.25em;
+    color: @color-Interactive--750;
+    cursor: pointer;
+    padding: 0.5em;
+    min-width: 20em;
+    text-align: left;
+
+    &:focus {
+      .focus();
+    }
+
+    &--open {
+      border-radius: 0.25em 0.25em 0 0;
+    }
+
+    &--disabled,
+    &[disabled],
+    fieldset[disabled] & {
+      background-color: @color-Interactive--100;
+      border-color: @color-Interactive--150;
+      color: @color-Interactive--400;
+      cursor: default;
+    }
+  }
+
+  &-buttonContent {
+    display: flex;
+  }
+
+  &-buttonLabel {
+    display: block;
+    flex: 1;
+  }
+
+  &-icon {
+    fill: @color-Interactive--750;
+    margin-left: 1em;
+  }
+
+  &-form {
+    .shadow();
+    background-color: @color-White;
+    border: unit(1/16, em) solid @color-Interactive--400;
+    box-sizing: border-box;
+    display: block;
+    margin: unit(-1/16, em) 0 0;
+    min-width: 20em;
+    padding: 0;
+    position: absolute;
+    z-index: 1;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &-inputBox {
+    padding: 0.5em;
+  }
+
+  &-optionList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &-option {
+    border-top: unit(1/16, em) solid @color-Interactive--100;
+    display: flex;
+    padding: 0.5em;
+
+    &:hover {
+      background-color: @color-Interactive--100;
+    }
+
+    &--selected {
+      background-color: @color-Interactive--100;
+    }
+  }
+
+  &-systemOption {
+    font-style: italic;
+  }
+
+  &-optionLabel {
+    flex: 1;
+  }
+
+  &-createOption {
+    padding: 0.5em;
+  }
+
+  &-createOptionValue {
+    font-family: inherit;
+    font-weight: bold;
+  }
+}

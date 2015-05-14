@@ -27,7 +27,7 @@ var Alert = React.createClass({
       'adv-Alert--' + type
     ].join(' ');
 
-    return this.transferPropsTo(
+    return (
       <p
         className={classNames}
         ref="content"

@@ -1,11 +1,5 @@
 var React = require('react');
 
-function syncNodeAttributes(node, props) {
-  if(props.selected && !props.disabled) {
-    node.focus();
-  }
-}
-
 module.exports = React.createClass({
   displayName: 'Tab',
   propTypes: {
@@ -16,16 +10,16 @@ module.exports = React.createClass({
     onClick: React.PropTypes.func,
     onKeyDown: React.PropTypes.func,
     panelId: React.PropTypes.string,
-    selected: React.PropTypes.bool
+    selected: React.PropTypes.bool,
+    shouldFocus: React.PropTypes.bool
   },
   //
   // Lifecycle methods
   //
-  componentDidMount: function() {
-    syncNodeAttributes(this.getDOMNode(), this.props);
-  },
   componentDidUpdate: function() {
-    syncNodeAttributes(this.getDOMNode(), this.props);
+    if(this.props.shouldFocus && this.props.selected && !this.props.disabled) {
+      this.getDOMNode().focus();
+    }
   },
   //
   // Render methods

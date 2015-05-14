@@ -1,6 +1,32 @@
 {
-  "adviseeList": [
-    {
+  "defaultGroupId": "0",
+  "groupMap": {
+    "0": {
+      "groupId": "0",
+      "groupName": "Advisees",
+      "membershipList": [
+        "7496827183",
+        "4786766189",
+        "3970471366",
+        "7994177191",
+        "3478623139",
+        "0519535902",
+        "3594629652",
+        "5474916620",
+        "8795173306",
+        "8242035571"
+      ]
+    },
+    "1": {
+      "groupId": "1",
+      "groupName": "Probation students",
+      "membershipList": [
+        "4786766189"
+      ]
+    }
+  },
+  "memberMap": {
+    "7496827183": {
       "emplid": "7496827183",
       "studentName": "Blanda, Angelina Fannie",
       "institution": "IUBLA",
@@ -18,108 +44,108 @@
       "hours": "111.5",
       "programGpa": "",
       "iuGpa": "",
-      flagsStatus: false,
-      sisStudentGroupList: [
-      {
-      institution: "IUBLA",
-      effectiveDateFormatted: "2010-09-01",
-      effectiveStatusBoolean: true,
-      institutionDescr: "Bloomington",
-      stdntGroup: "PREL",
-      stdntGroupDescr: "Pre-Law Interest"
-      },
-      {
-      institution: "IUBLA",
-      effectiveDateFormatted: "2011-08-01",
-      effectiveStatusBoolean: false,
-      institutionDescr: "Bloomington",
-      stdntGroup: "VB08",
-      stdntGroupDescr: "UDIV Business Intended"
-      },
-      {
-      institution: "IUBLA",
-      effectiveDateFormatted: "2011-10-01",
-      effectiveStatusBoolean: false,
-      institutionDescr: "Bloomington",
-      stdntGroup: "UDOP",
-      stdntGroupDescr: "UD Orientation Prg Participant"
-      },
-      {
-      institution: "IUBLA",
-      effectiveDateFormatted: "2012-07-09",
-      effectiveStatusBoolean: false,
-      institutionDescr: "Bloomington",
-      stdntGroup: "VB01",
-      stdntGroupDescr: "Kelley School Direct Admit"
-      },
-      {
-      institution: "IUBLA",
-      effectiveDateFormatted: "2012-07-20",
-      effectiveStatusBoolean: true,
-      institutionDescr: "Bloomington",
-      stdntGroup: "VB02",
-      stdntGroupDescr: "Business Honors Program"
-      },
-      {
-      institution: "IUBLA",
-      effectiveDateFormatted: "2013-12-23",
-      effectiveStatusBoolean: true,
-      institutionDescr: "Bloomington",
-      stdntGroup: "VGEV",
-      stdntGroupDescr: "GenEd: Overseas Study"
-      }
+      "flagsStatus": false,
+      "sisStudentGroupList": [
+        {
+          "institution": "IUBLA",
+          "effectiveDateFormatted": "2010-09-01",
+          "effectiveStatusBoolean": true,
+          "institutionDescr": "Bloomington",
+          "stdntGroup": "PREL",
+          "stdntGroupDescr": "Pre-Law Interest"
+        },
+        {
+          "institution": "IUBLA",
+          "effectiveDateFormatted": "2011-08-01",
+          "effectiveStatusBoolean": false,
+          "institutionDescr": "Bloomington",
+          "stdntGroup": "VB08",
+          "stdntGroupDescr": "UDIV Business Intended"
+        },
+        {
+          "institution": "IUBLA",
+          "effectiveDateFormatted": "2011-10-01",
+          "effectiveStatusBoolean": false,
+          "institutionDescr": "Bloomington",
+          "stdntGroup": "UDOP",
+          "stdntGroupDescr": "UD Orientation Prg Participant"
+        },
+        {
+          "institution": "IUBLA",
+          "effectiveDateFormatted": "2012-07-09",
+          "effectiveStatusBoolean": false,
+          "institutionDescr": "Bloomington",
+          "stdntGroup": "VB01",
+          "stdntGroupDescr": "Kelley School Direct Admit"
+        },
+        {
+          "institution": "IUBLA",
+          "effectiveDateFormatted": "2012-07-20",
+          "effectiveStatusBoolean": true,
+          "institutionDescr": "Bloomington",
+          "stdntGroup": "VB02",
+          "stdntGroupDescr": "Business Honors Program"
+        },
+        {
+          "institution": "IUBLA",
+          "effectiveDateFormatted": "2013-12-23",
+          "effectiveStatusBoolean": true,
+          "institutionDescr": "Bloomington",
+          "stdntGroup": "VGEV",
+          "stdntGroupDescr": "GenEd: Overseas Study"
+        }
       ],
-      negativeSisServiceIndicatorList: [
-      {
-      institutionDescr: "BL",
-      serviceIndicatorCode: "G07",
-      serviceIndicatorDescr: "No Personal Deferment",
-      impactBoolean: true,
-      reasonDescr: "Delinquent",
-      startTerm: "4148",
-      startTermDescr: "Fall2014",
-      endTerm: "    ",
-      startDateFormatted: "2014-08-18"
-      },
-      {
-      institutionDescr: "BL",
-      serviceIndicatorCode: "G03",
-      serviceIndicatorDescr: "Past Due Encumbrance",
-      impactBoolean: true,
-      reasonDescr: "Past Due",
-      startTerm: "",
-      startTermDescr: "",
-      endTerm: " ",
-      startDateFormatted: "2015-02-15"
-      }
+      "negativeSisServiceIndicatorList": [
+        {
+          "institutionDescr": "BL",
+          "serviceIndicatorCode": "G07",
+          "serviceIndicatorDescr": "No Personal Deferment",
+          "impactBoolean": true,
+          "reasonDescr": "Delinquent",
+          "startTerm": "4148",
+          "startTermDescr": "Fall2014",
+          "endTerm": "    ",
+          "startDateFormatted": "2014-08-18"
+        },
+        {
+          "institutionDescr": "BL",
+          "serviceIndicatorCode": "G03",
+          "serviceIndicatorDescr": "Past Due Encumbrance",
+          "impactBoolean": true,
+          "reasonDescr": "Past Due",
+          "startTerm": "",
+          "startTermDescr": "",
+          "endTerm": " ",
+          "startDateFormatted": "2015-02-15"
+        }
       ],
-      positiveSisServiceIndicatorList: [
-      {
-      institutionDescr: "BL",
-      serviceIndicatorCode: "R39",
-      serviceIndicatorDescr: "Completed Verify for US Status",
-      impactBoolean: false,
-      reasonDescr: "Eligible for Benefits",
-      startTerm: "4118",
-      startTermDescr: "Fall 2011",
-      endTerm: "",
-      endTermDescr: "",
-      startDateFormatted: "2011-08-08"
-      },
-      {
-      institutionDescr: "BL",
-      serviceIndicatorCode: "G14",
-      serviceIndicatorDescr: "Signed Title IV Waiver",
-      impactBoolean: false,
-      reasonDescr: "Grandfathered",
-      startTerm: "",
-      startTermDescr: "",
-      endTerm: "    ",
-      startDateFormatted: "2012-05-04"
-      }
+      "positiveSisServiceIndicatorList": [
+        {
+          "institutionDescr": "BL",
+          "serviceIndicatorCode": "R39",
+          "serviceIndicatorDescr": "Completed Verify for US Status",
+          "impactBoolean": false,
+          "reasonDescr": "Eligible for Benefits",
+          "startTerm": "4118",
+          "startTermDescr": "Fall 2011",
+          "endTerm": "",
+          "endTermDescr": "",
+          "startDateFormatted": "2011-08-08"
+        },
+        {
+          "institutionDescr": "BL",
+          "serviceIndicatorCode": "G14",
+          "serviceIndicatorDescr": "Signed Title IV Waiver",
+          "impactBoolean": false,
+          "reasonDescr": "Grandfathered",
+          "startTerm": "",
+          "startTermDescr": "",
+          "endTerm": "    ",
+          "startDateFormatted": "2012-05-04"
+        }
       ]
     },
-    {
+    "4786766189": {
       "emplid": "4786766189",
       "studentName": "Pfannerstill, Meggie Carter",
       "institution": "IUBLA",
@@ -140,11 +166,11 @@
       "hours": "116",
       "programGpa": "3.45",
       "iuGpa": "3.45",
-      flagsStatus: true,
-      negativeSisServiceIndicatorList: [ ],
-      positiveSisServiceIndicatorList: [ ]
+      "flagsStatus": true,
+      "negativeSisServiceIndicatorList": [],
+      "positiveSisServiceIndicatorList": []
     },
-    {
+    "3970471366": {
       "emplid": "3970471366",
       "studentName": "Wolff, Ewald Jerad",
       "institution": "IUBLA",
@@ -164,108 +190,108 @@
       "hours": "134",
       "programGpa": "3.874",
       "iuGpa": "3.874",
-      flagsStatus: false,
-      sisStudentGroupList: [
-      {
-      institution: "IUBLA",
-      effectiveDateFormatted: "2010-09-01",
-      effectiveStatusBoolean: true,
-      institutionDescr: "Bloomington",
-      stdntGroup: "PREL",
-      stdntGroupDescr: "Pre-Law Interest"
-      },
-      {
-      institution: "IUBLA",
-      effectiveDateFormatted: "2011-08-01",
-      effectiveStatusBoolean: false,
-      institutionDescr: "Bloomington",
-      stdntGroup: "VB08",
-      stdntGroupDescr: "UDIV Business Intended"
-      },
-      {
-      institution: "IUBLA",
-      effectiveDateFormatted: "2011-10-01",
-      effectiveStatusBoolean: false,
-      institutionDescr: "Bloomington",
-      stdntGroup: "UDOP",
-      stdntGroupDescr: "UD Orientation Prg Participant"
-      },
-      {
-      institution: "IUBLA",
-      effectiveDateFormatted: "2012-07-09",
-      effectiveStatusBoolean: false,
-      institutionDescr: "Bloomington",
-      stdntGroup: "VB01",
-      stdntGroupDescr: "Kelley School Direct Admit"
-      },
-      {
-      institution: "IUBLA",
-      effectiveDateFormatted: "2012-07-20",
-      effectiveStatusBoolean: true,
-      institutionDescr: "Bloomington",
-      stdntGroup: "VB02",
-      stdntGroupDescr: "Business Honors Program"
-      },
-      {
-      institution: "IUBLA",
-      effectiveDateFormatted: "2013-12-23",
-      effectiveStatusBoolean: true,
-      institutionDescr: "Bloomington",
-      stdntGroup: "VGEV",
-      stdntGroupDescr: "GenEd: Overseas Study"
-      }
+      "flagsStatus": false,
+      "sisStudentGroupList": [
+        {
+          "institution": "IUBLA",
+          "effectiveDateFormatted": "2010-09-01",
+          "effectiveStatusBoolean": true,
+          "institutionDescr": "Bloomington",
+          "stdntGroup": "PREL",
+          "stdntGroupDescr": "Pre-Law Interest"
+        },
+        {
+          "institution": "IUBLA",
+          "effectiveDateFormatted": "2011-08-01",
+          "effectiveStatusBoolean": false,
+          "institutionDescr": "Bloomington",
+          "stdntGroup": "VB08",
+          "stdntGroupDescr": "UDIV Business Intended"
+        },
+        {
+          "institution": "IUBLA",
+          "effectiveDateFormatted": "2011-10-01",
+          "effectiveStatusBoolean": false,
+          "institutionDescr": "Bloomington",
+          "stdntGroup": "UDOP",
+          "stdntGroupDescr": "UD Orientation Prg Participant"
+        },
+        {
+          "institution": "IUBLA",
+          "effectiveDateFormatted": "2012-07-09",
+          "effectiveStatusBoolean": false,
+          "institutionDescr": "Bloomington",
+          "stdntGroup": "VB01",
+          "stdntGroupDescr": "Kelley School Direct Admit"
+        },
+        {
+          "institution": "IUBLA",
+          "effectiveDateFormatted": "2012-07-20",
+          "effectiveStatusBoolean": true,
+          "institutionDescr": "Bloomington",
+          "stdntGroup": "VB02",
+          "stdntGroupDescr": "Business Honors Program"
+        },
+        {
+          "institution": "IUBLA",
+          "effectiveDateFormatted": "2013-12-23",
+          "effectiveStatusBoolean": true,
+          "institutionDescr": "Bloomington",
+          "stdntGroup": "VGEV",
+          "stdntGroupDescr": "GenEd: Overseas Study"
+        }
       ],
-      negativeSisServiceIndicatorList: [
-      {
-      institutionDescr: "BL",
-      serviceIndicatorCode: "G07",
-      serviceIndicatorDescr: "No Personal Deferment",
-      impactBoolean: true,
-      reasonDescr: "Delinquent",
-      startTerm: "4148",
-      startTermDescr: "Fall2014",
-      endTerm: "    ",
-      startDateFormatted: "2014-08-18"
-      },
-      {
-      institutionDescr: "BL",
-      serviceIndicatorCode: "G03",
-      serviceIndicatorDescr: "Past Due Encumbrance",
-      impactBoolean: true,
-      reasonDescr: "Past Due",
-      startTerm: "",
-      startTermDescr: "",
-      endTerm: " ",
-      startDateFormatted: "2015-02-15"
-      }
+      "negativeSisServiceIndicatorList": [
+        {
+          "institutionDescr": "BL",
+          "serviceIndicatorCode": "G07",
+          "serviceIndicatorDescr": "No Personal Deferment",
+          "impactBoolean": true,
+          "reasonDescr": "Delinquent",
+          "startTerm": "4148",
+          "startTermDescr": "Fall2014",
+          "endTerm": "    ",
+          "startDateFormatted": "2014-08-18"
+        },
+        {
+          "institutionDescr": "BL",
+          "serviceIndicatorCode": "G03",
+          "serviceIndicatorDescr": "Past Due Encumbrance",
+          "impactBoolean": true,
+          "reasonDescr": "Past Due",
+          "startTerm": "",
+          "startTermDescr": "",
+          "endTerm": " ",
+          "startDateFormatted": "2015-02-15"
+        }
       ],
-      positiveSisServiceIndicatorList: [
-      {
-      institutionDescr: "BL",
-      serviceIndicatorCode: "R39",
-      serviceIndicatorDescr: "Completed Verify for US Status",
-      impactBoolean: false,
-      reasonDescr: "Eligible for Benefits",
-      startTerm: "4118",
-      startTermDescr: "Fall 2011",
-      endTerm: "",
-      endTermDescr: "",
-      startDateFormatted: "2011-08-08"
-      },
-      {
-      institutionDescr: "BL",
-      serviceIndicatorCode: "G14",
-      serviceIndicatorDescr: "Signed Title IV Waiver",
-      impactBoolean: false,
-      reasonDescr: "Grandfathered",
-      startTerm: "",
-      startTermDescr: "",
-      endTerm: "    ",
-      startDateFormatted: "2012-05-04"
-      }
+      "positiveSisServiceIndicatorList": [
+        {
+          "institutionDescr": "BL",
+          "serviceIndicatorCode": "R39",
+          "serviceIndicatorDescr": "Completed Verify for US Status",
+          "impactBoolean": false,
+          "reasonDescr": "Eligible for Benefits",
+          "startTerm": "4118",
+          "startTermDescr": "Fall 2011",
+          "endTerm": "",
+          "endTermDescr": "",
+          "startDateFormatted": "2011-08-08"
+        },
+        {
+          "institutionDescr": "BL",
+          "serviceIndicatorCode": "G14",
+          "serviceIndicatorDescr": "Signed Title IV Waiver",
+          "impactBoolean": false,
+          "reasonDescr": "Grandfathered",
+          "startTerm": "",
+          "startTermDescr": "",
+          "endTerm": "    ",
+          "startDateFormatted": "2012-05-04"
+        }
       ]
     },
-    {
+    "7994177191": {
       "emplid": "7994177191",
       "studentName": "Tillman, Zoey Dolores",
       "institution": "IUBLA",
@@ -286,64 +312,64 @@
       "hours": "62",
       "programGpa": "3.422",
       "iuGpa": "3.524",
-      flagsStatus: false,
-      sisStudentGroupList: [
+      "flagsStatus": false,
+      "sisStudentGroupList": [
         {
-        institution: "IUBLA",
-        effectiveDateFormatted: "2013-08-13",
-        effectiveStatusBoolean: true,
-        institutionDescr: "Bloomington",
-        stdntGroup: "PRPT",
-        stdntGroupDescr: "Pre-Physical Therapy Interest"
+          "institution": "IUBLA",
+          "effectiveDateFormatted": "2013-08-13",
+          "effectiveStatusBoolean": true,
+          "institutionDescr": "Bloomington",
+          "stdntGroup": "PRPT",
+          "stdntGroupDescr": "Pre-Physical Therapy Interest"
         },
         {
-        institution: "IUBLA",
-        effectiveDateFormatted: "2014-06-13",
-        effectiveStatusBoolean: true,
-        institutionDescr: "Bloomington",
-        stdntGroup: "VLC1",
-        stdntGroupDescr: "Collins Living Learning Center"
+          "institution": "IUBLA",
+          "effectiveDateFormatted": "2014-06-13",
+          "effectiveStatusBoolean": true,
+          "institutionDescr": "Bloomington",
+          "stdntGroup": "VLC1",
+          "stdntGroupDescr": "Collins Living Learning Center"
         }
       ],
-      negativeSisServiceIndicatorList: [ ],
-      positiveSisServiceIndicatorList: [
+      "negativeSisServiceIndicatorList": [],
+      "positiveSisServiceIndicatorList": [
         {
-        institutionDescr: "BL",
-        serviceIndicatorCode: "R39",
-        serviceIndicatorDescr: "Completed Verify for US Status",
-        impactBoolean: false,
-        reasonDescr: "Eligible for Benefits",
-        startTerm: "4118",
-        startTermDescr: "Fall 2011",
-        endTerm: "",
-        endTermDescr: "",
-        startDateFormatted: "2014-05-01"
+          "institutionDescr": "BL",
+          "serviceIndicatorCode": "R39",
+          "serviceIndicatorDescr": "Completed Verify for US Status",
+          "impactBoolean": false,
+          "reasonDescr": "Eligible for Benefits",
+          "startTerm": "4118",
+          "startTermDescr": "Fall 2011",
+          "endTerm": "",
+          "endTermDescr": "",
+          "startDateFormatted": "2014-05-01"
         },
         {
-        institutionDescr: "BL",
-        serviceIndicatorCode: "F02",
-        serviceIndicatorDescr: "FT State Aid-Completion Reqmts",
-        impactBoolean: false,
-        reasonDescr: "Renewal Subj to CR Completion",
-        startTerm: "",
-        startTermDescr: "",
-        endTerm: "    ",
-        startDateFormatted: "2014-10-21"
+          "institutionDescr": "BL",
+          "serviceIndicatorCode": "F02",
+          "serviceIndicatorDescr": "FT State Aid-Completion Reqmts",
+          "impactBoolean": false,
+          "reasonDescr": "Renewal Subj to CR Completion",
+          "startTerm": "",
+          "startTermDescr": "",
+          "endTerm": "    ",
+          "startDateFormatted": "2014-10-21"
         },
         {
-        institutionDescr: "BL",
-        serviceIndicatorCode: "G14",
-        serviceIndicatorDescr: "Signed Title IV Waiver",
-        impactBoolean: false,
-        reasonDescr: "Signed",
-        startTerm: "",
-        startTermDescr: "",
-        endTerm: " ",
-        startDateFormatted: "2014-04-15"
+          "institutionDescr": "BL",
+          "serviceIndicatorCode": "G14",
+          "serviceIndicatorDescr": "Signed Title IV Waiver",
+          "impactBoolean": false,
+          "reasonDescr": "Signed",
+          "startTerm": "",
+          "startTermDescr": "",
+          "endTerm": " ",
+          "startDateFormatted": "2014-04-15"
         }
       ]
     },
-    {
+    "3478623139": {
       "emplid": "3478623139",
       "studentName": "Gleichner, Zander Zane",
       "institution": "IUBLA",
@@ -360,15 +386,12 @@
       "hours": "103.5",
       "programGpa": "3.446",
       "iuGpa": "3.446",
-      flagsStatus: false,
-      sisStudentGroupList: [
-      ],
-      negativeSisServiceIndicatorList: [
-      ],
-      positiveSisServiceIndicatorList: [
-      ]
+      "flagsStatus": false,
+      "sisStudentGroupList": [],
+      "negativeSisServiceIndicatorList": [],
+      "positiveSisServiceIndicatorList": []
     },
-    {
+    "0519535902": {
       "emplid": "0519535902",
       "studentName": "Nienow, Madaline Jadon",
       "institution": "IUBLA",
@@ -390,15 +413,12 @@
       "hours": "59.5",
       "programGpa": "3.06",
       "iuGpa": "3.06",
-      flagsStatus: false,
-      sisStudentGroupList: [
-      ],
-      negativeSisServiceIndicatorList: [
-      ],
-      positiveSisServiceIndicatorList: [
-      ]
+      "flagsStatus": false,
+      "sisStudentGroupList": [],
+      "negativeSisServiceIndicatorList": [],
+      "positiveSisServiceIndicatorList": []
     },
-    {
+    "3594629652": {
       "emplid": "3594629652",
       "studentName": "Kohler, Stacey Phyllis",
       "institution": "IUBLA",
@@ -419,13 +439,12 @@
       "hours": "137",
       "programGpa": "3.088",
       "iuGpa": "3.128",
-      flagsStatus: false,
-      sisStudentGroupList: [ ],
-      negativeSisServiceIndicatorList: [ ],
-      positiveSisServiceIndicatorList: [
-      ]
+      "flagsStatus": false,
+      "sisStudentGroupList": [ ],
+      "negativeSisServiceIndicatorList": [],
+      "positiveSisServiceIndicatorList": []
     },
-    {
+    "5474916620": {
       "emplid": "5474916620",
       "studentName": "Funk, Clemmie Mercedes",
       "institution": "IUBLA",
@@ -445,9 +464,9 @@
       "hours": "100",
       "programGpa": "3.41",
       "iuGpa": "3.41",
-      flagsStatus: false
+      "flagsStatus": false
     },
-    {
+    "8795173306": {
       "emplid": "8795173306",
       "studentName": "Hermann, Georgianna Francesco",
       "institution": "IUBLA",
@@ -467,9 +486,9 @@
       "hours": "111",
       "programGpa": "3.26",
       "iuGpa": "3.26",
-      flagsStatus: true,
+      "flagsStatus": true,
     },
-    {
+    "8242035571": {
       "emplid": "8242035571",
       "studentName": "Schuster, Catharine Lizeth",
       "institution": "IUBLA",
@@ -489,8 +508,8 @@
       "hours": "34",
       "programGpa": "3.222",
       "iuGpa": "3.222",
-      flagsStatus: true
+      "flagsStatus": true
     }
-  ],
-  adviseeFlagLink: "https://es-ps-env1.iu.edu/login/login?instance=PS1DEV&cassvc=PS8&url=https://es-ps-env1.iu.edu/psp/PS1DEV/IU/HRMS/c/SA_LEARNING_MANAGEMENT.IU_SPF_FLAG.GBL?Page=IU_SPF_FLAGS&Action=A&ExactKeys=Y&TargetFrameName=None"
+  },
+  "adviseeFlagLink": "https://es-ps-env1.iu.edu/login/login?instance=PS1DEV&cassvc=PS8&url=https://es-ps-env1.iu.edu/psp/PS1DEV/IU/HRMS/c/SA_LEARNING_MANAGEMENT.IU_SPF_FLAG.GBL?Page=IU_SPF_FLAGS&Action=A&ExactKeys=Y&TargetFrameName=None"
 }
