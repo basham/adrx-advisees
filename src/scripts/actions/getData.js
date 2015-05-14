@@ -6,8 +6,6 @@ var actions = require('./');
 var helpers = require('../helpers');
 
 actions.getData.listen(function() {
-  //return local();
-
   var params = helpers.getQueryParams();
   request
     .post(helpers.api('handleAdHocGroup'))
@@ -22,12 +20,6 @@ actions.getData.listen(function() {
     })
     .end(helpers.requestCallback(completed, failed));
 });
-
-function local() {
-  setTimeout(function() {
-    completed(require('../stores/data.json'));
-  }, 0);
-}
 
 function completed(json) {
   actions.getData.completed(json);
