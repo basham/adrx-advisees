@@ -36,7 +36,7 @@ var App = React.createClass({
       return;
     }
     // Transition to the default group if there is none selected.
-    var id = data.defautGroupId;
+    var id = data.defaultGroupId;
     this.context.router.transitionTo('group.view', { id: id });
   }
 });
