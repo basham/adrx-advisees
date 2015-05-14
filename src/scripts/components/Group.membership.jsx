@@ -166,22 +166,20 @@ console.log('###', this.state.data);
   },
   renderMember: function(member, index) {
     return (
-      <li className="adv-MemberList-item adv-Member">
-        <header className="adv-Member-header">
-          <div className="adv-Member-nameGroup adv-Member-nameGroup--fixed">
-            <h2 className="adv-Member-heading">
-              {member.name}
-            </h2>
-            <p className="adv-Member-id">
-              {member.universityId}
-            </p>
-          </div>
-          <button
-            className="adv-Member-controls-remove"
-            onClick={this.handleRemoveButtonClick(member)}>
-            {"\u2716"}
-          </button>
+      <li className="adv-MemberList-item adv-Membership">
+        <header className="adv-Membership-header">
+          <h2 className="adv-Membership-name">
+            {member.name}
+          </h2>
+          <span className="adv-Membership-id">
+            {member.universityId}
+          </span>
         </header>
+        <button
+          className="adv-Membership-controls-remove"
+          onClick={this.handleRemoveButtonClick(member)}>
+          {"\u2716"}
+        </button>
       </li>
     );
   },
