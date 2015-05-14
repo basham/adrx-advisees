@@ -36,7 +36,7 @@ function completed(json) {
 function failed() {
   var message = (
     <span>
-      Advisees could not load.
+      Could not load.
       Please <button className='adv-Alert-link adv-Link' onClick={actions.getData}>try again</button>.
     </span>
   );

@@ -35,27 +35,12 @@ var GroupMembership = React.createClass({
   //
   // Lifecycle methods
   //
-  componentDidMount: function() {
-    window.addEventListener('resize', this.onWindowResized);
-  },
-  componentWillUnmount: function() {
-    window.removeEventListener('resize', this.onWindowResized);
-  },
-  componentWillMount: function(){
-    this.setState({
-      isLongerTabLabel: window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange
-    });
-  },
   getInitialState: function() {
     return {
       data: {
         memberDetailList: []
       },
-      isAscending: sortStore.defaultIsAscending,
-      isLongerTabLabel: true,
       requesting: true,
-      sortByKey: sortStore.defaultSortByKey,
-      windowInnerWidth_borderForTabLabelChange: 700,
       inputValue: '',
       isBulkUpload: false
     }
@@ -104,7 +89,7 @@ console.log('###', this.state.data);
   renderEmpty: function() {
     return (
       <p className="adv-App-empty">
-        You currently have no advisees assigned to you.
+        No students in this group.
       </p>
     );
   },
@@ -119,11 +104,8 @@ console.log('###', this.state.data);
   renderAddMember: function() {
     return (
       <form
-        className="adv-Advisee-nameGroup adv-Advisee-nameGroup--fixed"
+        className="adv-Member-nameGroup adv-Member-nameGroup--fixed"
         onSubmit={this.handleSubmit}>
-        <h2 className="adv-Advisee-heading">
-          Student
-        </h2>
         {this.state.isBulkUpload ? this.renderTextareaField() : this.renderInputField()}
         <button
           className="qn-ActionBar-item qn-Button"
@@ -136,6 +118,9 @@ console.log('###', this.state.data);
   renderInputField: function() {
     return (
       <p>
+        <label className="adv-Member-heading">
+          Student
+        </label>
         <input
           className="adv-Input"
           onChange={this.handleTitleInputChange}
@@ -152,6 +137,9 @@ console.log('###', this.state.data);
   renderTextareaField: function() {
     return (
       <p>
+        <label className="adv-Member-heading">
+          Students
+        </label>
         <textarea
           className="adv-Input"
           onChange={this.handleTitleInputChange}
@@ -170,27 +158,27 @@ console.log('###', this.state.data);
             {count} {helpers.pluralize(count, 'student')}
           </p>
         </div>
-        <ol className="adv-AdviseeList">
-          {data.map(this.renderAdvisee)}
+        <ol className="adv-MemberList">
+          {data.map(this.renderMember)}
         </ol>
       </div>
     );
   },
-  renderAdvisee: function(advisee, index) {
+  renderMember: function(member, index) {
     return (
-      <li className="adv-AdviseeList-item adv-Advisee">
-        <header className="adv-Advisee-header">
-          <div className="adv-Advisee-nameGroup adv-Advisee-nameGroup--fixed">
-            <h2 className="adv-Advisee-heading">
-              {advisee.name}
+      <li className="adv-MemberList-item adv-Member">
+        <header className="adv-Member-header">
+          <div className="adv-Member-nameGroup adv-Member-nameGroup--fixed">
+            <h2 className="adv-Member-heading">
+              {member.name}
             </h2>
-            <p className="adv-Advisee-id">
-              {advisee.universityId}
+            <p className="adv-Member-id">
+              {member.universityId}
             </p>
           </div>
           <button
-            className="adv-Advisee-controls-remove"
-            onClick={this.handleRemoveButtonClick(advisee)}>
+            className="adv-Member-controls-remove"
+            onClick={this.handleRemoveButtonClick(member)}>
             {"\u2716"}
           </button>
         </header>
@@ -248,21 +236,6 @@ console.log('---add member', groupId, value);
     }, function() {
       this.refs.error.getDOMNode().focus();
     });
-  },
-  //
-  // Window event listener
-  //
-  //--------------------------------------------------//
-  //-- Created by Eunmee Yi on 2015/04/09
-  //--------------------------------------------------//
-  onWindowResized: function() {
-    var isLongerTabLabel = this.state.isLongerTabLabel;
-    var isViewportSmall = window.innerWidth < this.state.windowInnerWidth_borderForTabLabelChange;
-    if((isLongerTabLabel && isViewportSmall) || (!isLongerTabLabel && !isViewportSmall)) {
-      this.setState({
-        isLongerTabLabel: !this.state.isLongerTabLabel
-      });
-    }
   }
 });
 
