@@ -34,7 +34,7 @@ var GroupMembership = React.createClass({
     };
 
     return (
-      <div>
+      <div className="adv-App-membership">
         <header className="adv-App-header">
           <h1 className="adv-App-heading">
             {this.props.data.groupName}
@@ -52,7 +52,7 @@ var GroupMembership = React.createClass({
           to="group.view">
           Return to Caseload
         </Link>
-        {this.renderAddMember()}
+        {this.state.isBulkUpload ? this.renderBulkAddMemberForm() : this.renderSingleAddMemberForm()}
         {this.renderList()}
       </div>
     );
@@ -65,18 +65,11 @@ var GroupMembership = React.createClass({
         type="error"/>
     );
   },
-  renderAddMember: function() {
+  renderSingleAddMemberForm: function() {
     return (
       <form
-        className="adv-AddMemberForm"
-        onSubmit={this.handleSubmit}>
-        {this.state.isBulkUpload ? this.renderTextareaField() : this.renderInputField()}
-      </form>
-    );
-  },
-  renderInputField: function() {
-    return (
-      <div>
+        className="adv-AddMemberForm adv-AddMemberForm--small"
+        submit={this.handleSubmit}>
         <label
           className="adv-Label"
           htmlFor="adv-AddMemberForm-input">
@@ -86,7 +79,7 @@ var GroupMembership = React.createClass({
           <input
             className="adv-AddMemberForm-input adv-Input"
             id="adv-AddMemberForm-input"
-            onChange={this.handleTitleInputChange}
+            onChange={this.handleInputChange}
             maxLength="10"
             placeholder="Username or University ID"
             type="text"/>
@@ -103,12 +96,14 @@ var GroupMembership = React.createClass({
             Add students in bulk
           </a>
         </p>
-      </div>
+      </form>
     );
   },
-  renderTextareaField: function() {
+  renderBulkAddMemberForm: function() {
     return (
-      <div>
+      <form
+        className="adv-AddMemberForm"
+        submit={this.handleSubmit}>
         <label
           className="adv-Label"
           htmlFor="adv-AddMemberForm-textarea">
@@ -117,12 +112,11 @@ var GroupMembership = React.createClass({
         <textarea
           className="adv-AddMemberForm-textarea adv-Input"
           id="adv-AddMemberForm-textarea"
+          onChange={this.handleInputChange}
           placeholder="Usernames or University IDs"
-          onChange={this.handleTitleInputChange}
-          rows="5"
-          cols="50" />
+          rows="5"/>
         <p className="adv-AddMemberForm-instructions">
-          Separate student usernames or University IDs with a space, a return, or a comma.
+          Separate student usernames or University&nbsp;IDs with a space, a return, or a comma.
         </p>
         <div className="adv-AddMemberForm-controls">
           <button
@@ -131,7 +125,7 @@ var GroupMembership = React.createClass({
             Add
           </button>
         </div>
-      </div>
+      </form>
     );
   },
   renderEmpty: function() {
@@ -162,7 +156,7 @@ var GroupMembership = React.createClass({
       </div>
     );
   },
-  renderMember: function(member, index) {
+  renderMember: function(member) {
     return (
       <li className="adv-MemberList-item adv-Membership">
         <header className="adv-Membership-header">
@@ -188,28 +182,26 @@ var GroupMembership = React.createClass({
   //
   // Handler methods
   //
+  handleBulkButtonClick: function(event) {
+    this.setState({
+      isBulkUpload: true
+    });
+  },
+  handleInputChange: function(event) {
+    this.setState({
+      inputValue: event.target.value
+    });
+  },
   handleRemoveButtonClick: function(member) {
     return function(event) {
       actions.removeMember(this.props.data.groupId, member.universityId);
     }.bind(this);
   },
-  handleTitleInputChange: function(e) {
-    this.setState({
-      memberId: e.target.value
-    });
-  },
   handleSubmit: function(event) {
     event.preventDefault();
     var groupId = this.props.data.groupId;
-    var value = this.state.memberId;
-
-console.log('---add member', groupId, value);
+    var value = this.state.inputValue;
     actions.addMember(groupId, value);
-  },
-  handleBulkButtonClick: function(event) {
-    this.setState({
-      isBulkUpload: true
-    });
   }
 });
 

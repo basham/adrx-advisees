@@ -1,8 +1,9 @@
 .adv-AddMemberForm {
-  border-bottom: unit(1/16, em) solid @color-Border;
-  border-top: unit(1/16, em) solid @color-Border;
-  margin: 1em 0 1em;
-  max-width: 20em;
+  margin: 2em 1em;
+
+  &--small {
+    max-width: 20em;
+  }
 
   &-field {
     display: flex;
@@ -27,7 +28,9 @@
 
   &-instructions {
     font-size: @scale-FontSize--05i;
+    line-height: @scale-FontSize--10;
     margin: 0.5rem 0;
+    max-width: 20rem;
   }
 
   &-controls {
