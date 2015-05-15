@@ -14,7 +14,7 @@ var GroupEdit = require('./components/Group.edit');
 var routes = (
   <Route handler={App} ignoreScrollBehavior>
     <Route name="group" handler={Group} path=":id">
-      <DefaultRoute name="group.view" handler={GroupView} />
+      <DefaultRoute handler={GroupView} />
       <Route name="group.membership" handler={GroupMembership} path="membership" />
       <Route name="group.edit" handler={GroupEdit} path="edit" />
     </Route>

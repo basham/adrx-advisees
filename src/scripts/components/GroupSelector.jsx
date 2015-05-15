@@ -55,7 +55,7 @@ var GroupSelector = React.createClass({
     this.setState({
       selectedIndex: index
     });
-    this.context.router.transitionTo('group.view', { id: id });
+    this.context.router.transitionTo('group', { id: id });
   },
   handleCreate: function(value) {
     var options = this.state.options;

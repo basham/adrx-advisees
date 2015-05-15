@@ -49,7 +49,7 @@ var GroupMembership = React.createClass({
         <Link
           className="adv-Link adv-Link--underlined"
           params={params}
-          to="group.view">
+          to="group">
           Return to Caseload
         </Link>
         {this.state.isBulkUpload ? this.renderBulkAddMemberForm() : this.renderSingleAddMemberForm()}
