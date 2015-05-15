@@ -17,6 +17,11 @@ module.exports = Reflux.createStore({
     this.data.groupMap[group.groupId] = group;
     this.output();
   },
+  onDeleteGroupCompleted: function(groupId) {
+    delete this.data.groupMap[groupId];
+    actions.redirectToGroup(this.data.defaultGroupId);
+    this.output();
+  },
   onAddMemberCompleted: function(groupId, json) {
     Object.keys(json.emplidsResultMap).forEach(function(key) {
       var status = json.emplidsResultMap[key];

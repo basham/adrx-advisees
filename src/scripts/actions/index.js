@@ -17,13 +17,20 @@ module.exports = Reflux.createActions({
   // Group actions
   getGroup: async,
   createGroup: async,
+  renameGroup: async,
+  deleteGroup: async,
   // Member actions
   addMember: async,
-  removeMember: async
+  removeMember: async,
+  removeAllMembers: async,
+  redirectToGroup: {}
 });
 
 require('./getData');
 require('./getGroup');
 require('./createGroup');
+require('./renameGroup');
+require('./deleteGroup');
 require('./addMember');
 require('./removeMember');
+require('./removeAllMembers');

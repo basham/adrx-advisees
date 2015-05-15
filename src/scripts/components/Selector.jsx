@@ -255,7 +255,6 @@ var Selector = React.createClass({
   },
   handleSubmit: function(event) {
     event.preventDefault();
-console.log('---', this.state.selectedIndex, this.state.options);
     var option = this.state.options[this.state.selectedIndex];
     if(option.isNewOption) {
       if(this.props.onCreate) {
@@ -265,7 +264,6 @@ console.log('---', this.state.selectedIndex, this.state.options);
     else {
       if(this.props.onChange) {
         var index = this.props.options.indexOf(option);
-console.log('%%%', index, option.id, this.props.options);
         this.props.onChange(index, option.id);
       }
     }
