@@ -22,8 +22,9 @@ actions.createGroup.listen(function(name) {
 
 function completed(json) {
   // Prepare group object.
+console.log('~~~', json);
   var key = Object.keys(json.groupMap)[0];
-  var group = data.groupMap[key];
+  var group = json.groupMap[key];
   group.memberList = [];
 
   actions.createGroup.completed(group);
