@@ -55,7 +55,9 @@ var GroupEdit = React.createClass({
       isLongerTabLabel: true,
       requesting: true,
       sortByKey: sortStore.defaultSortByKey,
-      windowInnerWidth_borderForTabLabelChange: 700
+      windowInnerWidth_borderForTabLabelChange: 700,
+      inputValue: '',
+      isBulkUpload: false
     }
   },
   //
@@ -65,22 +67,20 @@ var GroupEdit = React.createClass({
     var data = this.state.data.memberDetailList;
     var content = null;
 
-    if(this.state.requesting) {
-      content = this.renderLoading();
-    }
-    else if(this.state.errorMessage) {
-      content = this.renderError();
-    }
-    else {
-      content = data.length ? this.renderList(data) : this.renderEmpty();
-    }
+    console.log('```', data);
 
     return (
       <section className="adv-App">
         <h1 className="adv-App-heading">
-          Edit Group
+        Edit Group
         </h1>
-        <Link to="group.membership" className="qn-Header-headingLink" params={{ id: this.props.params.id}}>Cancel</Link>
+        <Link to="group.membership" className="adv-Link--underlined" params={{ id: this.props.params.id}}>Cancel</Link>
+        <div>
+          {this.renderRenameGroup()}
+          {this.renderRemoveGroupMembers(data.groupId)}
+          {this.renderDeleteGroup()}
+        </div>
+        {content}
       </section>
     );
   },
@@ -107,25 +107,90 @@ var GroupEdit = React.createClass({
         type="error"/>
     );
   },
+  renderRenameGroup: function() {
+    return (
+      <form
+        className="adv-Advisee-nameGroup adv-Advisee-nameGroup--fixed"
+        onSubmit={this.handleSubmit}>
+        <h2 className="adv-Advisee-heading">
+          Rename
+        </h2>
+        <input
+          className="adv-Input"
+          onChange={this.handleNameInputChange}
+          maxLength="10"
+          type="text"/>
+        <button
+          className="qn-ActionBar-item qn-Button"
+          type="submit">
+          Save
+        </button>
+      </form>
+    );
+  },
+  renderRemoveGroupMembers: function() {
+    return (
+      <div>
+        <h2 className="adv-Advisee-heading">
+          Remove all members
+        </h2>
+        <div>
+          Remove all members. The group will not be deleted.
+        </div>
+        <button
+          className="adv-Advisee-controls-remove"
+          onClick={this.handleRemoveAllMembersButtonClick()}>
+          Remove all members
+        </button>
+      </div>
+    );
+  },
+  renderDeleteGroup: function() {
+    return (
+      <div>
+        <h2 className="adv-Advisee-heading">
+          Delete group
+        </h2>
+        <div>
+          Remove all members and delete the group.
+        </div>
+        <button
+          className="adv-Advisee-controls-remove"
+          onClick={this.handleDeleteGroupButtonClick()}>
+          Delete group
+        </button>
+      </div>
+    );
+  },
   //
   // Handler methods
   //
-  handleSortByChange: function(event) {
-    var key = event.target.value;
-    // Reset order whenever sort field changes.
-    var isAscending = key !== 'flagsStatus';
+  handleGroupNameInputChange: function(e) {
     this.setState({
-      sortByKey: key,
-      isAscending: isAscending
+      groupName: e.target.value
     });
-    actions.sortBy(key, isAscending);
   },
-  handleOrderByChange: function(event) {
-    var isAscending = event.target.value === 'true';
+  handleRemoveAllMembersButtonClick: function() {
+    return function(event) {
+      actions.removeAllMembers(this.state.data.groupId);
+    }.bind(this);
+  },
+  handleDeleteGroupButtonClick: function() {
+    return function(event) {
+      actions.deleteGroup(this.state.data.groupId);
+    }.bind(this);
+  },
+  handleSubmit: function(event) {
+    event.preventDefault();
+    var groupId = this.state.data.groupId;
+    var value = this.state.memberId;
+
+    actions.addMember(groupId, value);
+  },
+  handleBulkButtonClick: function(event) {
     this.setState({
-      isAscending: isAscending
+      isBulkUpload: true
     });
-    actions.sortBy(this.state.sortByKey, isAscending);
   },
   //
   // Store methods
