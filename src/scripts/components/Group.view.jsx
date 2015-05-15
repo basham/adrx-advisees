@@ -80,8 +80,17 @@ var GroupView = React.createClass({
         <h1 className="adv-App-heading">
           Caseload
         </h1>
-        <GroupSelector selectedId={this.props.params.id}/>
-        <Link to="group.membership" className="qn-Header-headingLink" params={{ id: this.props.params.id}}>Edit membership</Link>
+        <div className="adv-GroupSelectorControls">
+          <GroupSelector
+            className="adv-GroupSelectorControls-selector"
+            selectedId={this.props.params.id}/>
+          <Link
+            className="adv-GroupSelectorControls-link"
+            params={{ id: this.props.params.id}}
+            to="group.membership">
+            Edit membership
+          </Link>
+        </div>
         {content}
       </section>
     );

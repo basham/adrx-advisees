@@ -3,23 +3,15 @@
 var React = require('react');
 var Reflux = require('reflux');
 var Router = require('react-router');
-var classNames = require('classnames');
 var Link = Router.Link;
-
-var ReactTabs = require('./Tabs');
-var Tab = ReactTabs.Tab;
-var Tabs = ReactTabs.Tabs;
-var TabList = ReactTabs.TabList;
-var TabPanel = ReactTabs.TabPanel;
+var classNames = require('classnames');
 
 var actions = require('../actions');
 var groupStore = require('../stores/group');
-var sortStore = require('../stores/sort');
 var helpers = require('../helpers');
 
 var Alert = require('./Alert');
 var Icon = require('./Icon');
-var GroupSelector = require('./GroupSelector');
 
 var GroupMembership = React.createClass({
   mixins: [
@@ -49,10 +41,7 @@ var GroupMembership = React.createClass({
   // Render methods
   //
   render: function() {
-    var data = this.state.data.memberDetailList;
     var content = null;
-
-console.log('###', this.state.data);
 
     if(this.state.requesting) {
       content = this.renderLoading();
@@ -61,19 +50,11 @@ console.log('###', this.state.data);
       content = this.renderError();
     }
     else {
-      content = data.length ? this.renderList(data) : this.renderEmpty();
+      content = this.renderContent();
     }
 
     return (
       <section className="adv-App">
-        <h1 className="adv-App-heading">
-        Edit Membership
-        </h1>
-        <Link to="group.edit" className="adv-Link--underlined" params={{ id: this.props.params.id}}>Edit group</Link>
-        <Link to="group.view" className="adv-Link--underlined" params={{ id: this.props.params.id}}>Return to Caseload</Link>
-        <div>
-          {this.renderAddMember()}
-        </div>
         {content}
       </section>
     );
@@ -84,6 +65,45 @@ console.log('###', this.state.data);
         Loading
         <span className="adv-ProcessIndicator"/>
       </p>
+    );
+  },
+  renderContent: function() {
+    var data = this.state.data.memberDetailList;
+    var content = null;
+
+    if(this.state.errorMessage) {
+      content = this.renderError();
+    }
+    else {
+      content = data.length ? this.renderList(data) : this.renderEmpty();
+    }
+
+    var params = {
+      id: this.props.params.id
+    };
+
+    return (
+      <div>
+        <header className="adv-App-header">
+          <h1 className="adv-App-heading">
+            {this.state.data.groupName}
+          </h1>
+          <Link
+            className="adv-App-editGroupLink adv-Link adv-Link--underlined"
+            params={params}
+            to="group.edit">
+            Edit group
+          </Link>
+        </header>
+        <Link
+          className="adv-Link adv-Link--underlined"
+          params={params}
+          to="group.view">
+          Return to Caseload
+        </Link>
+        {this.renderAddMember()}
+        {content}
+      </div>
     );
   },
   renderEmpty: function() {
@@ -104,49 +124,70 @@ console.log('###', this.state.data);
   renderAddMember: function() {
     return (
       <form
-        className="adv-Member-nameGroup adv-Member-nameGroup--fixed"
+        className="adv-AddMemberForm"
         onSubmit={this.handleSubmit}>
         {this.state.isBulkUpload ? this.renderTextareaField() : this.renderInputField()}
-        <button
-          className="qn-ActionBar-item qn-Button"
-          type="submit">
-          Add
-        </button>
       </form>
     );
   },
   renderInputField: function() {
     return (
-      <p>
-        <label className="adv-Member-heading">
+      <div>
+        <label
+          className="adv-Label"
+          htmlFor="adv-AddMemberForm-input">
           Student
         </label>
-        <input
-          className="adv-Input"
-          onChange={this.handleTitleInputChange}
-          maxLength="10"
-          type="text"/>
-        <a
-          className="adv-Link--underlined"
-          onClick={this.handleBulkButtonClick}>
-          Add students in bulk
-        </a>
-      </p>
+        <div className="adv-AddMemberForm-field">
+          <input
+            className="adv-AddMemberForm-input adv-Input"
+            id="adv-AddMemberForm-input"
+            onChange={this.handleTitleInputChange}
+            maxLength="10"
+            placeholder="Username or University ID"
+            type="text"/>
+          <button
+            className="adv-AddMemberForm-button adv-Button"
+            type="submit">
+            Add
+          </button>
+        </div>
+        <p>
+          <a
+            className="adv-Link adv-Link--underlined"
+            onClick={this.handleBulkButtonClick}>
+            Add students in bulk
+          </a>
+        </p>
+      </div>
     );
   },
   renderTextareaField: function() {
     return (
-      <p>
-        <label className="adv-Member-heading">
+      <div>
+        <label
+          className="adv-Label"
+          htmlFor="adv-AddMemberForm-textarea">
           Students
         </label>
         <textarea
-          className="adv-Input"
+          className="adv-AddMemberForm-textarea adv-Input"
+          id="adv-AddMemberForm-textarea"
+          placeholder="Usernames or University IDs"
           onChange={this.handleTitleInputChange}
           rows="5"
           cols="50" />
-        Separate student usernames or University IDs with a space, a return, or a comma.
-      </p>
+        <p className="adv-AddMemberForm-instructions">
+          Separate student usernames or University IDs with a space, a return, or a comma.
+        </p>
+        <div className="adv-AddMemberForm-controls">
+          <button
+            className="adv-AddMemberForm-button adv-Button"
+            type="submit">
+            Add
+          </button>
+        </div>
+      </div>
     );
   },
   renderList: function(data) {
@@ -175,11 +216,15 @@ console.log('###', this.state.data);
             {member.universityId}
           </span>
         </header>
-        <button
-          className="adv-Membership-controls-remove"
-          onClick={this.handleRemoveButtonClick(member)}>
-          {"\u2716"}
-        </button>
+        <div className="adv-Membership-controls">
+          <button
+            className="adv-Membership-removeButton"
+            onClick={this.handleRemoveButtonClick(member)}>
+            <Icon
+              className="adv-Membership-removeButtonIcon"
+              name="x"/>
+          </button>
+        </div>
       </li>
     );
   },
