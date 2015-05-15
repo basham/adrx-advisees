@@ -67,8 +67,6 @@ var GroupEdit = React.createClass({
     var data = this.state.data.memberDetailList;
     var content = null;
 
-    console.log('```', data);
-
     return (
       <section className="adv-App">
         <h1 className="adv-App-heading">

@@ -12,7 +12,8 @@ var App = React.createClass({
     router: React.PropTypes.func
   },
   mixins: [
-    Reflux.listenTo(dataStore, 'onStoreChange')
+    Reflux.listenTo(dataStore, 'onStoreChange'),
+    Reflux.listenToMany(actions)
   ],
   //
   // Lifecycle methods
@@ -35,9 +36,15 @@ var App = React.createClass({
     if(this.props.params.id) {
       return;
     }
+
     // Transition to the default group if there is none selected.
-    var id = data.defaultGroupId;
-    this.context.router.transitionTo('group.view', { id: id });
+    actions.redirectToGroup(data.defaultGroupId);
+  },
+  //
+  // Action methods
+  //
+  onRedirectToGroup: function(groupId) {
+    this.context.router.transitionTo('group.view', { id: groupId });
   }
 });
 

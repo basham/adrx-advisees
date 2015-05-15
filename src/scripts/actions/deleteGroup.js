@@ -5,7 +5,7 @@ var request = require('superagent');
 var actions = require('./');
 var helpers = require('../helpers');
 
-actions.deleteGroup.listen(function(groupId, memberId) {
+actions.deleteGroup.listen(function(groupId) {
   var query = helpers.getQueryParams();
   query.action = 'deleteGroup';
   query.groupId = groupId;
@@ -13,20 +13,18 @@ actions.deleteGroup.listen(function(groupId, memberId) {
   // TO DO:
   // Remove `query.emplids` once backend accepts `send` parameters.
   //
-  query.emplids = memberId;
+  query.groupId = groupId;
 
   request
     .post(helpers.api('handleAdHocGroup'))
     .query(query)
-    .send({
-      emplids: memberId
-    })
-    .end(helpers.requestCallback(completed(groupId, memberId), failed));
+    .send()
+    .end(helpers.requestCallback(completed(groupId), failed));
 });
 
-function completed(groupId, memberId) {
+function completed(groupId) {
   return function() {
-    actions.deleteGroup.completed(groupId, memberId);
+    actions.deleteGroup.completed(groupId);
   }
 }
 
