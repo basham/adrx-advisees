@@ -3,10 +3,11 @@ var browserSync = require('browser-sync');
 var url = require('url');
 var proxy = require('proxy-middleware');
 
+var config = require('./config');
+
 gulp.task('browser-sync', function() {
-  // Forward all requests at `localhost:3000/api` to the dev server root.
-  var path = 'http://156.56.176.66:8080';
-  var proxyOptions = url.parse(path);
+  // Forward all requests at `localhost:3000/api` to a remote server.
+  var proxyOptions = url.parse(config.proxy);
   proxyOptions.route = '/api';
 
   browserSync({

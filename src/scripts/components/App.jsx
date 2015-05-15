@@ -44,7 +44,7 @@ var App = React.createClass({
   // Action methods
   //
   onRedirectToGroup: function(groupId) {
-    this.context.router.transitionTo('group.view', { id: groupId });
+    this.context.router.transitionTo('group', { id: groupId });
   }
 });
 

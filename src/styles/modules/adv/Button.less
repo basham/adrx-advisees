@@ -1,0 +1,72 @@
+.adv-Button {
+  .textShadow();
+  background-color: @color-Interactive--150;
+  border: unit(2/16, rem) solid @color-Interactive--400;
+  border-radius: 0.25em;
+  color: @color-Interactive--750;
+  display: inline-block;
+  padding: unit(10/16, em);
+  position: relative;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    .textShadow(@color-Interactive--750);
+    background-color: @color-Interactive--400;
+    color: @color-White;
+    // Fixes for specificity issues.
+    text-decoration: none;
+  }
+
+  &:focus {
+    .focus();
+  }
+
+  &:active {
+    position: relative;
+    top: unit(1/16, em);
+  }
+
+  &--primary {
+    background-color: @color-Interactive--750;
+    border-color: @color-Interactive--750;
+    color: @color-White;
+    text-shadow: none;
+
+    &:hover,
+    &:focus {
+      background-color: @color-White;
+      color: @color-Interactive--750;
+      text-shadow: inherit;
+    }
+  }
+
+  &--small {
+    font-size: @scale-FontSize--10i;
+    padding: unit(7/16, rem);
+  }
+
+  &--extraSmall {
+    font-size: @scale-FontSize--10i;
+    padding: unit(4/16, rem);
+  }
+
+  &--disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: default;
+
+    &,
+    &:hover,
+    &:focus {
+      .textShadow();
+      background-color: @color-Interactive--100;
+      border-color: @color-Interactive--150;
+      color: @color-Interactive--400;
+    }
+
+    &:active {
+      top: 0;
+    }
+  }
+}

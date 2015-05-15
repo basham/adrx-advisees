@@ -1,0 +1,40 @@
+.adv-AddMemberForm {
+  margin: 2em 1em;
+
+  &--small {
+    max-width: 20em;
+  }
+
+  &-field {
+    display: flex;
+  }
+
+  //
+  // TO DO:
+  // `[type]` is only used to increase specificity for the sake of overwriting
+  // Bootstrap. Remove once Bootstrap is removed.
+  //
+  &-input[type] {
+    margin-right: 0.5em;
+  }
+
+  &-textarea {
+    resize: vertical;
+  }
+
+  &-button {
+    flex-shrink: 0;
+  }
+
+  &-instructions {
+    font-size: @scale-FontSize--05i;
+    line-height: @scale-FontSize--10;
+    margin: 0.5rem 0;
+    max-width: 20rem;
+  }
+
+  &-controls {
+    margin: 0.5em 0;
+    text-align: right;
+  }
+}

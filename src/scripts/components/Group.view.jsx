@@ -13,7 +13,6 @@ var TabList = ReactTabs.TabList;
 var TabPanel = ReactTabs.TabPanel;
 
 var actions = require('../actions');
-var groupStore = require('../stores/group');
 var sortStore = require('../stores/sort');
 var helpers = require('../helpers');
 
@@ -22,15 +21,8 @@ var Icon = require('./Icon');
 var GroupSelector = require('./GroupSelector');
 
 var GroupView = React.createClass({
-  mixins: [
-    Reflux.listenTo(groupStore, 'onStoreChange'),
-    Reflux.listenToMany(actions)
-  ],
-  statics: {
-    // Get the group by its id when transitioning to this component.
-    willTransitionTo: function(transition, params) {
-      actions.getGroup(params.id);
-    }
+  propTypes: {
+    data: React.PropTypes.object
   },
   //
   // Lifecycle methods
@@ -48,12 +40,8 @@ var GroupView = React.createClass({
   },
   getInitialState: function() {
     return {
-      data: {
-        memberDetailList: []
-      },
       isAscending: sortStore.defaultIsAscending,
       isLongerTabLabel: true,
-      requesting: true,
       sortByKey: sortStore.defaultSortByKey,
       windowInnerWidth_borderForTabLabelChange: 700
     }
@@ -62,42 +50,30 @@ var GroupView = React.createClass({
   // Render methods
   //
   render: function() {
-    var data = this.state.data.memberDetailList;
-    var content = null;
-
-    if(this.state.requesting) {
-      content = this.renderLoading();
-    }
-    else if(this.state.errorMessage) {
-      content = this.renderError();
-    }
-    else {
-      content = data.length ? this.renderList(data) : this.renderEmpty();
-    }
-
     return (
-      <section className="adv-App">
+      <div>
         <h1 className="adv-App-heading">
           Caseload
         </h1>
-        <GroupSelector selectedId={this.props.params.id}/>
-        <Link to="group.membership" className="qn-Header-headingLink" params={{ id: this.props.params.id}}>Edit membership</Link>
-        {content}
-      </section>
-    );
-  },
-  renderLoading: function() {
-    return (
-      <p className="adv-App-loading">
-        Loading
-        <span className="adv-ProcessIndicator"/>
-      </p>
+        <div className="adv-GroupSelectorControls">
+          <GroupSelector
+            className="adv-GroupSelectorControls-selector"
+            selectedId={this.props.params.id}/>
+          <Link
+            className="adv-GroupSelectorControls-link"
+            params={{ id: this.props.params.id}}
+            to="group.membership">
+            Edit membership
+          </Link>
+        </div>
+        {this.renderList()}
+      </div>
     );
   },
   renderEmpty: function() {
     return (
       <p className="adv-App-empty">
-        You currently have no advisees assigned to you.
+        You currently have no students assigned to this group.
       </p>
     );
   },
@@ -109,8 +85,14 @@ var GroupView = React.createClass({
         type="error"/>
     );
   },
-  renderList: function(data) {
+  renderList: function() {
+    var data = this.props.data.memberDetailList;
     var count = data.length;
+
+    if(!count) {
+      return this.renderEmpty();
+    }
+
     return (
       <div>
         <div className="adv-Controls">
@@ -133,8 +115,8 @@ var GroupView = React.createClass({
             {this.renderOrderBySection()}
           </form>
         </div>
-        <ol className="adv-AdviseeList">
-          {data.map(this.renderAdvisee)}
+        <ol className="adv-MemberList">
+          {data.map(this.renderMember)}
         </ol>
       </div>
     );
@@ -177,8 +159,8 @@ var GroupView = React.createClass({
       </span>
     );
   },
-  renderAdvisee: function(advisee) {
-    var studentGroups = Array.isArray(advisee.studentGroupList) ? advisee.studentGroupList : [];
+  renderMember: function(member) {
+    var studentGroups = Array.isArray(member.studentGroupList) ? member.studentGroupList : [];
 
     //--------------------------------------------------//
     //
@@ -198,28 +180,28 @@ var GroupView = React.createClass({
     //--------------------------------------------------//
 
     var hasStudentGroups = !!studentGroups.length;
-    var hasPSI = advisee.positiveServiceIndicators_Impact.length || advisee.positiveServiceIndicators_NoImpact.length;
-    var hasNSI = advisee.negativeServiceIndicators_Impact.length || advisee.negativeServiceIndicators_NoImpact.length;
+    var hasPSI = member.positiveServiceIndicators_Impact.length || member.positiveServiceIndicators_NoImpact.length;
+    var hasNSI = member.negativeServiceIndicators_Impact.length || member.negativeServiceIndicators_NoImpact.length;
 
     return (
-      <li className="adv-AdviseeList-item adv-Advisee">
-        <header className="adv-Advisee-header">
-          <div className="adv-Advisee-nameGroup">
-            <h2 className="adv-Advisee-heading">
+      <li className="adv-MemberList-item adv-Member">
+        <header className="adv-Member-header">
+          <div className="adv-Member-nameGroup">
+            <h2 className="adv-Member-heading">
               <a
                 className="adv-Link"
-                href={advisee.url_onName}>
-                {advisee.name}
+                href={member.url_onName}>
+                {member.name}
               </a>
             </h2>
-            <p className="adv-Advisee-id">
-              {advisee.universityId}
+            <p className="adv-Member-id">
+              {member.universityId}
             </p>
           </div>
-          {this.renderAdviseeFlag(advisee)}
+          {this.renderMemberFlag(member)}
         </header>
-        <div className="adv-Advisee-details">
-          {advisee.details.map(this.renderAdviseeDetail)}
+        <div className="adv-Member-details">
+          {member.details.map(this.renderMemberDetail)}
         </div>
         <Tabs className="adv-Tabs">
           <TabList>
@@ -234,60 +216,60 @@ var GroupView = React.createClass({
             </Tab>
           </TabList>
           <TabPanel>
-            {studentGroups.map(this.renderAdviseeStudentGroup)}
+            {studentGroups.map(this.renderMemberStudentGroup)}
           </TabPanel>
           <TabPanel>
-            {this.renderAdviseeServiceIndicatorSection(advisee.negativeServiceIndicators_Impact, 'Impact')}
-            {this.renderAdviseeServiceIndicatorSection(advisee.negativeServiceIndicators_NoImpact, 'No impact')}
+            {this.renderMemberServiceIndicatorSection(member.negativeServiceIndicators_Impact, 'Impact')}
+            {this.renderMemberServiceIndicatorSection(member.negativeServiceIndicators_NoImpact, 'No impact')}
           </TabPanel>
           <TabPanel>
-            {this.renderAdviseeServiceIndicatorSection(advisee.positiveServiceIndicators_Impact, 'Impact')}
-            {this.renderAdviseeServiceIndicatorSection(advisee.positiveServiceIndicators_NoImpact, 'No impact')}
+            {this.renderMemberServiceIndicatorSection(member.positiveServiceIndicators_Impact, 'Impact')}
+            {this.renderMemberServiceIndicatorSection(member.positiveServiceIndicators_NoImpact, 'No impact')}
           </TabPanel>
         </Tabs>
       </li>
     );
   },
-  renderAdviseeDetail: function(detail) {
+  renderMemberDetail: function(detail) {
     var cn = classNames({
-      'adv-Advisee-detail': true,
-      'adv-Advisee-detail--fixed': detail.fixed,
-      'adv-Advisee-detail--right': detail.rightAlign
+      'adv-Member-detail': true,
+      'adv-Member-detail--fixed': detail.fixed,
+      'adv-Member-detail--right': detail.rightAlign
     });
 
     return (
       <dl className={cn}>
-        <dt className="adv-Advisee-detailTitle">
+        <dt className="adv-Member-detailTitle">
           {detail.title}
         </dt>
-        {detail.items.map(this.renderAdviseeDetailItem)}
+        {detail.items.map(this.renderMemberDetailItem)}
       </dl>
     );
   },
-  renderAdviseeDetailItem: function(item) {
+  renderMemberDetailItem: function(item) {
     return (
-      <dd className="adv-Advisee-detailItem">
+      <dd className="adv-Member-detailItem">
         {item}
       </dd>
     );
   },
-  renderAdviseeFlag: function(advisee) {
-    if(!advisee.flag) {
+  renderMemberFlag: function(member) {
+    if(!member.flag) {
       return null;
     }
 
     return (
       <a
-        className="adv-Advisee-flag"
-        href={advisee.url_onFlag}
+        className="adv-Member-flag"
+        href={member.url_onFlag}
         target="sisStudent">
         <Icon
-          className="adv-Advisee-flagIcon"
+          className="adv-Member-flagIcon"
           name="flag"/>
       </a>
     );
   },
-  renderAdviseeStudentGroup: function(item) {
+  renderMemberStudentGroup: function(item) {
     var cn = classNames({
       'adv-StudentGroup': true,
       'adv-StudentGroup--inactive': !item.effectiveStatusBoolean
@@ -295,7 +277,7 @@ var GroupView = React.createClass({
     return (
       <dl className={cn}>
         <dt className="adv-StudentGroup-title">
-          <dfn className="adv-Advisee-code">
+          <dfn className="adv-Member-code">
             {item.stdntGroup}
           </dfn>
           {item.stdntGroupDescr} ({item.institutionDescr})
@@ -306,7 +288,7 @@ var GroupView = React.createClass({
       </dl>
     );
   },
-  renderAdviseeServiceIndicatorSection: function(list, impactDescription) {
+  renderMemberServiceIndicatorSection: function(list, impactDescription) {
     var hasContent = Array.isArray(list) && list.length;
     if(!hasContent) {
       return null;
@@ -314,38 +296,38 @@ var GroupView = React.createClass({
 
     return (
       <div>
-        <h3 className="adv-Advisee-sectionHeading">
+        <h3 className="adv-Member-sectionHeading">
           {impactDescription}
         </h3>
-        {list.map(this.renderAdviseeServiceIndicator)}
+        {list.map(this.renderMemberServiceIndicator)}
       </div>
     );
   },
-  renderAdviseeServiceIndicator: function(item) {
+  renderMemberServiceIndicator: function(item) {
     return (
       <dl>
-        <dt className="adv-Advisee-indicatorTitle">
-          <dfn className="adv-Advisee-code">
+        <dt className="adv-Member-indicatorTitle">
+          <dfn className="adv-Member-code">
             {item.serviceIndicatorCode}
           </dfn>
           {item.serviceIndicatorDescr} ({item.institutionDescr}) &middot; {item.reasonDescr}
         </dt>
-        <dd className="adv-Advisee-details">
-          {this.renderAdviseeServiceIndicatorDetail('Start Term', item.startTermDescr)}
-          {this.renderAdviseeServiceIndicatorDetail('End Term', item.endTermDescr)}
-          {this.renderAdviseeServiceIndicatorDetail('Start Date', item.startDate)}
-          {this.renderAdviseeServiceIndicatorDetail('End Date', item.endDate)}
+        <dd className="adv-Member-details">
+          {this.renderMemberServiceIndicatorDetail('Start Term', item.startTermDescr)}
+          {this.renderMemberServiceIndicatorDetail('End Term', item.endTermDescr)}
+          {this.renderMemberServiceIndicatorDetail('Start Date', item.startDate)}
+          {this.renderMemberServiceIndicatorDetail('End Date', item.endDate)}
         </dd>
       </dl>
     );
   },
-  renderAdviseeServiceIndicatorDetail: function(title, item) {
+  renderMemberServiceIndicatorDetail: function(title, item) {
     return (
-      <dl className="adv-Advisee-detail">
-        <dt className="adv-Advisee-detailTitle">
+      <dl className="adv-Member-detail">
+        <dt className="adv-Member-detailTitle">
           {title}
         </dt>
-        <dd className="adv-Advisee-detailItem">
+        <dd className="adv-Member-detailItem">
           {item}
         </dd>
       </dl>
@@ -370,32 +352,6 @@ var GroupView = React.createClass({
       isAscending: isAscending
     });
     actions.sortBy(this.state.sortByKey, isAscending);
-  },
-  //
-  // Store methods
-  //
-  onStoreChange: function(data) {
-   this.setState({
-     data: data,
-     requesting: false
-   });
-  },
-  //
-  // Action methods
-  //
-  onGetData: function() {
-    this.setState({
-      errorMessage: null,
-      requesting: true
-    });
-  },
-  onGetDataFailed: function(message) {
-    this.setState({
-      errorMessage: message,
-      requesting: false
-    }, function() {
-      this.refs.error.getDOMNode().focus();
-    });
   },
   //
   // Window event listener

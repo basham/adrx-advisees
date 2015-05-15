@@ -3,59 +3,24 @@
 var React = require('react');
 var Reflux = require('reflux');
 var Router = require('react-router');
-var classNames = require('classnames');
 var Link = Router.Link;
-
-var ReactTabs = require('./Tabs');
-var Tab = ReactTabs.Tab;
-var Tabs = ReactTabs.Tabs;
-var TabList = ReactTabs.TabList;
-var TabPanel = ReactTabs.TabPanel;
+var classNames = require('classnames');
 
 var actions = require('../actions');
-var groupStore = require('../stores/group');
-var sortStore = require('../stores/sort');
 var helpers = require('../helpers');
 
 var Alert = require('./Alert');
 var Icon = require('./Icon');
-var GroupSelector = require('./GroupSelector');
 
 var GroupMembership = React.createClass({
-  mixins: [
-    Reflux.listenTo(groupStore, 'onStoreChange'),
-    Reflux.listenToMany(actions)
-  ],
-  statics: {
-    // Get the group by its id when transitioning to this component.
-    willTransitionTo: function(transition, params) {
-      actions.getGroup(params.id);
-    }
+  propTypes: {
+    data: React.PropTypes.object
   },
   //
   // Lifecycle methods
   //
-  componentDidMount: function() {
-    window.addEventListener('resize', this.onWindowResized);
-  },
-  componentWillUnmount: function() {
-    window.removeEventListener('resize', this.onWindowResized);
-  },
-  componentWillMount: function(){
-    this.setState({
-      isLongerTabLabel: window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange
-    });
-  },
   getInitialState: function() {
     return {
-      data: {
-        memberDetailList: []
-      },
-      isAscending: sortStore.defaultIsAscending,
-      isLongerTabLabel: true,
-      requesting: true,
-      sortByKey: sortStore.defaultSortByKey,
-      windowInnerWidth_borderForTabLabelChange: 700,
       inputValue: '',
       isBulkUpload: false
     }
@@ -64,46 +29,32 @@ var GroupMembership = React.createClass({
   // Render methods
   //
   render: function() {
-    var data = this.state.data.memberDetailList;
-    var content = null;
-
-    if(this.state.requesting) {
-      content = this.renderLoading();
-    }
-    else if(this.state.errorMessage) {
-      content = this.renderError();
-    }
-    else {
-      content = data.length ? this.renderList(data) : this.renderEmpty();
-    }
+    var params = {
+      id: this.props.params.id
+    };
 
     return (
-      <section className="adv-App">
-        <h1 className="adv-App-heading">
-        Edit Membership2
-        </h1>
-        <Link to="group.edit" className="adv-Link--underlined" params={{ id: this.props.params.id}}>Edit group</Link>
-        <Link to="group.view" className="adv-Link--underlined" params={{ id: this.props.params.id}}>Return to Caseload</Link>
-        <div>
-          {this.renderAddMember()}
-        </div>
-        {content}
-      </section>
-    );
-  },
-  renderLoading: function() {
-    return (
-      <p className="adv-App-loading">
-        Loading
-        <span className="adv-ProcessIndicator"/>
-      </p>
-    );
-  },
-  renderEmpty: function() {
-    return (
-      <p className="adv-App-empty">
-        You currently have no advisees assigned to you.
-      </p>
+      <div className="adv-App-membership">
+        <header className="adv-App-header">
+          <h1 className="adv-App-heading">
+            {this.props.data.groupName}
+          </h1>
+          <Link
+            className="adv-App-editGroupLink adv-Link adv-Link--underlined"
+            params={params}
+            to="group.edit">
+            Edit group
+          </Link>
+        </header>
+        <Link
+          className="adv-Link adv-Link--underlined"
+          params={params}
+          to="group">
+          Return to Caseload
+        </Link>
+        {this.state.isBulkUpload ? this.renderBulkAddMemberForm() : this.renderSingleAddMemberForm()}
+        {this.renderList()}
+      </div>
     );
   },
   renderError: function() {
@@ -114,53 +65,84 @@ var GroupMembership = React.createClass({
         type="error"/>
     );
   },
-  renderAddMember: function() {
+  renderSingleAddMemberForm: function() {
     return (
       <form
-        className="adv-Advisee-nameGroup adv-Advisee-nameGroup--fixed"
-        onSubmit={this.handleSubmit}>
-        <h2 className="adv-Advisee-heading">
+        className="adv-AddMemberForm adv-AddMemberForm--small"
+        submit={this.handleSubmit}>
+        <label
+          className="adv-Label"
+          htmlFor="adv-AddMemberForm-input">
           Student
-        </h2>
-        {this.state.isBulkUpload ? this.renderTextareaField() : this.renderInputField()}
-        <button
-          className="qn-ActionBar-item qn-Button"
-          type="submit">
-          Add
-        </button>
+        </label>
+        <div className="adv-AddMemberForm-field">
+          <input
+            className="adv-AddMemberForm-input adv-Input"
+            id="adv-AddMemberForm-input"
+            onChange={this.handleInputChange}
+            maxLength="10"
+            placeholder="Username or University ID"
+            type="text"/>
+          <button
+            className="adv-AddMemberForm-button adv-Button"
+            type="submit">
+            Add
+          </button>
+        </div>
+        <p>
+          <a
+            className="adv-Link adv-Link--underlined"
+            onClick={this.handleBulkButtonClick}>
+            Add students in bulk
+          </a>
+        </p>
       </form>
     );
   },
-  renderInputField: function() {
+  renderBulkAddMemberForm: function() {
     return (
-      <p>
-        <input
-          className="adv-Input"
-          onChange={this.handleTitleInputChange}
-          maxLength="10"
-          type="text"/>
-        <a
-          className="adv-Link--underlined"
-          onClick={this.handleBulkButtonClick}>
-          Add students in bulk
-        </a>
-      </p>
-    );
-  },
-  renderTextareaField: function() {
-    return (
-      <p>
+      <form
+        className="adv-AddMemberForm"
+        submit={this.handleSubmit}>
+        <label
+          className="adv-Label"
+          htmlFor="adv-AddMemberForm-textarea">
+          Students
+        </label>
         <textarea
-          className="adv-Input"
-          onChange={this.handleTitleInputChange}
-          rows="5"
-          cols="50" />
-        Separate student usernames or University IDs with a space, a return, or a comma.
+          className="adv-AddMemberForm-textarea adv-Input"
+          id="adv-AddMemberForm-textarea"
+          onChange={this.handleInputChange}
+          placeholder="Usernames or University IDs"
+          rows="5"/>
+        <p className="adv-AddMemberForm-instructions">
+          Separate student usernames or University&nbsp;IDs with a space, a return, or a comma.
+        </p>
+        <div className="adv-AddMemberForm-controls">
+          <button
+            className="adv-AddMemberForm-button adv-Button"
+            type="submit">
+            Add
+          </button>
+        </div>
+      </form>
+    );
+  },
+  renderEmpty: function() {
+    return (
+      <p className="adv-App-empty">
+        No students in this group.
       </p>
     );
   },
-  renderList: function(data) {
+  renderList: function() {
+    var data = this.props.data.memberDetailList;
     var count = data.length;
+
+    if(!count) {
+      return this.renderEmpty();
+    }
+
     return (
       <div>
         <div className="adv-Controls">
@@ -168,98 +150,58 @@ var GroupMembership = React.createClass({
             {count} {helpers.pluralize(count, 'student')}
           </p>
         </div>
-        <ol className="adv-AdviseeList">
-          {data.map(this.renderAdvisee)}
+        <ol className="adv-MemberList">
+          {data.map(this.renderMember)}
         </ol>
       </div>
     );
   },
-  renderAdvisee: function(advisee, index) {
+  renderMember: function(member) {
     return (
-      <li className="adv-AdviseeList-item adv-Advisee">
-        <header className="adv-Advisee-header">
-          <div className="adv-Advisee-nameGroup adv-Advisee-nameGroup--fixed">
-            <h2 className="adv-Advisee-heading">
-              {advisee.name}
-            </h2>
-            <p className="adv-Advisee-id">
-              {advisee.universityId}
-            </p>
-          </div>
-          <button
-            className="adv-Advisee-controls-remove"
-            onClick={this.handleRemoveButtonClick(advisee)}>
-            {"\u2716"}
-          </button>
+      <li className="adv-MemberList-item adv-Membership">
+        <header className="adv-Membership-header">
+          <h2 className="adv-Membership-name">
+            {member.name}
+          </h2>
+          <span className="adv-Membership-id">
+            {member.universityId}
+          </span>
         </header>
+        <div className="adv-Membership-controls">
+          <button
+            className="adv-Membership-removeButton"
+            onClick={this.handleRemoveButtonClick(member)}>
+            <Icon
+              className="adv-Membership-removeButtonIcon"
+              name="x"/>
+          </button>
+        </div>
       </li>
     );
   },
   //
   // Handler methods
   //
-  handleRemoveButtonClick: function(member) {
-    return function(event) {
-      actions.removeMember(this.state.data.groupId, member.universityId);
-    }.bind(this);
-  },
-  handleTitleInputChange: function(e) {
-    this.setState({
-      memberId: e.target.value
-    });
-  },
-  handleSubmit: function(event) {
-    event.preventDefault();
-    var groupId = this.state.data.groupId;
-    var value = this.state.memberId;
-
-    actions.addMember(groupId, value);
-  },
   handleBulkButtonClick: function(event) {
     this.setState({
       isBulkUpload: true
     });
   },
-  //
-  // Store methods
-  //
-  onStoreChange: function(data) {
-   this.setState({
-     data: data,
-     requesting: false
-   });
-  },
-  //
-  // Action methods
-  //
-  onGetData: function() {
+  handleInputChange: function(event) {
     this.setState({
-      errorMessage: null,
-      requesting: true
+      inputValue: event.target.value
     });
   },
-  onGetDataFailed: function(message) {
-    this.setState({
-      errorMessage: message,
-      requesting: false
-    }, function() {
-      this.refs.error.getDOMNode().focus();
-    });
+  handleRemoveButtonClick: function(member) {
+    return function(event) {
+      actions.removeMember(this.props.data.groupId, member.universityId);
+    }.bind(this);
   },
-  //
-  // Window event listener
-  //
-  //--------------------------------------------------//
-  //-- Created by Eunmee Yi on 2015/04/09
-  //--------------------------------------------------//
-  onWindowResized: function() {
-    var isLongerTabLabel = this.state.isLongerTabLabel;
-    var isViewportSmall = window.innerWidth < this.state.windowInnerWidth_borderForTabLabelChange;
-    if((isLongerTabLabel && isViewportSmall) || (!isLongerTabLabel && !isViewportSmall)) {
-      this.setState({
-        isLongerTabLabel: !this.state.isLongerTabLabel
-      });
-    }
+  handleSubmit: function(event) {
+    event.preventDefault();
+    var groupId = this.props.data.groupId;
+    var value = this.state.inputValue;
+    actions.addMember(groupId, value);
   }
 });
 

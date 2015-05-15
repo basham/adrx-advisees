@@ -9,6 +9,7 @@ var actions = require('../actions');
 
 var GroupSelector = React.createClass({
   contextTypes: {
+    className: React.PropTypes.string,
     router: React.PropTypes.func
   },
   mixins: [
@@ -37,15 +38,14 @@ var GroupSelector = React.createClass({
   //
   render: function() {
     return (
-      <div>
-        <Selector
-          maxLength={20}
-          onChange={this.handleChange}
-          onCreate={this.handleCreate}
-          optionName="group"
-          options={this.state.options}
-          selectedIndex={this.state.selectedIndex}/>
-      </div>
+      <Selector
+        className={this.props.className}
+        maxLength={20}
+        onChange={this.handleChange}
+        onCreate={this.handleCreate}
+        optionName="group"
+        options={this.state.options}
+        selectedIndex={this.state.selectedIndex}/>
     );
   },
   //
@@ -55,7 +55,7 @@ var GroupSelector = React.createClass({
     this.setState({
       selectedIndex: index
     });
-    this.context.router.transitionTo('group.view', { id: id });
+    this.context.router.transitionTo('group', { id: id });
   },
   handleCreate: function(value) {
     var options = this.state.options;

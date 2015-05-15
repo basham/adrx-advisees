@@ -48,16 +48,8 @@ console.log('~~~', data);
       return;
     }
 
-    var adviseeFlagLink = this.data.adviseeFlagLink;
-
     this.sortByKey = !!this.sortByKey ? this.sortByKey : sortStore.defaultSortByKey;
     this.isAscending = this.isAscending !== undefined ? this.isAscending : sortStore.defaultIsAscending;
-
-    // URL on name to the student's detail
-    var params = helpers.getQueryParams();
-    var url = helpers.api('search', {
-      sr: params.sr
-    });
 
     var group = this.data.groupMap[this.groupId];
     // Ignore triggering store if group was deleted.
@@ -77,16 +69,20 @@ console.log('~~~', data);
 
     this.trigger(group);
   },
-  formatMemberDetail: function(advisee) {
-    // URLs
-    var url_onFlag = this.adviseeFlagLink + '&EMPLID=' + advisee.emplid;
-    var url_onName = this.url + '&searchEmplid=' + advisee.emplid;
+  formatMemberDetail: function(member) {
+    // Construct external URLs.
+    var params = helpers.getQueryParams();
+    var url = helpers.api('search', {
+      sr: params.sr
+    });
+    var url_onName = url + '&searchEmplid=' + member.emplid;
+    var url_onFlag = this.data.adviseeFlagLink + '&EMPLID=' + member.emplid;
 
     //
     // Handle Program and Plan
     //
-    var program = advisee.acadProgDescr;
-    var planList = advisee.acadPlanList;
+    var program = member.acadProgDescr;
+    var planList = member.acadPlanList;
 
     var hasProgram = !!program && !!program.trim();
     var hasPlanList = Array.isArray(planList) && !!planList.length;
@@ -124,9 +120,9 @@ console.log('~~~', data);
     //
     // Round numerical values.
     //
-    var hours = helpers.roundToString(advisee.hours, 1);
-    var programGPA = helpers.roundToString(advisee.programGpa, 2);
-    var universityGPA = helpers.roundToString(advisee.iuGpa, 2);
+    var hours = helpers.roundToString(member.hours, 1);
+    var programGPA = helpers.roundToString(member.programGpa, 2);
+    var universityGPA = helpers.roundToString(member.iuGpa, 2);
     hours = helpers.formatNullValue(hours, stringForEmptyValue);
     programGPA = helpers.formatNullValue(programGPA, stringForEmptyValue);
     universityGPA = helpers.formatNullValue(universityGPA, stringForEmptyValue);
@@ -134,10 +130,10 @@ console.log('~~~', data);
     //
     // Handle Student Groups
     //
-    var hasGroupList = Array.isArray(advisee.sisStudentGroupList) && !!advisee.sisStudentGroupList.length;
+    var hasGroupList = Array.isArray(member.sisStudentGroupList) && !!member.sisStudentGroupList.length;
     var sortedStudentGroupList = null;
     if (hasGroupList) {
-      sortedStudentGroupList = advisee.sisStudentGroupList
+      sortedStudentGroupList = member.sisStudentGroupList
         .map(function(item) {
           item.activeStatus = !!item.effectiveStatusBoolean ? 'Active as of' : 'Inactive as of';
           item.effectiveDate = !!item.effectiveDateFormatted ? item.effectiveDateFormatted : null;
@@ -163,7 +159,7 @@ console.log('~~~', data);
     //--------------------------------------------------//
     // Positive Service Indicators
     //--------------------------------------------------//
-    var psList = advisee.positiveSisServiceIndicatorList;
+    var psList = member.positiveSisServiceIndicatorList;
     if(!!psList) {
       psList =
         psList
@@ -189,7 +185,7 @@ console.log('~~~', data);
     //--------------------------------------------------//
     // Negative Service Indicators
     //--------------------------------------------------//
-    var nsList = advisee.negativeSisServiceIndicatorList;
+    var nsList = member.negativeSisServiceIndicatorList;
     if(!!nsList) {
       nsList =
       nsList
@@ -214,9 +210,9 @@ console.log('~~~', data);
     //--------------------------------------------------//
 
     return {
-      name: advisee.studentName,
-      universityId: advisee.emplid,
-      flag: advisee.flagsStatus,
+      name: member.studentName,
+      universityId: member.emplid,
+      flag: member.flagsStatus,
       url_onFlag: url_onFlag,
       url_onName: url_onName,
       studentGroupList: sortedStudentGroupList,
@@ -233,11 +229,11 @@ console.log('~~~', data);
         },
         {
           title: 'Advisor Role',
-          items: [advisee.advisorRoleDescr]
+          items: [member.advisorRoleDescr]
         },
         {
           title: 'Last Enrolled',
-          items: [advisee.lastEnrolled]
+          items: [member.lastEnrolled]
         },
         {
           title: 'Hours',
