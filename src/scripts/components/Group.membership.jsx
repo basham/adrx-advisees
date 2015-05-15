@@ -7,32 +7,20 @@ var Link = Router.Link;
 var classNames = require('classnames');
 
 var actions = require('../actions');
-var groupStore = require('../stores/group');
 var helpers = require('../helpers');
 
 var Alert = require('./Alert');
 var Icon = require('./Icon');
 
 var GroupMembership = React.createClass({
-  mixins: [
-    Reflux.listenTo(groupStore, 'onStoreChange'),
-    Reflux.listenToMany(actions)
-  ],
-  statics: {
-    // Get the group by its id when transitioning to this component.
-    willTransitionTo: function(transition, params) {
-      actions.getGroup(params.id);
-    }
+  propTypes: {
+    data: React.PropTypes.object
   },
   //
   // Lifecycle methods
   //
   getInitialState: function() {
     return {
-      data: {
-        memberDetailList: []
-      },
-      requesting: true,
       inputValue: '',
       isBulkUpload: false
     }
@@ -41,43 +29,6 @@ var GroupMembership = React.createClass({
   // Render methods
   //
   render: function() {
-    var content = null;
-
-    if(this.state.requesting) {
-      content = this.renderLoading();
-    }
-    else if(this.state.errorMessage) {
-      content = this.renderError();
-    }
-    else {
-      content = this.renderContent();
-    }
-
-    return (
-      <section className="adv-App">
-        {content}
-      </section>
-    );
-  },
-  renderLoading: function() {
-    return (
-      <p className="adv-App-loading">
-        Loading
-        <span className="adv-ProcessIndicator"/>
-      </p>
-    );
-  },
-  renderContent: function() {
-    var data = this.state.data.memberDetailList;
-    var content = null;
-
-    if(this.state.errorMessage) {
-      content = this.renderError();
-    }
-    else {
-      content = data.length ? this.renderList(data) : this.renderEmpty();
-    }
-
     var params = {
       id: this.props.params.id
     };
@@ -86,7 +37,7 @@ var GroupMembership = React.createClass({
       <div>
         <header className="adv-App-header">
           <h1 className="adv-App-heading">
-            {this.state.data.groupName}
+            {this.props.data.groupName}
           </h1>
           <Link
             className="adv-App-editGroupLink adv-Link adv-Link--underlined"
@@ -102,15 +53,8 @@ var GroupMembership = React.createClass({
           Return to Caseload
         </Link>
         {this.renderAddMember()}
-        {content}
+        {this.renderList()}
       </div>
-    );
-  },
-  renderEmpty: function() {
-    return (
-      <p className="adv-App-empty">
-        No students in this group.
-      </p>
     );
   },
   renderError: function() {
@@ -190,8 +134,21 @@ var GroupMembership = React.createClass({
       </div>
     );
   },
-  renderList: function(data) {
+  renderEmpty: function() {
+    return (
+      <p className="adv-App-empty">
+        No students in this group.
+      </p>
+    );
+  },
+  renderList: function() {
+    var data = this.props.data.memberDetailList;
     var count = data.length;
+
+    if(!count) {
+      return this.renderEmpty();
+    }
+
     return (
       <div>
         <div className="adv-Controls">
@@ -233,7 +190,7 @@ var GroupMembership = React.createClass({
   //
   handleRemoveButtonClick: function(member) {
     return function(event) {
-      actions.removeMember(this.state.data.groupId, member.universityId);
+      actions.removeMember(this.props.data.groupId, member.universityId);
     }.bind(this);
   },
   handleTitleInputChange: function(e) {
@@ -243,7 +200,7 @@ var GroupMembership = React.createClass({
   },
   handleSubmit: function(event) {
     event.preventDefault();
-    var groupId = this.state.data.groupId;
+    var groupId = this.props.data.groupId;
     var value = this.state.memberId;
 
 console.log('---add member', groupId, value);
@@ -252,32 +209,6 @@ console.log('---add member', groupId, value);
   handleBulkButtonClick: function(event) {
     this.setState({
       isBulkUpload: true
-    });
-  },
-  //
-  // Store methods
-  //
-  onStoreChange: function(data) {
-   this.setState({
-     data: data,
-     requesting: false
-   });
-  },
-  //
-  // Action methods
-  //
-  onGetData: function() {
-    this.setState({
-      errorMessage: null,
-      requesting: true
-    });
-  },
-  onGetDataFailed: function(message) {
-    this.setState({
-      errorMessage: message,
-      requesting: false
-    }, function() {
-      this.refs.error.getDOMNode().focus();
     });
   }
 });
