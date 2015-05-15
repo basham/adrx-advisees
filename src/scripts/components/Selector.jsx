@@ -13,6 +13,7 @@ function uuid() {
 
 var Selector = React.createClass({
   propTypes: {
+    className: React.PropTypes.string,
     disabled: React.PropTypes.bool,
     maxLength: React.PropTypes.number,
     onChange: React.PropTypes.func,
@@ -54,6 +55,9 @@ var Selector = React.createClass({
   // Render methods
   //
   render: function() {
+    var selectorClassNames = classNames({
+      'adv-Selector': true
+    }, this.props.className);
     var buttonClassNames = classNames({
       'adv-Selector-button': true,
       'adv-Selector-button--open': this.state.isOpen
@@ -67,10 +71,10 @@ var Selector = React.createClass({
     }
     var selectedOptionClassNames = classNames({
       'adv-Selector-buttonLabel': true
-    }, selectedOption.classNames);
+    }, selectedOption.className);
 
     return (
-      <div className="adv-Selector">
+      <div className={selectorClassNames}>
         <button
           aria-haspopup="true"
           aria-label={buttonLabel}
@@ -138,7 +142,7 @@ var Selector = React.createClass({
     var cn = classNames({
       'adv-Selector-option': true,
       'adv-Selector-option--selected': isSelected
-    }, option.classNames);
+    }, option.className);
 
     return (
       <li
