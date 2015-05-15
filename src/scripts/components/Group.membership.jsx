@@ -69,7 +69,7 @@ var GroupMembership = React.createClass({
     return (
       <form
         className="adv-AddMemberForm adv-AddMemberForm--small"
-        submit={this.handleSubmit}>
+        onSubmit={this.handleSubmit}>
         <label
           className="adv-Label"
           htmlFor="adv-AddMemberForm-input">
@@ -103,7 +103,7 @@ var GroupMembership = React.createClass({
     return (
       <form
         className="adv-AddMemberForm"
-        submit={this.handleSubmit}>
+        onSubmit={this.handleSubmit}>
         <label
           className="adv-Label"
           htmlFor="adv-AddMemberForm-textarea">
