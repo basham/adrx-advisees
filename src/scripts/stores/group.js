@@ -1,6 +1,7 @@
 'use strict';
 
 var Reflux = require('reflux');
+var Router = require('react-router');
 
 var actions = require('../actions');
 var helpers = require('../helpers');
@@ -8,6 +9,9 @@ var dataStore = require('./data');
 var sortStore = require('./sort');
 
 module.exports = Reflux.createStore({
+  contextTypes: {
+    router: React.PropTypes.func
+  },
   listenables: actions,
   init: function() {
     this.listenTo(dataStore, this.onStoreChange);
@@ -26,6 +30,7 @@ module.exports = Reflux.createStore({
   // Action methods
   //
   onGetGroupCompleted: function(data, id) {
+console.log('~~~', data);
     this.data = data;
     this.groupId = id;
     this.output();
@@ -55,6 +60,10 @@ module.exports = Reflux.createStore({
     });
 
     var group = this.data.groupMap[this.groupId];
+    // Ignore triggering store if group was deleted.
+    if(!group) {
+      return;
+    }
     group.memberDetailList = group.memberList
       .map(function(id) {
         var member = this.data.memberMap[id];

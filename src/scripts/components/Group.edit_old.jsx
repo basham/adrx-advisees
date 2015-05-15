@@ -21,7 +21,7 @@ var Alert = require('./Alert');
 var Icon = require('./Icon');
 var GroupSelector = require('./GroupSelector');
 
-var GroupMembership = React.createClass({
+var GroupEdit = React.createClass({
   mixins: [
     Reflux.listenTo(groupStore, 'onStoreChange'),
     Reflux.listenToMany(actions)
@@ -55,9 +55,7 @@ var GroupMembership = React.createClass({
       isLongerTabLabel: true,
       requesting: true,
       sortByKey: sortStore.defaultSortByKey,
-      windowInnerWidth_borderForTabLabelChange: 700,
-      inputValue: '',
-      isBulkUpload: false
+      windowInnerWidth_borderForTabLabelChange: 700
     }
   },
   //
@@ -80,14 +78,9 @@ var GroupMembership = React.createClass({
     return (
       <section className="adv-App">
         <h1 className="adv-App-heading">
-        Edit Membership2
+          Edit Group
         </h1>
-        <Link to="group.edit" className="adv-Link--underlined" params={{ id: this.props.params.id}}>Edit group</Link>
-        <Link to="group.view" className="adv-Link--underlined" params={{ id: this.props.params.id}}>Return to Caseload</Link>
-        <div>
-          {this.renderAddMember()}
-        </div>
-        {content}
+        <Link to="group.membership" className="qn-Header-headingLink" params={{ id: this.props.params.id}}>Cancel</Link>
       </section>
     );
   },
@@ -114,111 +107,25 @@ var GroupMembership = React.createClass({
         type="error"/>
     );
   },
-  renderAddMember: function() {
-    return (
-      <form
-        className="adv-Advisee-nameGroup adv-Advisee-nameGroup--fixed"
-        onSubmit={this.handleSubmit}>
-        <h2 className="adv-Advisee-heading">
-          Student
-        </h2>
-        {this.state.isBulkUpload ? this.renderTextareaField() : this.renderInputField()}
-        <button
-          className="qn-ActionBar-item qn-Button"
-          type="submit">
-          Add
-        </button>
-      </form>
-    );
-  },
-  renderInputField: function() {
-    return (
-      <p>
-        <input
-          className="adv-Input"
-          onChange={this.handleTitleInputChange}
-          maxLength="10"
-          type="text"/>
-        <a
-          className="adv-Link--underlined"
-          onClick={this.handleBulkButtonClick}>
-          Add students in bulk
-        </a>
-      </p>
-    );
-  },
-  renderTextareaField: function() {
-    return (
-      <p>
-        <textarea
-          className="adv-Input"
-          onChange={this.handleTitleInputChange}
-          rows="5"
-          cols="50" />
-        Separate student usernames or University IDs with a space, a return, or a comma.
-      </p>
-    );
-  },
-  renderList: function(data) {
-    var count = data.length;
-    return (
-      <div>
-        <div className="adv-Controls">
-          <p className="adv-Controls-count">
-            {count} {helpers.pluralize(count, 'student')}
-          </p>
-        </div>
-        <ol className="adv-AdviseeList">
-          {data.map(this.renderAdvisee)}
-        </ol>
-      </div>
-    );
-  },
-  renderAdvisee: function(advisee, index) {
-    return (
-      <li className="adv-AdviseeList-item adv-Advisee">
-        <header className="adv-Advisee-header">
-          <div className="adv-Advisee-nameGroup adv-Advisee-nameGroup--fixed">
-            <h2 className="adv-Advisee-heading">
-              {advisee.name}
-            </h2>
-            <p className="adv-Advisee-id">
-              {advisee.universityId}
-            </p>
-          </div>
-          <button
-            className="adv-Advisee-controls-remove"
-            onClick={this.handleRemoveButtonClick(advisee)}>
-            {"\u2716"}
-          </button>
-        </header>
-      </li>
-    );
-  },
   //
   // Handler methods
   //
-  handleRemoveButtonClick: function(member) {
-    return function(event) {
-      actions.removeMember(this.state.data.groupId, member.universityId);
-    }.bind(this);
-  },
-  handleTitleInputChange: function(e) {
+  handleSortByChange: function(event) {
+    var key = event.target.value;
+    // Reset order whenever sort field changes.
+    var isAscending = key !== 'flagsStatus';
     this.setState({
-      memberId: e.target.value
+      sortByKey: key,
+      isAscending: isAscending
     });
+    actions.sortBy(key, isAscending);
   },
-  handleSubmit: function(event) {
-    event.preventDefault();
-    var groupId = this.state.data.groupId;
-    var value = this.state.memberId;
-
-    actions.addMember(groupId, value);
-  },
-  handleBulkButtonClick: function(event) {
+  handleOrderByChange: function(event) {
+    var isAscending = event.target.value === 'true';
     this.setState({
-      isBulkUpload: true
+      isAscending: isAscending
     });
+    actions.sortBy(this.state.sortByKey, isAscending);
   },
   //
   // Store methods
@@ -263,4 +170,4 @@ var GroupMembership = React.createClass({
   }
 });
 
-module.exports = GroupMembership;
+module.exports = GroupEdit;
