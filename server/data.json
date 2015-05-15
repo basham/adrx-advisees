@@ -1,0 +1,868 @@
+{
+  "memberMap":{
+    "7496827183":{
+      "emplid":"7496827183",
+      "studentName":"Blanda, Angelina Fannie",
+      "acadPlanList":[
+
+      ],
+      "lastEnrolled":" ",
+      "lastEnrolledStrm":" ",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Angelina",
+      "iuMiddleNamePrf":" ",
+      "iuLastNamePrf":"Blanda"
+    },
+    "4786766189":{
+      "emplid":"4786766189",
+      "studentName":"Pfannerstill, Meggie Carter",
+      "advisorRole":"ADVR",
+      "advisorRoleDescr":"Academic Advisor",
+      "acadCareer":"UGRD",
+      "acadProg":"LAS1",
+      "acadProgDescr":"Lib Arts & Sci Undergraduate",
+      "acadPlanList":[
+
+      ],
+      "lastEnrolled":"Spring 2014",
+      "lastEnrolledStrm":"4142",
+      "programGpa":"2.255",
+      "iuGpa":"2.255",
+      "hours":"82",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Meggie",
+      "iuMiddleNamePrf":"Carter",
+      "iuLastNamePrf":"Pfannerstill",
+      "sisStudentGroupList":[
+        {
+          "institution":"IUBLA",
+          "effectiveDate":"Nov 10, 2006 12:00:00 AM",
+          "effectiveDateFormatted":"2006-11-10",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Bloomington",
+          "stdntGroup":"PREL",
+          "stdntGroupDescr":"Pre-Law Interest"
+        },
+        {
+          "institution":"IUBLA",
+          "effectiveDate":"Nov 10, 2006 12:00:00 AM",
+          "effectiveDateFormatted":"2006-11-10",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Bloomington",
+          "stdntGroup":"PREM",
+          "stdntGroupDescr":"Pre-Medical Interest"
+        },
+        {
+          "institution":"IUBLA",
+          "effectiveDate":"Nov 10, 2006 12:00:00 AM",
+          "effectiveDateFormatted":"2006-11-10",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Bloomington",
+          "stdntGroup":"PRPT",
+          "stdntGroupDescr":"Pre-Physical Therapy Interest"
+        },
+        {
+          "institution":"IUBLA",
+          "effectiveDate":"Oct 1, 2007 12:00:00 AM",
+          "effectiveDateFormatted":"2007-10-01",
+          "effectiveStatusBoolean":false,
+          "institutionDescr":"Bloomington",
+          "stdntGroup":"UDOP",
+          "stdntGroupDescr":"UD Orientation Prg Participant"
+        }
+      ],
+      "negativeSisServiceIndicatorList":[
+
+      ],
+      "positiveSisServiceIndicatorList":[
+        {
+          "institutionDescr":"SB",
+          "serviceIndicatorCode":"G14",
+          "serviceIndicatorDescr":"Signed Title IV Autho",
+          "impactBoolean":false,
+          "reasonDescr":"Grandfathered",
+          "startTerm":"",
+          "startTermDescr":"",
+          "endTerm":"    ",
+          "startDateFormatted":"2012-07-26",
+          "posSrvcIndicator":"Y"
+        }
+      ]
+    },
+    "3970471366":{
+      "emplid":"3970471366",
+      "studentName":"Wolff, Ewald Jerad",
+      "advisorRoleDescr":"",
+      "acadCareer":"GRAD",
+      "acadProg":"ILS5",
+      "acadProgDescr":"Info & Library Sci Graduate",
+      "acadPlanList":[
+
+      ],
+      "lastEnrolled":"Summer 2015",
+      "lastEnrolledStrm":"4155",
+      "programGpa":"3.936",
+      "iuGpa":"3.936",
+      "hours":"21",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Ewald",
+      "iuMiddleNamePrf":"Jerad",
+      "iuLastNamePrf":"Wolff",
+      "sisStudentGroupList":[
+        {
+          "institution":"IUBLA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Bloomington",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUCOA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"IUPUC",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUEAA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"East",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUINA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"IUPUI",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUKOA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Kokomo",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUNWA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Northwest",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUSBA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"South Bend",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUSEA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Southeast",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        }
+      ],
+      "negativeSisServiceIndicatorList":[
+
+      ],
+      "positiveSisServiceIndicatorList":[
+        {
+          "institutionDescr":"BL",
+          "serviceIndicatorCode":"G14",
+          "serviceIndicatorDescr":"Signed Title IV Waiver",
+          "impactBoolean":false,
+          "reasonDescr":"Grandfathered",
+          "startTerm":"",
+          "startTermDescr":"",
+          "endTerm":"    ",
+          "startDateFormatted":"2012-05-04",
+          "posSrvcIndicator":"Y"
+        }
+      ]
+    },
+    "7994177191":{
+      "emplid":"7994177191",
+      "studentName":"Tillman, Zoey Dolores",
+      "acadPlanList":[
+
+      ],
+      "lastEnrolled":" ",
+      "lastEnrolledStrm":" ",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Zoey",
+      "iuMiddleNamePrf":"Dolores",
+      "iuLastNamePrf":"Tillman",
+      "sisStudentGroupList":[
+        {
+          "institution":"IUBLA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Bloomington",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUCOA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"IUPUC",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUEAA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"East",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUINA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"IUPUI",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUKOA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Kokomo",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUNWA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Northwest",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUSBA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"South Bend",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUSEA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Southeast",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        }
+      ],
+      "negativeSisServiceIndicatorList":[
+
+      ],
+      "positiveSisServiceIndicatorList":[
+        {
+          "institutionDescr":"BL",
+          "serviceIndicatorCode":"R20",
+          "serviceIndicatorDescr":"Special Credit",
+          "impactBoolean":false,
+          "reasonDescr":"Special Credit",
+          "startTerm":"",
+          "startTermDescr":"",
+          "endTerm":" ",
+          "startDateFormatted":"2005-04-19",
+          "posSrvcIndicator":"Y"
+        }
+      ]
+    },
+    "3478623139":{
+      "emplid":"3478623139",
+      "studentName":"Gleichner, Zander Zane",
+      "acadPlanList":[
+
+      ],
+      "lastEnrolled":"Spring 2015",
+      "lastEnrolledStrm":"4152",
+      "programGpa":"3.567",
+      "iuGpa":"3.567",
+      "hours":"9",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Zander",
+      "iuMiddleNamePrf":"Zane",
+      "iuLastNamePrf":"Gleichner",
+      "negativeSisServiceIndicatorList":[
+
+      ],
+      "positiveSisServiceIndicatorList":[
+        {
+          "institutionDescr":"BL",
+          "serviceIndicatorCode":"R39",
+          "serviceIndicatorDescr":"Completed Verify for US Status",
+          "impactBoolean":false,
+          "reasonDescr":"Eligible for Benefits",
+          "startTerm":"4118",
+          "startTermDescr":"Fall 2011",
+          "endTerm":"",
+          "endTermDescr":"",
+          "startDateFormatted":"2014-12-23",
+          "posSrvcIndicator":"Y"
+        }
+      ]
+    },
+    "0519535902":{
+      "emplid":"0519535902",
+      "studentName":"Nienow, Madaline Jadon",
+      "advisorRole":"ADVR",
+      "advisorRoleDescr":"Academic Advisor",
+      "acadCareer":"UGRD",
+      "acadProg":"LAS1",
+      "acadProgDescr":"Lib Arts & Sci Undergraduate",
+      "acadPlanList":[
+
+      ],
+      "lastEnrolled":"Summer 2015",
+      "lastEnrolledStrm":"4155",
+      "programGpa":"3.873",
+      "iuGpa":"3.873",
+      "hours":"124",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Madaline",
+      "iuMiddleNamePrf":"Jadon",
+      "iuLastNamePrf":"Nienow",
+      "negativeSisServiceIndicatorList":[
+
+      ],
+      "positiveSisServiceIndicatorList":[
+        {
+          "institutionDescr":"SB",
+          "serviceIndicatorCode":"G14",
+          "serviceIndicatorDescr":"Signed Title IV Autho",
+          "impactBoolean":false,
+          "reasonDescr":"Signed",
+          "startTerm":"",
+          "startTermDescr":"",
+          "endTerm":" ",
+          "startDateFormatted":"2012-12-12",
+          "posSrvcIndicator":"Y"
+        }
+      ]
+    },
+    "3594629652":{
+      "emplid":"3594629652",
+      "studentName":"Kohler, Stacey",
+      "acadPlanList":[
+
+      ],
+      "lastEnrolled":" ",
+      "lastEnrolledStrm":" ",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Stacey",
+      "iuMiddleNamePrf":" ",
+      "iuLastNamePrf":"Kohler",
+      "sisStudentGroupList":[
+        {
+          "institution":"IUBLA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Bloomington",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUCOA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"IUPUC",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUEAA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"East",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUINA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"IUPUI",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUKOA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Kokomo",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUNWA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Northwest",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUSBA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"South Bend",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUSEA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Southeast",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        }
+      ],
+      "negativeSisServiceIndicatorList":[
+
+      ],
+      "positiveSisServiceIndicatorList":[
+        {
+          "institutionDescr":"BL",
+          "serviceIndicatorCode":"R20",
+          "serviceIndicatorDescr":"Special Credit",
+          "impactBoolean":false,
+          "reasonDescr":"Special Credit",
+          "startTerm":"",
+          "startTermDescr":"",
+          "endTerm":" ",
+          "startDateFormatted":"2005-04-19",
+          "posSrvcIndicator":"Y"
+        }
+      ]
+    },
+    "5474916620":{
+      "emplid":"5474916620",
+      "studentName":"Funk, Clemmie Mercedes",
+      "acadPlanList":[
+
+      ],
+      "lastEnrolled":"Fall 2012",
+      "lastEnrolledStrm":"4128",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Clemmie",
+      "iuMiddleNamePrf":"Mercedes",
+      "iuLastNamePrf":"Funk",
+      "sisStudentGroupList":[
+        {
+          "institution":"IUBLA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Bloomington",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUCOA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"IUPUC",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUEAA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"East",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUINA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"IUPUI",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUKOA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Kokomo",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUNWA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Northwest",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUSBA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"South Bend",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        },
+        {
+          "institution":"IUSEA",
+          "effectiveDate":"Apr 7, 2004 12:00:00 AM",
+          "effectiveDateFormatted":"2004-04-07",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Southeast",
+          "stdntGroup":"FEEX",
+          "stdntGroupDescr":"Fee Exclusion"
+        }
+      ],
+      "negativeSisServiceIndicatorList":[
+
+      ],
+      "positiveSisServiceIndicatorList":[
+        {
+          "institutionDescr":"IN",
+          "serviceIndicatorCode":"R39",
+          "serviceIndicatorDescr":"Completed Verify for US Status",
+          "impactBoolean":false,
+          "reasonDescr":"Eligible for Benefits",
+          "startTerm":"4118",
+          "startTermDescr":"Fall 2011",
+          "endTerm":"",
+          "endTermDescr":"",
+          "startDateFormatted":"2011-07-25",
+          "posSrvcIndicator":"Y"
+        },
+        {
+          "institutionDescr":"IN",
+          "serviceIndicatorCode":"G14",
+          "serviceIndicatorDescr":"Signed Title IV Authorization",
+          "impactBoolean":false,
+          "reasonDescr":"Signed",
+          "startTerm":"",
+          "startTermDescr":"",
+          "endTerm":"    ",
+          "startDateFormatted":"2010-01-05",
+          "posSrvcIndicator":"Y"
+        }
+      ]
+    },
+    "8795173306":{
+      "emplid":"8795173306",
+      "studentName":"Hermann, Georgianna Francesco",
+      "advisorRole":"ADVR",
+      "advisorRoleDescr":"Academic Advisor",
+      "acadCareer":"UGRD",
+      "acadProg":"LAS1",
+      "acadProgDescr":"Lib Arts & Sci Undergraduate",
+      "acadPlanList":[
+
+      ],
+      "lastEnrolled":"Spring 2015",
+      "lastEnrolledStrm":"4152",
+      "programGpa":"3.489",
+      "iuGpa":"3.489",
+      "hours":"106",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Georgianna",
+      "iuMiddleNamePrf":"Francesco",
+      "iuLastNamePrf":"Hermann",
+      "negativeSisServiceIndicatorList":[
+
+      ],
+      "positiveSisServiceIndicatorList":[
+        {
+          "institutionDescr":"SB",
+          "serviceIndicatorCode":"G14",
+          "serviceIndicatorDescr":"Signed Title IV Autho",
+          "impactBoolean":false,
+          "reasonDescr":"Grandfathered",
+          "startTerm":"",
+          "startTermDescr":"",
+          "endTerm":"    ",
+          "startDateFormatted":"2012-07-26",
+          "posSrvcIndicator":"Y"
+        }
+      ]
+    },
+    "8242035571":{
+      "emplid":"8242035571",
+      "studentName":"Schuster, Catharine Lizeth",
+      "advisorRole":"ADVR",
+      "advisorRoleDescr":"Academic Advisor",
+      "acadCareer":"UGRD",
+      "acadProg":"LAS1",
+      "acadProgDescr":"Lib Arts & Sci Undergraduate",
+      "acadPlanList":[
+
+      ],
+      "lastEnrolled":"Fall 2015",
+      "lastEnrolledStrm":"4158",
+      "programGpa":"3.119",
+      "iuGpa":"3.119",
+      "hours":"172",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Catharine",
+      "iuMiddleNamePrf":"Lizeth",
+      "iuLastNamePrf":"Schuster",
+      "sisStudentGroupList":[
+        {
+          "institution":"IUBLA",
+          "effectiveDate":"Nov 3, 2005 12:00:00 AM",
+          "effectiveDateFormatted":"2005-11-03",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Bloomington",
+          "stdntGroup":"PREL",
+          "stdntGroupDescr":"Pre-Law Interest"
+        },
+        {
+          "institution":"IUBLA",
+          "effectiveDate":"Nov 3, 2005 12:00:00 AM",
+          "effectiveDateFormatted":"2005-11-03",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"Bloomington",
+          "stdntGroup":"PREM",
+          "stdntGroupDescr":"Pre-Medical Interest"
+        }
+      ],
+      "negativeSisServiceIndicatorList":[
+
+      ],
+      "positiveSisServiceIndicatorList":[
+        {
+          "institutionDescr":"SB",
+          "serviceIndicatorCode":"G14",
+          "serviceIndicatorDescr":"Signed Title IV Autho",
+          "impactBoolean":false,
+          "reasonDescr":"Signed",
+          "startTerm":"",
+          "startTermDescr":"",
+          "endTerm":" ",
+          "startDateFormatted":"2014-12-24",
+          "posSrvcIndicator":"Y"
+        }
+      ]
+    },
+    "0323180305":{
+      "emplid":"0323180305",
+      "studentName":"Bogan, Ada Lilly",
+      "advisorRole":"ADVR",
+      "advisorRoleDescr":"Academic Advisor",
+      "acadCareer":"UGRD",
+      "acadProg":"LAS1",
+      "acadProgDescr":"Lib Arts & Sci Undergraduate",
+      "acadPlanList":[
+
+      ],
+      "lastEnrolled":"Fall 2015",
+      "lastEnrolledStrm":"4158",
+      "programGpa":"2.838",
+      "iuGpa":"2.838",
+      "hours":"43",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Ada",
+      "iuMiddleNamePrf":"Lilly",
+      "iuLastNamePrf":"Bogan",
+      "negativeSisServiceIndicatorList":[
+
+      ],
+      "positiveSisServiceIndicatorList":[
+        {
+          "institutionDescr":"SB",
+          "serviceIndicatorCode":"R39",
+          "serviceIndicatorDescr":"Completed Verify for US Status",
+          "impactBoolean":false,
+          "reasonDescr":"Eligible for Benefits",
+          "startTerm":"4118",
+          "startTermDescr":"Fall 2011",
+          "endTerm":"",
+          "endTermDescr":"",
+          "startDateFormatted":"2014-08-14",
+          "posSrvcIndicator":"Y"
+        }
+      ]
+    },
+    "3628828085":{
+      "emplid":"3628828085",
+      "studentName":"Stanton, Wallace Kraig",
+      "advisorRole":"ADVR",
+      "advisorRoleDescr":"Academic Advisor",
+      "acadCareer":"UGRD",
+      "acadProg":"LAS1",
+      "acadProgDescr":"Lib Arts & Sci Undergraduate",
+      "acadPlanList":[
+
+      ],
+      "lastEnrolled":"Fall 2015",
+      "lastEnrolledStrm":"4158",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Wallace",
+      "iuMiddleNamePrf":"Kraig",
+      "iuLastNamePrf":"Stanton",
+      "negativeSisServiceIndicatorList":[
+        {
+          "institutionDescr":"SB",
+          "serviceIndicatorCode":"G03",
+          "serviceIndicatorDescr":"Past Due Encumbrance",
+          "impactBoolean":true,
+          "reasonDescr":"Past Due",
+          "startTerm":"",
+          "startTermDescr":"",
+          "endTerm":" ",
+          "startDateFormatted":"2015-05-14",
+          "posSrvcIndicator":"N"
+        }
+      ],
+      "positiveSisServiceIndicatorList":[
+
+      ]
+    },
+    "0917659442":{
+      "emplid":"0917659442",
+      "studentName":"Witting, Jody Sandrine",
+      "advisorRole":"ADVR",
+      "advisorRoleDescr":"Academic Advisor",
+      "acadCareer":"UGRD",
+      "acadProg":"TRAN0",
+      "acadProgDescr":"Transient Ugrd Non-Deg",
+      "acadPlanList":[
+
+      ],
+      "lastEnrolled":"Fall 2015",
+      "lastEnrolledStrm":"4158",
+      "programGpa":"3.762",
+      "iuGpa":"3.762",
+      "hours":"73",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Jody",
+      "iuMiddleNamePrf":"Sandrine",
+      "iuLastNamePrf":"Witting",
+      "sisStudentGroupList":[
+        {
+          "institution":"IUSBA",
+          "effectiveDate":"Jan 1, 2014 12:00:00 AM",
+          "effectiveDateFormatted":"2014-01-01",
+          "effectiveStatusBoolean":true,
+          "institutionDescr":"South Bend",
+          "stdntGroup":"RTRF",
+          "stdntGroupDescr":"Students with Transfer Credit"
+        }
+      ],
+      "negativeSisServiceIndicatorList":[
+        {
+          "institutionDescr":"SB",
+          "serviceIndicatorCode":"G03",
+          "serviceIndicatorDescr":"Past Due Encumbrance",
+          "impactBoolean":true,
+          "reasonDescr":"Past Due",
+          "startTerm":"",
+          "startTermDescr":"",
+          "endTerm":" ",
+          "startDateFormatted":"2015-05-14",
+          "posSrvcIndicator":"N"
+        }
+      ],
+      "positiveSisServiceIndicatorList":[
+
+      ]
+    },
+    "7579737923":{
+      "emplid":"7579737923",
+      "studentName":"Pouros, Ford Roslyn",
+      "acadPlanList":[
+
+      ],
+      "lastEnrolled":" ",
+      "lastEnrolledStrm":" ",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Ford",
+      "iuMiddleNamePrf":"Roslyn",
+      "iuLastNamePrf":"Pouros"
+    }
+  },
+  "groupMap":{
+    "0":{
+      "groupId":"0",
+      "groupName":"Advisee",
+      "memberList":[
+        "8242035571",
+        "4786766189",
+        "0917659442",
+        "8795173306",
+        "0519535902",
+        "0323180305",
+        "3628828085"
+      ]
+    },
+    "1b4aeed1-abed-4980-bfb9-8f12918f5b5b":{
+      "groupId":"1b4aeed1-abed-4980-bfb9-8f12918f5b5b",
+      "groupName":"New Admits",
+      "memberList":[
+        "3594629652",
+        "7496827183",
+        "7994177191",
+        "7579737923"
+      ]
+    },
+    "4485f10b-3f07-4e2e-90b8-c0a66bed5417":{
+      "groupId":"4485f10b-3f07-4e2e-90b8-c0a66bed5417",
+      "groupName":"Honors",
+      "memberList":[
+        "3970471366",
+        "5474916620",
+        "3478623139"
+      ]
+    }
+  },
+  "defaultGroupId":"0"
+}
