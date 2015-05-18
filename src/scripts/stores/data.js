@@ -17,6 +17,10 @@ module.exports = Reflux.createStore({
     this.data.groupMap[group.groupId] = group;
     this.output();
   },
+  onRenameGroupCompleted: function(groupId, value) {
+    this.data.groupMap[groupId].groupName = value;
+    this.output();
+  },
   onDeleteGroupCompleted: function(groupId) {
     delete this.data.groupMap[groupId];
     actions.redirectToGroup(this.data.defaultGroupId);
@@ -38,6 +42,10 @@ module.exports = Reflux.createStore({
   onRemoveMemberCompleted: function(groupId, memberId) {
     var list = this.data.groupMap[groupId].memberList;
     list = list.splice(list.indexOf(memberId), 1);
+    this.output();
+  },
+  onRemoveAllMembersCompleted: function(groupId) {
+    this.data.groupMap[groupId].memberList = [];
     this.output();
   },
   //
