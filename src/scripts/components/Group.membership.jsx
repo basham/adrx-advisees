@@ -43,7 +43,7 @@ var GroupMembership = React.createClass({
             {this.props.data.groupName}
           </h1>
           <Link
-            className="adv-App-editGroupLink adv-Link adv-Link--underlined"
+            className="adv-Link adv-Link--underlined"
             params={params}
             to="group.edit">
             Edit group
