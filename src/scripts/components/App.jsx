@@ -45,6 +45,9 @@ var App = React.createClass({
   //
   onRedirectToGroup: function(groupId) {
     this.context.router.transitionTo('group', { id: groupId });
+  },
+  onRemoveAllMembersCompleted: function(groupId) {
+    this.context.router.transitionTo('group.membership', { id: groupId });
   }
 });
 
