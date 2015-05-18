@@ -43,7 +43,7 @@ var GroupMembership = React.createClass({
             {this.props.data.groupName}
           </h1>
           <Link
-            className="adv-App-editGroupLink adv-Link adv-Link--underlined"
+            className="adv-Link adv-Link--underlined"
             params={params}
             to="group.edit">
             Edit group
@@ -162,6 +162,7 @@ var GroupMembership = React.createClass({
     );
   },
   renderMember: function(member) {
+    var removeLabel = ['Remove', member.name, 'from group'].join(' ');
     return (
       <li className="adv-MemberList-item adv-Membership">
         <header className="adv-Membership-header">
@@ -174,11 +175,12 @@ var GroupMembership = React.createClass({
         </header>
         <div className="adv-Membership-controls">
           <button
+            aria-label={removeLabel}
             className="adv-Membership-removeButton"
             onClick={this.handleRemoveButtonClick(member)}>
             <Icon
               className="adv-Membership-removeButtonIcon"
-              name="x"/>
+              name="remove"/>
           </button>
         </div>
       </li>

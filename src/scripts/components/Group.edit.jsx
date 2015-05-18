@@ -29,17 +29,22 @@ var GroupEdit = React.createClass({
   //
   render: function() {
     return (
-      <section className="adv-App">
-        <h1 className="adv-App-heading">
-        Edit {this.props.data.groupName}
-        </h1>
-        <Link to="group.membership" className="adv-Link--underlined" params={{ id: this.props.params.id}}>Cancel</Link>
-        <div>
-          {this.renderRenameGroup()}
-          {this.renderRemoveGroupMembers()}
-          {this.renderDeleteGroup()}
-        </div>
-      </section>
+      <div className="adv-App-editGroup">
+        <header className="adv-App-header">
+          <h1 className="adv-App-heading">
+            Edit <em>{this.props.data.groupName}</em>
+          </h1>
+          <Link
+            className="adv-Button"
+            params={{ id: this.props.params.id }}
+            to="group.membership">
+            Cancel
+          </Link>
+        </header>
+        {this.renderRenameGroup()}
+        {this.renderRemoveGroupMembers()}
+        {this.renderDeleteGroup()}
+      </div>
     );
   },
   renderError: function() {
@@ -53,22 +58,25 @@ var GroupEdit = React.createClass({
   renderRenameGroup: function() {
     return (
       <form
-        className="adv-Advisee-nameGroup adv-Advisee-nameGroup--fixed"
+        className="adv-EditGroup"
         onSubmit={this.handleSubmit}>
-        <h2 className="adv-Advisee-heading">
+        <h2 className="adv-EditGroup-heading">
           Rename
         </h2>
         <input
+          aria-label="Group name"
           className="adv-Input"
           maxLength="50"
           onChange={this.handleGroupNameInputChange}
           type="text"
           value={this.state.groupName}/>
-        <button
-          className="qn-ActionBar-item qn-Button"
-          type="submit">
-          Save
-        </button>
+        <div className="adv-EditGroup-controls">
+          <button
+            className="adv-Button"
+            type="submit">
+            Save
+          </button>
+        </div>
       </form>
     );
   },
@@ -78,18 +86,20 @@ var GroupEdit = React.createClass({
     );
 
     return (
-      <div>
-        <h2 className="adv-Advisee-heading">
+      <div className="adv-EditGroup">
+        <h2 className="adv-EditGroup-heading">
           Remove all members
         </h2>
-        <div>
+        <p>
           Remove all members. The group will not be deleted.
+        </p>
+        <div className="adv-EditGroup-controls">
+          <button
+            className="adv-Button"
+            onClick={this.handleRemoveMembersDialog}>
+            Remove all members
+          </button>
         </div>
-        <button
-          className="adv-Advisee-controls-remove"
-          onClick={this.handleRemoveMembersDialog}>
-          Remove all members
-        </button>
         <Dialog
          confirmationButtonLabel="Yes, remove members"
          message={dialogMessage}
@@ -106,18 +116,20 @@ var GroupEdit = React.createClass({
     );
 
     return (
-      <div>
-        <h2 className="adv-Advisee-heading">
+      <div className="adv-EditGroup">
+        <h2 className="adv-EditGroup-heading">
           Delete group
         </h2>
-        <div>
+        <p>
           Remove all members and delete the group.
+        </p>
+        <div className="adv-EditGroup-controls">
+          <button
+            className="adv-Button"
+            onClick={this.handleDeleteGroupDialog}>
+            Delete group
+          </button>
         </div>
-        <button
-          className="adv-Advisee-controls-remove"
-          onClick={this.handleDeleteGroupDialog}>
-          Delete group
-        </button>
         <Dialog
          confirmationButtonLabel="Yes, delete"
          message={dialogMessage}
