@@ -7,7 +7,7 @@ var helpers = require('../helpers');
 
 actions.renameGroup.listen(function(groupId, value) {
   var query = helpers.getQueryParams();
-  query.action = 'renameGroup';
+  query.action = 'updateGroup';
   query.groupId = groupId;
   //
   // TO DO:
@@ -21,12 +21,12 @@ actions.renameGroup.listen(function(groupId, value) {
     .send({
       emplids: value
     })
-    .end(helpers.requestCallback(completed(groupId), failed));
+    .end(helpers.requestCallback(completed(groupId, value), failed));
 });
 
-function completed(groupId) {
-  return function(json) {
-    actions.renameGroup.completed(groupId, json);
+function completed(groupId, value) {
+  return function() {
+    actions.renameGroup.completed(groupId, value);
   }
 }
 

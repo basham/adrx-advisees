@@ -30,7 +30,6 @@ module.exports = Reflux.createStore({
   // Action methods
   //
   onGetGroupCompleted: function(data, id) {
-console.log('~~~', data);
     this.data = data;
     this.groupId = id;
     this.output();

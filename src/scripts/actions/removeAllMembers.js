@@ -7,29 +7,22 @@ var helpers = require('../helpers');
 
 actions.removeAllMembers.listen(function(groupId, memberId) {
   var query = helpers.getQueryParams();
-  query.action = 'removeAllMembers';
+  query.action = 'removeAllMembersFromGroup';
   query.groupId = groupId;
-  //
-  // TO DO:
-  // Remove `query.emplids` once backend accepts `send` parameters.
-  //
-  query.emplids = memberId;
 
   request
     .post(helpers.api('handleAdHocGroup'))
     .query(query)
-    .send({
-      emplids: memberId
-    })
-    .end(helpers.requestCallback(completed(groupId, memberId), failed));
+    .send()
+    .end(helpers.requestCallback(completed(groupId), failed));
 });
 
-function completed(groupId, memberId) {
+function completed(groupId) {
   return function() {
-    actions.removeMember.completed(groupId, memberId);
+    actions.removeAllMembers.completed(groupId);
   }
 }
 
 function failed() {
-  actions.removeMember.failed('Could not remove all members. Please try again.');
+  actions.removeAllMembers.failed('Could not remove all members. Please try again.');
 }

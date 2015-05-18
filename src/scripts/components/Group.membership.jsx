@@ -13,6 +13,9 @@ var Alert = require('./Alert');
 var Icon = require('./Icon');
 
 var GroupMembership = React.createClass({
+  mixins: [
+    Reflux.listenToMany(actions)
+  ],
   propTypes: {
     data: React.PropTypes.object
   },
@@ -82,6 +85,7 @@ var GroupMembership = React.createClass({
             onChange={this.handleInputChange}
             maxLength="10"
             placeholder="Username or University ID"
+            value={this.state.inputValue}
             type="text"/>
           <button
             className="adv-AddMemberForm-button adv-Button"
@@ -114,6 +118,7 @@ var GroupMembership = React.createClass({
           id="adv-AddMemberForm-textarea"
           onChange={this.handleInputChange}
           placeholder="Usernames or University IDs"
+          value={this.state.inputValue}
           rows="5"/>
         <p className="adv-AddMemberForm-instructions">
           Separate student usernames or University&nbsp;IDs with a space, a return, or a comma.
@@ -202,6 +207,14 @@ var GroupMembership = React.createClass({
     var groupId = this.props.data.groupId;
     var value = this.state.inputValue;
     actions.addMember(groupId, value);
+  },
+  //
+  // Action methods
+  //
+  onAddMemberCompleted: function() {
+    this.setState ({
+      inputValue: null
+    });
   }
 });
 

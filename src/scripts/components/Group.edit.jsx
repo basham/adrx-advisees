@@ -115,8 +115,8 @@ var GroupEdit = React.createClass({
         </h2>
         <input
           className="adv-Input"
-          onChange={this.handleNameInputChange}
-          maxLength="10"
+          onChange={this.handleGroupNameInputChange}
+          maxLength="50"
           type="text"/>
         <button
           className="qn-ActionBar-item qn-Button"
@@ -181,9 +181,8 @@ var GroupEdit = React.createClass({
   handleSubmit: function(event) {
     event.preventDefault();
     var groupId = this.state.data.groupId;
-    var value = this.state.memberId;
-
-    actions.addMember(groupId, value);
+    var value = this.state.groupName;
+    actions.renameGroup(groupId, value);
   },
   handleBulkButtonClick: function(event) {
     this.setState({
