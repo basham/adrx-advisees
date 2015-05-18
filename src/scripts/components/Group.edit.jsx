@@ -20,6 +20,7 @@ var GroupEdit = React.createClass({
   getInitialState: function() {
     return {
       groupName: this.props.data.groupName,
+      showDeleteGroupDialog: false,
       showRemoveMembersDialog: false
     }
   },
@@ -30,7 +31,7 @@ var GroupEdit = React.createClass({
     return (
       <section className="adv-App">
         <h1 className="adv-App-heading">
-        Edit Group
+        Edit {this.props.data.groupName}
         </h1>
         <Link to="group.membership" className="adv-Link--underlined" params={{ id: this.props.params.id}}>Cancel</Link>
         <div>
@@ -73,7 +74,7 @@ var GroupEdit = React.createClass({
   },
   renderRemoveGroupMembers: function() {
     var dialogMessage = (
-      <span>Remove all members from <em>{this.props.data.groupName}</em> group?</span>
+      <span>Delete <em>{this.props.data.groupName}</em> group?</span>
     );
 
     return (
@@ -100,6 +101,10 @@ var GroupEdit = React.createClass({
     );
   },
   renderDeleteGroup: function() {
+    var dialogMessage = (
+      <span>Remove all members from <em>{this.props.data.groupName}</em> group?</span>
+    );
+
     return (
       <div>
         <h2 className="adv-Advisee-heading">
@@ -110,9 +115,16 @@ var GroupEdit = React.createClass({
         </div>
         <button
           className="adv-Advisee-controls-remove"
-          onClick={this.handleDeleteGroupButtonClick}>
+          onClick={this.handleDeleteGroupDialog}>
           Delete group
         </button>
+        <Dialog
+         confirmationButtonLabel="Yes, delete"
+         message={dialogMessage}
+         show={this.state.showDeleteGroupDialog}
+         onCancel={this.handleDeleteGroupDialogCancel}
+         onConfirm={this.handleDeleteGroupDialogConfirm}
+         title="Delete group"/>
       </div>
     );
   },
@@ -124,7 +136,19 @@ var GroupEdit = React.createClass({
       groupName: event.target.value
     });
   },
-  handleDeleteGroupButtonClick: function() {
+  handleDeleteGroupDialog: function(event) {
+    event.preventDefault();
+    this.setState({
+      showDeleteGroupDialog: true
+    });
+  },
+  handleDeleteGroupDialogCancel: function() {
+    this.setState({
+      showDeleteGroupDialog: false
+    });
+  },
+  handleDeleteGroupDialogConfirm: function() {
+    this.handleDeleteGroupDialogCancel();
     actions.deleteGroup(this.props.data.groupId);
   },
   handleRemoveMembersDialog: function(event) {
