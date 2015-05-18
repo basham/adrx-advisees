@@ -3,70 +3,30 @@
 var React = require('react');
 var Reflux = require('reflux');
 var Router = require('react-router');
-var classNames = require('classnames');
 var Link = Router.Link;
 
-var ReactTabs = require('./Tabs');
-var Tab = ReactTabs.Tab;
-var Tabs = ReactTabs.Tabs;
-var TabList = ReactTabs.TabList;
-var TabPanel = ReactTabs.TabPanel;
-
 var actions = require('../actions');
-var groupStore = require('../stores/group');
-var sortStore = require('../stores/sort');
-var helpers = require('../helpers');
 
 var Alert = require('./Alert');
-var Icon = require('./Icon');
-var GroupSelector = require('./GroupSelector');
+var Dialog = require('./Dialog');
 
 var GroupEdit = React.createClass({
   mixins: [
-    Reflux.listenTo(groupStore, 'onStoreChange'),
     Reflux.listenToMany(actions)
   ],
-  statics: {
-    // Get the group by its id when transitioning to this component.
-    willTransitionTo: function(transition, params) {
-      actions.getGroup(params.id);
-    }
-  },
   //
   // Lifecycle methods
   //
-  componentDidMount: function() {
-    window.addEventListener('resize', this.onWindowResized);
-  },
-  componentWillUnmount: function() {
-    window.removeEventListener('resize', this.onWindowResized);
-  },
-  componentWillMount: function(){
-    this.setState({
-      isLongerTabLabel: window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange
-    });
-  },
   getInitialState: function() {
     return {
-      data: {
-        memberDetailList: []
-      },
-      isAscending: sortStore.defaultIsAscending,
-      isLongerTabLabel: true,
-      requesting: true,
-      sortByKey: sortStore.defaultSortByKey,
-      windowInnerWidth_borderForTabLabelChange: 700,
-      inputValue: '',
-      isBulkUpload: false
+      groupName: this.props.data.groupName,
+      showRemoveMembersDialog: false
     }
   },
   //
   // Render methods
   //
   render: function() {
-    var data = this.state.data.memberDetailList;
-    var content = null;
-
     return (
       <section className="adv-App">
         <h1 className="adv-App-heading">
@@ -75,26 +35,10 @@ var GroupEdit = React.createClass({
         <Link to="group.membership" className="adv-Link--underlined" params={{ id: this.props.params.id}}>Cancel</Link>
         <div>
           {this.renderRenameGroup()}
-          {this.renderRemoveGroupMembers(data.groupId)}
+          {this.renderRemoveGroupMembers()}
           {this.renderDeleteGroup()}
         </div>
-        {content}
       </section>
-    );
-  },
-  renderLoading: function() {
-    return (
-      <p className="adv-App-loading">
-        Loading
-        <span className="adv-ProcessIndicator"/>
-      </p>
-    );
-  },
-  renderEmpty: function() {
-    return (
-      <p className="adv-App-empty">
-        You currently have no advisees assigned to you.
-      </p>
     );
   },
   renderError: function() {
@@ -115,9 +59,10 @@ var GroupEdit = React.createClass({
         </h2>
         <input
           className="adv-Input"
-          onChange={this.handleGroupNameInputChange}
           maxLength="50"
-          type="text"/>
+          onChange={this.handleGroupNameInputChange}
+          type="text"
+          value={this.state.groupName}/>
         <button
           className="qn-ActionBar-item qn-Button"
           type="submit">
@@ -127,6 +72,10 @@ var GroupEdit = React.createClass({
     );
   },
   renderRemoveGroupMembers: function() {
+    var dialogMessage = (
+      <span>Remove all members from <em>{this.props.data.groupName}</em> group?</span>
+    );
+
     return (
       <div>
         <h2 className="adv-Advisee-heading">
@@ -137,9 +86,16 @@ var GroupEdit = React.createClass({
         </div>
         <button
           className="adv-Advisee-controls-remove"
-          onClick={this.handleRemoveAllMembersButtonClick()}>
+          onClick={this.handleRemoveMembersDialog}>
           Remove all members
         </button>
+        <Dialog
+         confirmationButtonLabel="Yes, remove members"
+         message={dialogMessage}
+         show={this.state.showRemoveMembersDialog}
+         onCancel={this.handleRemoveMembersDialogCancel}
+         onConfirm={this.handleRemoveMembersDialogConfirm}
+         title="Remove members"/>
       </div>
     );
   },
@@ -154,7 +110,7 @@ var GroupEdit = React.createClass({
         </div>
         <button
           className="adv-Advisee-controls-remove"
-          onClick={this.handleDeleteGroupButtonClick()}>
+          onClick={this.handleDeleteGroupButtonClick}>
           Delete group
         </button>
       </div>
@@ -163,20 +119,28 @@ var GroupEdit = React.createClass({
   //
   // Handler methods
   //
-  handleGroupNameInputChange: function(e) {
+  handleGroupNameInputChange: function(event) {
     this.setState({
-      groupName: e.target.value
+      groupName: event.target.value
     });
   },
-  handleRemoveAllMembersButtonClick: function() {
-    return function(event) {
-      actions.removeAllMembers(this.state.data.groupId);
-    }.bind(this);
-  },
   handleDeleteGroupButtonClick: function() {
-    return function(event) {
-      actions.deleteGroup(this.state.data.groupId);
-    }.bind(this);
+    actions.deleteGroup(this.props.data.groupId);
+  },
+  handleRemoveMembersDialog: function(event) {
+    event.preventDefault();
+    this.setState({
+      showRemoveMembersDialog: true
+    });
+  },
+  handleRemoveMembersDialogCancel: function() {
+    this.setState({
+      showRemoveMembersDialog: false
+    });
+  },
+  handleRemoveMembersDialogConfirm: function() {
+    this.handleRemoveMembersDialogCancel();
+    actions.removeAllMembers(this.props.data.groupId);
   },
   handleSubmit: function(event) {
     event.preventDefault();
@@ -184,51 +148,26 @@ var GroupEdit = React.createClass({
     var value = this.state.groupName;
     actions.renameGroup(groupId, value);
   },
-  handleBulkButtonClick: function(event) {
-    this.setState({
-      isBulkUpload: true
-    });
-  },
-  //
-  // Store methods
-  //
-  onStoreChange: function(data) {
-   this.setState({
-     data: data,
-     requesting: false
-   });
-  },
   //
   // Action methods
   //
-  onGetData: function() {
-    this.setState({
-      errorMessage: null,
-      requesting: true
-    });
-  },
-  onGetDataFailed: function(message) {
+  onDeleteGroupFailed: function(message) {
     this.setState({
       errorMessage: message,
       requesting: false
-    }, function() {
-      this.refs.error.getDOMNode().focus();
     });
   },
-  //
-  // Window event listener
-  //
-  //--------------------------------------------------//
-  //-- Created by Eunmee Yi on 2015/04/09
-  //--------------------------------------------------//
-  onWindowResized: function() {
-    var isLongerTabLabel = this.state.isLongerTabLabel;
-    var isViewportSmall = window.innerWidth < this.state.windowInnerWidth_borderForTabLabelChange;
-    if((isLongerTabLabel && isViewportSmall) || (!isLongerTabLabel && !isViewportSmall)) {
-      this.setState({
-        isLongerTabLabel: !this.state.isLongerTabLabel
-      });
-    }
+  onRemoveAllMembersFailed: function(message) {
+    this.setState({
+      errorMessage: message,
+      requesting: false
+    });
+  },
+  onRenameGroupFailed: function(message) {
+    this.setState({
+      errorMessage: message,
+      requesting: false
+    });
   }
 });
 
