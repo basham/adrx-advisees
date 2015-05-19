@@ -48,5 +48,10 @@
     "react": "global:React",
     "react-router": "global:ReactRouter",
     "reflux": "global:Reflux"
+  },
+  "proxy": {
+    "default": "localhost:8080",
+    "local": "localhost:8000",
+    "remote": "156.56.176.66:8080"
   }
 }
