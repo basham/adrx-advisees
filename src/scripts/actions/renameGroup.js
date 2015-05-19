@@ -7,7 +7,7 @@ var helpers = require('../helpers');
 
 actions.renameGroup.listen(function(groupId, value) {
   var query = helpers.getQueryParams();
-  query.action = 'updateGroup';
+  query.action = 'renameGroup';
   query.groupId = groupId;
   //
   // TO DO:
