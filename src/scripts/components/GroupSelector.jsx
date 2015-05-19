@@ -30,7 +30,8 @@ var GroupSelector = React.createClass({
   getInitialState: function() {
     return {
       selectedIndex: 0,
-      options: []
+      options: [],
+      value: ''
     };
   },
   //
@@ -45,7 +46,8 @@ var GroupSelector = React.createClass({
         onCreate={this.handleCreate}
         optionName="group"
         options={this.state.options}
-        selectedIndex={this.state.selectedIndex}/>
+        selectedIndex={this.state.selectedIndex}
+        value={this.state.value}/>
     );
   },
   //
@@ -53,26 +55,12 @@ var GroupSelector = React.createClass({
   //
   handleChange: function(index, id) {
     this.setState({
-      selectedIndex: index
+      selectedIndex: index,
+      value: ''
     });
     this.context.router.transitionTo('group', { id: id });
   },
   handleCreate: function(value) {
-    var options = this.state.options;
-    // Create new option.
-    var newOption = {
-      label: value
-    };
-    // Add the new option to the option list.
-    options.push(newOption);
-    // Get the index of the new option.
-    var index = options.indexOf(newOption);
-    // Update state and select the new option.
-    this.setState({
-      options: options,
-      selectedIndex: index
-    });
-
     actions.createGroup(value);
   },
   //
@@ -109,6 +97,11 @@ var GroupSelector = React.createClass({
     var index = this.state.options.indexOf(option);
     // Change to the created option.
     this.handleChange(index, id);
+  },
+  onCreateGroupFailed: function(message, name) {
+    this.setState({
+      value: name
+    });
   }
 });
 

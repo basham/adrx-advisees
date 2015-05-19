@@ -20,24 +20,22 @@ var Selector = React.createClass({
     onCreate: React.PropTypes.func,
     options: React.PropTypes.array,
     optionName: React.PropTypes.string,
-    selectedIndex: React.PropTypes.number
+    selectedIndex: React.PropTypes.number,
+    value: React.PropTypes.string
   },
   //
   // Lifecycle methods
   //
   componentWillMount: function() {
     document.addEventListener('click', this.handleBodyClick);
-    // Set unique ids for ARIA attributes.
-    this.setState({
-      optionListId: 'selectorOptionListId-' + uuid(),
-      selectedOptionId: 'selectorSelectedOptionId-' + uuid()
-    });
   },
   componentWillReceiveProps: function(nextProps) {
     this.setState({
       options: nextProps.options,
       selectedIndex: nextProps.selectedIndex
-    });
+    }, function() {
+      this.changeInputValue(nextProps.value || '');
+    }.bind(this));
   },
   componentWillUnmount: function() {
     document.removeEventListener('click', this.handleBodyClick);
@@ -45,10 +43,12 @@ var Selector = React.createClass({
   getInitialState: function() {
     return {
       isOpen: false,
-      inputValue: '',
+      inputValue: this.props.value || '',
       options: [],
+      optionListId: 'selectorOptionListId-' + uuid(),
       optionName: 'option',
-      selectedIndex: 0
+      selectedIndex: 0,
+      selectedOptionId: 'selectorSelectedOptionId-' + uuid()
     };
   },
   //
@@ -200,33 +200,7 @@ var Selector = React.createClass({
     }
   },
   handleInputChange: function(event) {
-    var inputValue = event.target.value;
-    var hasInput = !!inputValue.trim().length;
-    var hasMatch = false;
-
-    var options = this.props.options.filter(function(option) {
-      var a = option.label.toLowerCase().trim();
-      var b = inputValue.toLowerCase().trim();
-      if(!hasMatch) {
-        hasMatch = a === b;
-      }
-      return a.search(b) === 0;
-    }.bind(this));
-
-    if(hasInput && !hasMatch) {
-      options.push({
-        isNewOption: true,
-        label: this.renderCreateOption(inputValue),
-        value: inputValue
-      });
-    }
-
-    var index = 0;
-    this.setState({
-      inputValue: inputValue,
-      options: options,
-      selectedIndex: index
-    });
+    this.changeInputValue(event.target.value);
   },
   handleInputKeyDown: function(event) {
     switch(event.key) {
@@ -239,11 +213,9 @@ var Selector = React.createClass({
         event.preventDefault();
         break;
       case 'ArrowDown':
-      case 'ArrowRight':
         this.selectNext();
         break;
       case 'ArrowUp':
-      case 'ArrowLeft':
         this.selectPrevious();
         break;
     }
@@ -272,6 +244,37 @@ var Selector = React.createClass({
   //
   // Helper methods
   //
+  changeInputValue: function(inputValue) {
+    var hasInput = !!inputValue.trim().length;
+    var hasMatch = false;
+
+    var options = this.props.options.filter(function(option) {
+      var a = option.label.toLowerCase().trim();
+      var b = inputValue.toLowerCase().trim();
+      if(!hasMatch) {
+        hasMatch = a === b;
+      }
+      return a.search(b) === 0;
+    }.bind(this));
+
+    if(hasInput && !hasMatch) {
+      options.push({
+        isNewOption: true,
+        label: this.renderCreateOption(inputValue),
+        value: inputValue
+      });
+    }
+
+    // Select the first option, if searching or creating.
+    // Otherwise, select the default selection.
+    var index = hasInput ? 0 : this.props.selectedIndex;
+
+    this.setState({
+      inputValue: inputValue,
+      options: options,
+      selectedIndex: index
+    });
+  },
   close: function(ignoreFocus) {
     this.setState({
       inputValue: '',

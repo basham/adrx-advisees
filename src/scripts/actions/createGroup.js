@@ -17,7 +17,7 @@ actions.createGroup.listen(function(name) {
     .send({
       groupName: name
     })
-    .end(helpers.requestCallback(completed, failed));
+    .end(helpers.requestCallback(completed, failed(name)));
 });
 
 function completed(json) {
@@ -29,6 +29,8 @@ function completed(json) {
   actions.createGroup.completed(group);
 }
 
-function failed() {
-  actions.createGroup.failed('Could create group. Please try again.');
+function failed(name) {
+  return function() {
+    actions.createGroup.failed('Could not create group. Please try again.', name);
+  }
 }

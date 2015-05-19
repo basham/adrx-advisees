@@ -21,8 +21,19 @@ var Icon = require('./Icon');
 var GroupSelector = require('./GroupSelector');
 
 var GroupView = React.createClass({
+  mixins: [
+    Reflux.listenToMany(actions)
+  ],
   propTypes: {
     data: React.PropTypes.object
+  },
+  statics: {
+    willTransitionFrom: function(transition, component) {
+      // Remove error message when transitioning away.
+      component.setState({
+        errorMessage: null
+      });
+    }
   },
   //
   // Lifecycle methods
@@ -40,6 +51,7 @@ var GroupView = React.createClass({
   },
   getInitialState: function() {
     return {
+      errorMessage: null,
       isAscending: sortStore.defaultIsAscending,
       isLongerTabLabel: true,
       sortByKey: sortStore.defaultSortByKey,
@@ -55,6 +67,7 @@ var GroupView = React.createClass({
         <h1 className="adv-App-heading">
           Caseload
         </h1>
+        {this.renderError()}
         <div className="adv-GroupSelectorControls">
           <GroupSelector
             className="adv-GroupSelectorControls-selector"
@@ -70,14 +83,11 @@ var GroupView = React.createClass({
       </div>
     );
   },
-  renderEmpty: function() {
-    return (
-      <p className="adv-App-empty">
-        You currently have no students assigned to this group.
-      </p>
-    );
-  },
   renderError: function() {
+    if(!this.state.errorMessage) {
+      return null;
+    }
+
     return (
       <Alert
         message={this.state.errorMessage}
@@ -119,6 +129,13 @@ var GroupView = React.createClass({
           {data.map(this.renderMember)}
         </ol>
       </div>
+    );
+  },
+  renderEmpty: function() {
+    return (
+      <p className="adv-App-empty">
+        You currently have no students assigned to this group.
+      </p>
     );
   },
   renderSortOption: function(option, index) {
@@ -352,6 +369,19 @@ var GroupView = React.createClass({
       isAscending: isAscending
     });
     actions.sortBy(this.state.sortByKey, isAscending);
+  },
+  //
+  // Action methods
+  //
+  onCreateGroupCompleted: function() {
+    this.setState({
+      errorMessage: null
+    });
+  },
+  onCreateGroupFailed: function(message) {
+    this.setState({
+      errorMessage: message
+    });
   },
   //
   // Window event listener

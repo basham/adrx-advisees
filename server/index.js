@@ -71,8 +71,8 @@ server.post(
     _data.groupMap[id] = group;
     data.groupMap[id] = group;
 
-    //res.send(403);
-    res.send(201, _data);
+    res.send(403);
+    //res.send(201, _data);
     next();
   });
 
