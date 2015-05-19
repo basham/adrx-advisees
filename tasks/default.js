@@ -8,6 +8,6 @@ gulp.task('default', function(callback) {
     runSequence('build', callback);
   }
   else {
-    runSequence('build', 'browser-sync', 'watch', callback);
+    runSequence('build', ['browser-sync', 'server'], 'watch', callback);
   }
 });
