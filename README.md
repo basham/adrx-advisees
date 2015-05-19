@@ -19,7 +19,7 @@ Run the development environment through the default [gulp](http://gulpjs.com/) t
 gulp
 ```
 
-### `--proxy` option
+### Proxy option
 
 If wanting API calls to be proxied to a specific destination, use the `--proxy` flag. By default, all API calls are proxied to `localhost:8080`.
 
@@ -48,6 +48,8 @@ If wanting to use other remote servers:
 ```
 gulp --proxy=[IP_ADDRESS:PORT]
 ```
+
+All preset proxy options are defined in `package.json` under the `proxy` key.
 
 ## Build without the development environment
 
