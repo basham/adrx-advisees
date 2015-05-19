@@ -25,6 +25,9 @@ function completed(json) {
   var key = Object.keys(json.groupMap)[0];
   var group = json.groupMap[key];
   group.memberList = [];
+  if(group.isEditable != false && group.isEditable != true) {
+    group.isEditable = true;
+  }
 
   actions.createGroup.completed(group);
 }
