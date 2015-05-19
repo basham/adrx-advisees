@@ -7,7 +7,11 @@ exports.isProduction = argv.p || argv.production;
 // Otherwise, assume the proxy value is an address.
 // But if nothing is supplied as an argument, then use the default address.
 var defaultProxyName = 'default';
+var defaultProxyAddress = pjson.proxy[defaultProxyName];
+var localProxyName = 'local';
+var localProxyAddress = pjson.proxy[localProxyName];
 var proxyName = argv.proxy || defaultProxyName;
-var address = pjson.proxy[proxyName] || argv.proxy || pjson.proxy[defaultProxyName];
+var address = pjson.proxy[proxyName] || argv.proxy || defaultProxyAddress;
 
 exports.proxy = 'http://' + address;
+exports.isLocalProxy = proxyName === localProxyName || address === localProxyAddress;
