@@ -118,8 +118,8 @@ var GroupMembership = React.createClass({
           id="adv-AddMemberForm-textarea"
           onChange={this.handleInputChange}
           placeholder="Usernames or University IDs"
-          value={this.state.inputValue}
-          rows="5"/>
+          rows="5"
+          value={this.state.inputValue}/>
         <p className="adv-AddMemberForm-instructions">
           Separate student usernames or University&nbsp;IDs with a space, a return, or a comma.
         </p>
@@ -214,8 +214,8 @@ var GroupMembership = React.createClass({
   // Action methods
   //
   onAddMemberCompleted: function() {
-    this.setState ({
-      inputValue: null
+    this.setState({
+      inputValue: ''
     });
   }
 });
