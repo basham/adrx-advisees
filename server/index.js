@@ -42,7 +42,10 @@ server.get(
     path: '/groups'
   },
   function(req, res, next) {
-    res.send(data);
+    setTimeout(function() {
+      //res.send(500);
+      res.send(data);
+    }, 1000);
     next();
   });
 
@@ -71,8 +74,8 @@ server.post(
     _data.groupMap[id] = group;
     data.groupMap[id] = group;
 
-    res.send(403);
-    //res.send(201, _data);
+    //res.send(403);
+    res.send(201, _data);
     next();
   });
 
