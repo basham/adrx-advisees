@@ -38,7 +38,7 @@ var GroupEdit = React.createClass({
           aria-label="Group name"
           className="adv-Input"
           maxLength="50"
-          onChange={this.handleGroupNameInputChange}
+          onChange={this.handleInputChange}
           type="text"
           value={this.state.groupName}/>
         <div className="adv-EditGroup-controls">
@@ -63,10 +63,12 @@ var GroupEdit = React.createClass({
   //
   // Handler methods
   //
-  handleGroupNameInputChange: function(event) {
+  handleInputChange: function(event) {
     var value = event.target.value;
+    var isIdentical = value.trim() === this.props.data.groupName;
+    var isEmpty = !value.trim().length;
     this.setState({
-      isDisabled: value.trim() === this.props.data.groupName,
+      isDisabled: isIdentical || isEmpty,
       groupName: value
     });
   },
