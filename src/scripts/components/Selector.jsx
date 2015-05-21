@@ -141,6 +141,7 @@ var Selector = React.createClass({
 
     var cn = classNames({
       'adv-Selector-option': true,
+      'adv-Selector-option--preselected': isPreselected || option.isNewOption,
       'adv-Selector-option--selected': isSelected
     }, option.className);
 
@@ -152,10 +153,10 @@ var Selector = React.createClass({
         onClick={this.handleSubmit}
         onMouseOver={this.handleOptionMouseOver(index)}
         role="option">
-        <span className='adv-Selector-optionLabel'>
+        <div className='adv-Selector-optionLabel'>
           {option.label}
-        </span>
-        {isPreselected ? <Icon name="check"/> : null}
+        </div>
+        {this.renderPreselectedIcon(isPreselected)}
       </li>
     );
   },
@@ -170,6 +171,17 @@ var Selector = React.createClass({
           </kbd>
         </samp>
       </div>
+    );
+  },
+  renderPreselectedIcon: function(isPreselected) {
+    if(!isPreselected) {
+      return null;
+    }
+
+    return (
+      <Icon
+        className="adv-Selector-icon"
+        name="check"/>
     );
   },
   //
