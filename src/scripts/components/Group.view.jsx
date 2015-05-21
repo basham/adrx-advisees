@@ -72,12 +72,7 @@ var GroupView = React.createClass({
           <GroupSelector
             className="adv-GroupSelectorControls-selector"
             selectedId={this.props.params.id}/>
-          <Link
-            className="adv-GroupSelectorControls-link"
-            params={{ id: this.props.params.id}}
-            to="group.membership">
-            Edit membership
-          </Link>
+          {this.renderEditLinks()}
         </div>
         {this.renderList()}
       </div>
@@ -93,6 +88,24 @@ var GroupView = React.createClass({
         message={this.state.errorMessage}
         ref="error"
         type="error"/>
+    );
+  },
+  renderEditLinks: function() {
+    return (
+      <div className="adv-GroupSelectorControls-list">
+        <Link
+          className="adv-Link adv-GroupSelectorControls-item"
+          params={{ id: this.props.params.id}}
+          to="group.membership">
+          Edit Membership
+        </Link>
+        <Link
+          className="adv-Link adv-GroupSelectorControls-item"
+          params={{ id: this.props.params.id}}
+          to="group.edit">
+          Edit Group
+        </Link>
+      </div>
     );
   },
   renderList: function() {
