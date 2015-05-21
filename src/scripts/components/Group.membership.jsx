@@ -81,13 +81,11 @@ var GroupMembership = React.createClass({
             Add
           </button>
         </div>
-        <p>
-          <a
-            className="adv-Link adv-Link--underlined"
-            onClick={this.handleBulkButtonClick}>
-            Add students in bulk
-          </a>
-        </p>
+        <button
+          className="adv-Link"
+          onClick={this.handleBulkButtonClick}>
+          Add students in bulk
+        </button>
       </form>
     );
   },
