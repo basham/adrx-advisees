@@ -73,7 +73,7 @@ var GroupEdit = React.createClass({
   handleSubmit: function(event) {
     event.preventDefault();
     var groupId = this.props.data.groupId;
-    var value = this.state.groupName;
+    var value = this.state.groupName.trim();
     actions.renameGroup(groupId, value);
   },
   //
