@@ -19,6 +19,7 @@ var GroupEdit = React.createClass({
   //
   getInitialState: function() {
     return {
+      isDisabled: true,
       groupName: this.props.data.groupName
     }
   },
@@ -43,6 +44,7 @@ var GroupEdit = React.createClass({
         <div className="adv-EditGroup-controls">
           <button
             className="adv-Button"
+            disabled={this.state.isDisabled}
             type="submit">
             Save
           </button>
@@ -62,8 +64,10 @@ var GroupEdit = React.createClass({
   // Handler methods
   //
   handleGroupNameInputChange: function(event) {
+    var value = event.target.value;
     this.setState({
-      groupName: event.target.value
+      isDisabled: value.trim() === this.props.data.groupName,
+      groupName: value
     });
   },
   handleSubmit: function(event) {
