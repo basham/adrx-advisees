@@ -1,0 +1,32 @@
+.adv-Overlay {
+  bottom: 0;
+  left: 0;
+  outline: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  -webkit-overflow-scrolling: touch;
+
+  &:focus {
+    outline: none;
+  }
+
+  &--backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  &-backdrop {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  &-content {
+    position: relative;
+  }
+}

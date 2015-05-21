@@ -8,7 +8,14 @@
     background-color: @color-Interactive--150;
   }
 
+  &-header {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   &-heading {
+    flex: 1;
     font-size: @scale-FontSize--20;
     font-weight: normal;
     line-height: 1;
@@ -22,5 +29,10 @@
     line-height: @scale-FontSize--10;
     padding: 5%;
     text-align: center;
+  }
+
+  &-editGroup,
+  &-membership {
+    max-width: 30em;
   }
 }

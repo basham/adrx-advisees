@@ -1,0 +1,35 @@
+.adv-Dialog {
+  .shadow();
+  background-color: @color-White;
+  border: unit(4/16, em) solid @color-Border;
+  box-sizing: border-box;
+  display: block;
+  margin: 10vh auto;
+  max-width: 30em;
+  padding: 2em;
+
+  &-title {
+    font-size: @scale-FontSize--10;
+    margin: 0 0 1rem;
+    padding: 0;
+  }
+
+  &-message {
+    line-height: @scale-FontSize--20;
+    margin: 0 0 1em;
+    padding: 0;
+  }
+
+  &-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2em;
+  }
+
+  &-action {
+
+    & + & {
+      margin-left: 1em;
+    }
+  }
+}

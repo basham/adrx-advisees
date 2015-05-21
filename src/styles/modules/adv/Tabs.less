@@ -1,37 +1,38 @@
 .adv-Tabs {
-  margin: 0 1em;
+  margin: 0 1em 1em;
 
-  &-controls {
-    align-items: center;
-    box-shadow: 0 unit(1/16, em) 0 0 @color-Border;
-    display: flex;
-  }
-
-  //[role=tablist],
-  &-list {
+  [role=tablist] {
     display: flex;
     list-style-type: none;
+    margin: 0;
     padding: 0;
   }
 
-  //[role=tab],
-  &-tab {
-    cursor: pointer;
-    padding: 0.75em 0.5em;
-
-    &[aria-selected=true],
-    &--active {
-      box-shadow: inset 0 unit(-4/16, em) 0 0 @color-Interactive--750;
-    }
+  [role=tab] {
+    color: @color-Link;
+    cursor: default;
+    padding: 0.5em 0.5em;
 
     &:focus,
     &:hover {
       background-color: @color-Interactive--100;
     }
+
+    &[aria-selected=true][aria-expanded=true] {
+      box-shadow: 0 unit(4/16, em) 0 0 @color-Interactive--750;
+    }
+
+    &[aria-disabled=true] {
+      color: @color-Text--400;
+
+      &:focus,
+      &:hover {
+        background-color: inherit;
+      }
+    }
   }
 
-  //[role=tabpanel],
-  &-panel {
+  [role=tabpanel] {
     padding: 0.5em;
   }
 }

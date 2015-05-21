@@ -8,4 +8,13 @@
     color: @color-Link;
     text-decoration: underline;
   }
+
+  &--underlined {
+    text-decoration: underline;
+
+    &:hover {
+      // Fixes for specificity issues.
+      cursor: pointer;
+    }
+  }
 }

@@ -1,0 +1,45 @@
+.adv-Membership {
+  align-items: center;
+  display: flex;
+  padding: 1em 0.5em 1em 1em;
+
+  &-header {
+    align-items: baseline;
+    display: flex;
+    flex-basis: 30em;
+    flex-wrap: wrap;
+  }
+
+  &-name {
+    flex-basis: 17em;
+    font-size: @scale-FontSize--00;
+    font-weight: normal;
+    line-height: @scale-FontSize--10;
+    margin: 0;
+  }
+
+  &-id {
+    font-size: @scale-FontSize--05i;
+    margin-right: 0.5rem;
+  }
+
+  &-controls {
+    flex-shrink: 0;
+  }
+
+  &-removeButton {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+
+    &:hover,
+    &:focus {
+      background-color: @color-Interactive--100;
+    }
+  }
+
+  &-removeButtonIcon {
+    fill: @color-Link;
+    padding: 0.5em;
+  }
+}
