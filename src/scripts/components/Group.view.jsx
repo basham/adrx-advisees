@@ -91,6 +91,10 @@ var GroupView = React.createClass({
     );
   },
   renderEditLinks: function() {
+    if(!this.props.data.isEditable) {
+      return null;
+    }
+
     return (
       <div className="adv-GroupSelectorControls-list">
         <Link
