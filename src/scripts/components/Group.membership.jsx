@@ -11,6 +11,7 @@ var helpers = require('../helpers');
 
 var Alert = require('./Alert');
 var Icon = require('./Icon');
+var Heading = require('./Group.heading');
 
 var GroupMembership = React.createClass({
   mixins: [
@@ -37,24 +38,11 @@ var GroupMembership = React.createClass({
     };
 
     return (
-      <div className="adv-App-membership">
-        <header className="adv-App-header">
-          <h1 className="adv-App-heading">
-            {this.props.data.groupName}
-          </h1>
-          <Link
-            className="adv-Link adv-Link--underlined"
-            params={params}
-            to="group.edit">
-            Edit group
-          </Link>
-        </header>
-        <Link
-          className="adv-Link adv-Link--underlined"
-          params={params}
-          to="group">
-          Return to Caseload
-        </Link>
+      <div className="adv-App-editView">
+        <Heading
+          groupId={this.props.params.id}
+          groupName={this.props.data.groupName}
+          label="Edit Membership" />
         {this.state.isBulkUpload ? this.renderBulkAddMemberForm() : this.renderSingleAddMemberForm()}
         {this.renderList()}
       </div>
@@ -93,13 +81,11 @@ var GroupMembership = React.createClass({
             Add
           </button>
         </div>
-        <p>
-          <a
-            className="adv-Link adv-Link--underlined"
-            onClick={this.handleBulkButtonClick}>
-            Add students in bulk
-          </a>
-        </p>
+        <button
+          className="adv-Link"
+          onClick={this.handleBulkButtonClick}>
+          Add students in bulk
+        </button>
       </form>
     );
   },

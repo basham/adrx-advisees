@@ -19,6 +19,7 @@ var GroupEdit = React.createClass({
   //
   getInitialState: function() {
     return {
+      isDisabled: true,
       groupName: this.props.data.groupName
     }
   },
@@ -37,12 +38,13 @@ var GroupEdit = React.createClass({
           aria-label="Group name"
           className="adv-Input"
           maxLength="50"
-          onChange={this.handleGroupNameInputChange}
+          onChange={this.handleInputChange}
           type="text"
           value={this.state.groupName}/>
         <div className="adv-EditGroup-controls">
           <button
             className="adv-Button"
+            disabled={this.state.isDisabled}
             type="submit">
             Save
           </button>
@@ -61,15 +63,19 @@ var GroupEdit = React.createClass({
   //
   // Handler methods
   //
-  handleGroupNameInputChange: function(event) {
+  handleInputChange: function(event) {
+    var value = event.target.value;
+    var isIdentical = value.trim() === this.props.data.groupName;
+    var isEmpty = !value.trim().length;
     this.setState({
-      groupName: event.target.value
+      isDisabled: isIdentical || isEmpty,
+      groupName: value
     });
   },
   handleSubmit: function(event) {
     event.preventDefault();
     var groupId = this.props.data.groupId;
-    var value = this.state.groupName;
+    var value = this.state.groupName.trim();
     actions.renameGroup(groupId, value);
   },
   //

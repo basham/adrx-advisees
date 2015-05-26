@@ -21,8 +21,19 @@ var Icon = require('./Icon');
 var GroupSelector = require('./GroupSelector');
 
 var GroupView = React.createClass({
+  mixins: [
+    Reflux.listenToMany(actions)
+  ],
   propTypes: {
     data: React.PropTypes.object
+  },
+  statics: {
+    willTransitionFrom: function(transition, component) {
+      // Remove error message when transitioning away.
+      component.setState({
+        errorMessage: null
+      });
+    }
   },
   //
   // Lifecycle methods
@@ -40,6 +51,7 @@ var GroupView = React.createClass({
   },
   getInitialState: function() {
     return {
+      errorMessage: null,
       isAscending: sortStore.defaultIsAscending,
       isDisabledButtonNotify: true,
       isLongerTabLabel: true,
@@ -56,25 +68,22 @@ var GroupView = React.createClass({
         <h1 className="adv-App-heading">
           Caseload
         </h1>
+        {this.renderError()}
         <div className="adv-GroupSelectorControls">
           <GroupSelector
             className="adv-GroupSelectorControls-selector"
-            selectedId={this.props.params.id}
-            />
-          {this.renderEditMembershipLink()}
+            selectedId={this.props.params.id}/>
+          {this.renderEditLinks()}
         </div>
         {this.renderList()}
       </div>
     );
   },
-  renderEmpty: function() {
-    return (
-      <p className="adv-App-empty">
-        You currently have no students assigned to this group.
-      </p>
-    );
-  },
   renderError: function() {
+    if(!this.state.errorMessage) {
+      return null;
+    }
+
     return (
       <Alert
         message={this.state.errorMessage}
@@ -82,18 +91,26 @@ var GroupView = React.createClass({
         type="error"/>
     );
   },
-  renderEditMembershipLink: function() {
+  renderEditLinks: function() {
     if(!this.props.data.isEditable) {
       return null;
     }
 
     return (
-      <Link
-        className="adv-GroupSelectorControls-link"
-        params={{ id: this.props.params.id }}
-        to="group.membership">
-        Edit membership
-      </Link>
+      <div className="adv-GroupSelectorControls-list">
+        <Link
+          className="adv-Link adv-GroupSelectorControls-item"
+          params={{ id: this.props.params.id}}
+          to="group.membership">
+          Edit Membership
+        </Link>
+        <Link
+          className="adv-Link adv-GroupSelectorControls-item"
+          params={{ id: this.props.params.id}}
+          to="group.edit">
+          Edit Group
+        </Link>
+      </div>
     );
   },
   renderList: function() {
@@ -150,6 +167,13 @@ var GroupView = React.createClass({
           {data.map(this.renderMember)}
         </ol>
       </div>
+    );
+  },
+  renderEmpty: function() {
+    return (
+      <p className="adv-App-empty">
+        You currently have no students assigned to this group.
+      </p>
     );
   },
   renderSortOption: function(option, index) {
@@ -404,6 +428,19 @@ var GroupView = React.createClass({
       isAscending: isAscending
     });
     actions.sortBy(this.state.sortByKey, isAscending);
+  },
+  //
+  // Action methods
+  //
+  onCreateGroupCompleted: function() {
+    this.setState({
+      errorMessage: null
+    });
+  },
+  onCreateGroupFailed: function(message) {
+    this.setState({
+      errorMessage: message
+    });
   },
   //
   // Window event listener

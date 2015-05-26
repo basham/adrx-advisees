@@ -8,7 +8,7 @@
     color: @color-Interactive--750;
     cursor: pointer;
     padding: 0.5em;
-    min-width: 20em;
+    min-width: 14em;
     text-align: left;
 
     &:focus {
@@ -50,7 +50,7 @@
     box-sizing: border-box;
     display: block;
     margin: unit(-1/16, em) 0 0;
-    min-width: 20em;
+    min-width: 14em;
     padding: 0;
     position: absolute;
     z-index: 1;
@@ -73,7 +73,7 @@
   &-option {
     border-top: unit(1/16, em) solid @color-Interactive--100;
     display: flex;
-    padding: 0.5em;
+    padding: 0.5em 2.5em 0.5em 0.5em;
 
     &:hover {
       background-color: @color-Interactive--100;
@@ -81,6 +81,10 @@
 
     &--selected {
       background-color: @color-Interactive--100;
+    }
+
+    &--preselected {
+      padding-right: 0.5em;
     }
   }
 
