@@ -41,6 +41,7 @@ var GroupView = React.createClass({
   getInitialState: function() {
     return {
       isAscending: sortStore.defaultIsAscending,
+      isDisabledButtonNotify: true,
       isLongerTabLabel: true,
       sortByKey: sortStore.defaultSortByKey,
       windowInnerWidth_borderForTabLabelChange: 700
@@ -89,7 +90,7 @@ var GroupView = React.createClass({
     return (
       <Link
         className="adv-GroupSelectorControls-link"
-        params={{ id: this.props.params.id}}
+        params={{ id: this.props.params.id }}
         to="group.membership">
         Edit membership
       </Link>
@@ -109,6 +110,26 @@ var GroupView = React.createClass({
           <p className="adv-Controls-count">
             {count} {helpers.pluralize(count, 'student')}
           </p>
+
+          <button
+            className="adv-Button"
+            disabled={this.state.isDisabledButtonNotify}
+            onClick={this.handleClickNotifySelected}
+          >
+            Notify selected students
+          </button>
+          <button
+            className="adv-Button"
+            onClick={this.handleClickNotifyAll}
+          >
+            Notify all students
+          </button>
+          <Link
+            params={{ id: this.props.params.id }}
+            to="group.notify">
+            Notify all students
+          </Link>
+
           <form className="adv-Controls-form">
             <label
               className="adv-Controls-label"
@@ -197,6 +218,11 @@ var GroupView = React.createClass({
       <li className="adv-MemberList-item adv-Member">
         <header className="adv-Member-header">
           <div className="adv-Member-nameGroup">
+            <input
+              onChange={this.handleCheckboxChange}
+              type="checkbox"
+              value={member.universityId}
+            />
             <h2 className="adv-Member-heading">
               <a
                 className="adv-Link"
@@ -346,6 +372,22 @@ var GroupView = React.createClass({
   //
   // Handler methods
   //
+  handleCheckboxChange: function(event) {
+    //event.preventDefault();
+    var value = event.target.value;
+    console.log(event.target.checked);
+    //this.setState({
+    //  isDisabledButtonNotify: !!this.state.isDisabledButtonNotify ? false : true
+    //});
+  },
+  handleClickNotifyAll: function(event) {
+    event.preventDefault();
+    actions.notifyGroup(this.props.data.groupId);
+  },
+  handleClickNotifySelected: function(event) {
+    event.preventDefault();
+    actions.notifyGroup(this.props.data.groupId);
+  },
   handleSortByChange: function(event) {
     var key = event.target.value;
     // Reset order whenever sort field changes.
