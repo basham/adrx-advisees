@@ -8,6 +8,7 @@ var classNames = require('classnames');
 
 var actions = require('../actions');
 var helpers = require('../helpers');
+var notifyStore = require('../stores/notify');
 
 var Alert = require('./Alert');
 var Icon = require('./Icon');
@@ -22,9 +23,24 @@ var GroupNotify = React.createClass({
   //
   // Lifecycle methods
   //
+  componentDidMount: function() {
+    // Replace the textarea with a CKEditor instance.
+    this.editor = window.CKEDITOR.replace('message', config.CKEDITOR);
+    this.editor.on('change', this.handleMessageInputChange);
+  },
+  componentWillUnmount: function() {
+    // Destroy the CKEditor instance.
+    // Destroying will also remove any event listeners.
+    this.editor.destroy();
+  },
   getInitialState: function() {
     return {
-      inputValue: ''
+      to: '',
+      cc: '',
+      bcc: '',
+      subject: '',
+      message: '',
+      isDisabledButtonSend: true
     }
   },
   //
@@ -32,51 +48,101 @@ var GroupNotify = React.createClass({
   //
   render: function() {
     var params = {
-      id: this.props.params.id
+      id: this.props.params.id,
+      type: this.props.params.type
     };
 
     return (
-      <div className="adv-App-membership">
-        <header className="adv-App-header">
-          <h1 className="adv-App-heading">
-            Notify for {this.props.data.groupName}
-          </h1>
-          <Link
-            className="adv-Link adv-Link--underlined"
-            params={params}
-            to="group.edit">
-            Edit group
-          </Link>
-        </header>
+      <div>
+        <h1 className="adv-App-heading">
+          Notify for {this.props.data.groupName}
+        </h1>
         <Link
           className="adv-Link adv-Link--underlined"
           params={params}
           to="group">
-          Return to Caseload
+          Return to Group
         </Link>
+        {this.renderError()}
+        --- {this.selectedIds}
+        ----- {this.props.params.type}
 
         <form
           className="adv-AddMemberForm adv-AddMemberForm--small"
-          onSubmit={this.handleSubmit}>
+          onSubmit={this.handleSubmit}
+        >
           <label
             className="adv-Label"
             htmlFor="adv-AddMemberForm-input">
             To
           </label>
+          {notifyStore.selectedIds}
+          <label
+            className="adv-Label"
+            htmlFor="adv-AddMemberForm-input">
+            Cc
+          </label>
           <div className="adv-AddMemberForm-field">
             <input
               className="adv-AddMemberForm-input adv-Input"
-              id="adv-AddMemberForm-input"
+              id="cc"
+              maxLength="1000"
               onChange={this.handleInputChange}
-              maxLength="10"
-              placeholder="Username or University ID"
-              value={this.state.inputValue}
+              placeholder="Email ids with comma separator"
               type="text"/>
           </div>
+          <label
+            className="adv-Label"
+            htmlFor="adv-AddMemberForm-input">
+            Bcc
+          </label>
+          <div className="adv-AddMemberForm-field">
+            <input
+              className="adv-AddMemberForm-input adv-Input"
+              id="bcc"
+              maxLength="1000"
+              onChange={this.handleInputChange}
+              placeholder="Email ids with comma separator"
+              type="text"/>
+          </div>
+          <label
+            className="adv-Label"
+            htmlFor="adv-AddMemberForm-input">
+            Subject *
+          </label>
+          <div className="adv-AddMemberForm-field">
+            <input
+              className="adv-AddMemberForm-input adv-Input"
+              id="subject"
+              maxLength="100"
+              onChange={this.handleInputChange}
+              placeholder="Subject"
+              required
+              type="text"/>
+          </div>
+          <label
+            className="adv-Label"
+            htmlFor="adv-AddMemberForm-textarea">
+            Body *
+          </label>
+          <textarea
+            className="adv-AddMemberForm-textarea adv-Input"
+            id="message"
+            onChange={this.handleInputChange}
+            placeholder="Mail body"
+            required
+            rows="5"
+            />
           <button
             className="adv-AddMemberForm-button adv-Button"
+            disabled={this.state.isDisabledButtonSend}
             type="submit">
             Send
+          </button>
+          <button
+            className="adv-AddMemberForm-button adv-Button"
+          >
+            Cancel
           </button>
         </form>
 
@@ -84,76 +150,15 @@ var GroupNotify = React.createClass({
     );
   },
   renderError: function() {
+    if(!this.state.errorMessage) {
+      return null;
+    }
+
     return (
       <Alert
         message={this.state.errorMessage}
         ref="error"
         type="error"/>
-    );
-  },
-  renderSingleAddMemberForm: function() {
-    return (
-      <form
-        className="adv-AddMemberForm adv-AddMemberForm--small"
-        onSubmit={this.handleSubmit}>
-        <label
-          className="adv-Label"
-          htmlFor="adv-AddMemberForm-input">
-          Student
-        </label>
-        <div className="adv-AddMemberForm-field">
-          <input
-            className="adv-AddMemberForm-input adv-Input"
-            id="adv-AddMemberForm-input"
-            onChange={this.handleInputChange}
-            maxLength="10"
-            placeholder="Username or University ID"
-            value={this.state.inputValue}
-            type="text"/>
-          <button
-            className="adv-AddMemberForm-button adv-Button"
-            type="submit">
-            Add
-          </button>
-        </div>
-        <p>
-          <a
-            className="adv-Link adv-Link--underlined"
-            onClick={this.handleBulkButtonClick}>
-            Add students in bulk
-          </a>
-        </p>
-      </form>
-    );
-  },
-  renderBulkAddMemberForm: function() {
-    return (
-      <form
-        className="adv-AddMemberForm"
-        onSubmit={this.handleSubmit}>
-        <label
-          className="adv-Label"
-          htmlFor="adv-AddMemberForm-textarea">
-          Students
-        </label>
-        <textarea
-          className="adv-AddMemberForm-textarea adv-Input"
-          id="adv-AddMemberForm-textarea"
-          onChange={this.handleInputChange}
-          placeholder="Usernames or University IDs"
-          rows="5"
-          value={this.state.inputValue}/>
-        <p className="adv-AddMemberForm-instructions">
-          Separate student usernames or University&nbsp;IDs with a space, a return, or a comma.
-        </p>
-        <div className="adv-AddMemberForm-controls">
-          <button
-            className="adv-AddMemberForm-button adv-Button"
-            type="submit">
-            Add
-          </button>
-        </div>
-      </form>
     );
   },
   renderEmpty: function() {
@@ -163,54 +168,26 @@ var GroupNotify = React.createClass({
       </p>
     );
   },
-  renderMember: function(member) {
-    var removeLabel = ['Remove', member.name, 'from group'].join(' ');
-    return (
-      <li className="adv-MemberList-item adv-Membership">
-        <header className="adv-Membership-header">
-          <h2 className="adv-Membership-name">
-            {member.name}
-          </h2>
-          <span className="adv-Membership-id">
-            {member.universityId}
-          </span>
-        </header>
-        <div className="adv-Membership-controls">
-          <button
-            aria-label={removeLabel}
-            className="adv-Membership-removeButton"
-            onClick={this.handleRemoveButtonClick(member)}>
-            <Icon
-              className="adv-Membership-removeButtonIcon"
-              name="remove"/>
-          </button>
-        </div>
-      </li>
-    );
-  },
   //
   // Handler methods
   //
-  handleBulkButtonClick: function(event) {
-    this.setState({
-      isBulkUpload: true
-    });
-  },
   handleInputChange: function(event) {
     this.setState({
+      isDisabledButtonSend: !this.state.isDisabledButtonSend ? true : false,
       inputValue: event.target.value
     });
   },
-  handleRemoveButtonClick: function(member) {
-    return function(event) {
-      actions.removeMember(this.props.data.groupId, member.universityId);
-    }.bind(this);
+  handleMessageInputChange: function(event) {
+    var value = event.editor.getData();
+    this.setState({
+      message: value
+    });
   },
   handleSubmit: function(event) {
     event.preventDefault();
     var groupId = this.props.data.groupId;
     var value = this.state.inputValue;
-    actions.addMember(groupId, value);
+    actions.notifyGroup(groupId, value);
   },
   //
   // Action methods

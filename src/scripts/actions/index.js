@@ -24,7 +24,10 @@ module.exports = Reflux.createActions({
   addMember: async,
   removeMember: async,
   removeAllMembers: async,
-  redirectToGroup: {}
+  redirectToGroup: {},
+  // Notify actions
+  getAllIdsForNotify: {},
+  getSelectedIdsForNotify: {}
 });
 
 require('./getData');

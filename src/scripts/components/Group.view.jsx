@@ -13,6 +13,7 @@ var TabList = ReactTabs.TabList;
 var TabPanel = ReactTabs.TabPanel;
 
 var actions = require('../actions');
+var notifyStore = require('../stores/notify');
 var sortStore = require('../stores/sort');
 var helpers = require('../helpers');
 
@@ -243,6 +244,7 @@ var GroupView = React.createClass({
         <header className="adv-Member-header">
           <div className="adv-Member-nameGroup">
             <input
+              name="idForNotify"
               onChange={this.handleCheckboxChange}
               type="checkbox"
               value={member.universityId}
@@ -399,18 +401,24 @@ var GroupView = React.createClass({
   handleCheckboxChange: function(event) {
     //event.preventDefault();
     var value = event.target.value;
-    console.log(event.target.checked);
-    //this.setState({
-    //  isDisabledButtonNotify: !!this.state.isDisabledButtonNotify ? false : true
-    //});
+    var checked = event.target.checked;
+    actions.getSelectedIdsForNotify(value, checked);
+    var selectedIds = notifyStore.selectedIds;
+    //console.log('++ from handleCheckboxChange in Group.view.jsx ++ ', value, checked, selectedIds, selectedIds.length, selectedIds[0]);
+    this.setState({
+      isDisabledButtonNotify: ( !checked && (selectedIds.length==1 && selectedIds[0]==value) ) ? true : false
+    });
   },
   handleClickNotifyAll: function(event) {
-    event.preventDefault();
-    actions.notifyGroup(this.props.data.groupId);
+    //event.preventDefault();
+    actions.getAllIdsForNotify(this.props.params.id);
+    //actions.notifyGroup(this.props.data.groupId, "all");
+    this.context.router.transitionTo('group.notify', { id: this.props.data.groupId }, { type: 'all' });
   },
   handleClickNotifySelected: function(event) {
-    event.preventDefault();
-    actions.notifyGroup(this.props.data.groupId);
+    //event.preventDefault();
+    //actions.notifyGroup(this.props.data.groupId, "selected");
+    this.context.router.transitionTo('group.notify', { id: this.props.data.groupId }, { type: 'selected' });
   },
   handleSortByChange: function(event) {
     var key = event.target.value;
