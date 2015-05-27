@@ -30,6 +30,10 @@ server.post('/sisaarex-dev/adrx/portal.do', function(req, res, next) {
     case 'createGroup':
       next('postGroups');
       break;
+    case 'renameGroup':
+      req.method = 'PUT';
+      next('putGroups');
+      break;
   }
   next();
 });
@@ -76,6 +80,32 @@ server.post(
 
     //res.send(403);
     res.send(201, _data);
+    next();
+  });
+
+// curl -isX PUT http://localhost:8000/sisaarex-dev/adrx/portal.do?action=renameGroup&groupId=0&groupName=Group | json
+// curl -isX PUT http://localhost:8000/groups -d "groupId=0&groupName=Group" | json
+server.put(
+  {
+    name: 'putGroups',
+    path: '/groups'
+  },
+  function(req, res, next) {
+    var id = req.query.groupId;
+    var name = req.query.groupName;
+    var group = data.groupMap[id];
+
+    // Group not found.
+    if(!group) {
+      res.send(404);
+      return next();
+    }
+
+    // Update the group name.
+    data.groupMap[id].groupName = name;
+
+    // Update successful.
+    res.send(204);
     next();
   });
 

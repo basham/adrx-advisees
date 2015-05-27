@@ -19,8 +19,10 @@ var GroupEdit = React.createClass({
   //
   getInitialState: function() {
     return {
+      errorMessage: null,
       isDisabled: true,
-      groupName: this.props.data.groupName
+      groupName: this.props.data.groupName,
+      requesting: false
     }
   },
   //
@@ -34,6 +36,7 @@ var GroupEdit = React.createClass({
         <h2 className="adv-EditGroup-heading">
           Rename
         </h2>
+        {this.renderError()}
         <input
           aria-label="Group name"
           className="adv-Input"
@@ -44,21 +47,37 @@ var GroupEdit = React.createClass({
         <div className="adv-EditGroup-controls">
           <button
             className="adv-Button"
-            disabled={this.state.isDisabled}
+            disabled={this.state.isDisabled || this.state.requesting}
             type="submit">
-            Save
+            {this.renderButtonLabel()}
           </button>
         </div>
       </form>
     );
   },
   renderError: function() {
+    if(!this.state.errorMessage) {
+      return null;
+    }
+
     return (
       <Alert
         message={this.state.errorMessage}
         ref="error"
         type="error"/>
     );
+  },
+  renderButtonLabel: function() {
+    if(!this.state.requesting) {
+      return 'Save';
+    }
+
+    return (
+      <span>
+        Saving
+        <span className="adv-ProcessIndicator"/>
+      </span>
+    )
   },
   //
   // Handler methods
@@ -77,6 +96,9 @@ var GroupEdit = React.createClass({
     var groupId = this.props.data.groupId;
     var value = this.state.groupName.trim();
     actions.renameGroup(groupId, value);
+    this.setState({
+      requesting: true
+    });
   },
   //
   // Action methods

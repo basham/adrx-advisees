@@ -117,6 +117,9 @@ var App = React.createClass({
   },
   onRemoveAllMembersCompleted: function(groupId) {
     this.context.router.transitionTo('group.membership', { id: groupId });
+  },
+  onRenameGroupCompleted: function(groupId) {
+    this.context.router.transitionTo('group', { id: groupId });
   }
 });
 
