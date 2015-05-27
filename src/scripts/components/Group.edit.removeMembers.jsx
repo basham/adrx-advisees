@@ -20,6 +20,7 @@ var GroupEdit = React.createClass({
   //
   getInitialState: function() {
     return {
+      requesting: false,
       showDialog: false
     }
   },
@@ -42,8 +43,10 @@ var GroupEdit = React.createClass({
         <div className="adv-EditGroup-controls">
           <button
             className="adv-Button"
-            onClick={this.handleDialog}>
-            Remove all members
+            disabled={this.state.requesting}
+            onClick={this.handleDialog}
+            ref="button">
+            {this.renderButtonLabel()}
           </button>
         </div>
         <Dialog
@@ -64,6 +67,18 @@ var GroupEdit = React.createClass({
         type="error"/>
     );
   },
+  renderButtonLabel: function() {
+    if(!this.state.requesting) {
+      return 'Remove all members';
+    }
+
+    return (
+      <span>
+        Removing all members
+        <span className="adv-ProcessIndicator"/>
+      </span>
+    )
+  },
   //
   // Handler methods
   //
@@ -76,11 +91,14 @@ var GroupEdit = React.createClass({
   handleDialogCancel: function() {
     this.setState({
       showDialog: false
-    });
+    }, this.focus);
   },
   handleDialogConfirm: function() {
     this.handleDialogCancel();
     actions.removeAllMembers(this.props.data.groupId);
+    this.setState({
+      requesting: true
+    });
   },
   //
   // Action methods
@@ -89,7 +107,13 @@ var GroupEdit = React.createClass({
     this.setState({
       errorMessage: message,
       requesting: false
-    });
+    }, this.focus);
+  },
+  //
+  // Helper methods
+  //
+  focus: function() {
+    this.refs.button.getDOMNode().focus();
   }
 });
 

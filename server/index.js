@@ -16,7 +16,7 @@ server.use(restify.bodyParser({ mapParams: false }));
 
 // Print each request.
 server.use(function(req, res, next) {
-  console.log(req.method, req.url, req.query);
+  console.log(req.method, req.url, req.query, req.body);
   next();
 });
 
@@ -28,7 +28,7 @@ server.post('/sisaarex-dev/adrx/portal.do', function(req, res, next) {
       next('getGroups');
       break;
     case 'createGroup':
-      var name = req.body.groupName;
+      var name = req.query.groupName;
       req.body = {
         data: {
           type: 'groups',
@@ -55,10 +55,22 @@ server.post('/sisaarex-dev/adrx/portal.do', function(req, res, next) {
       };
       next('putGroups');
       break;
+    case 'removeAllMembersFromGroup':
+      req.method = 'PUT';
+      req.params.id = req.query.groupId;
+      req.body = {
+        data: []
+      };
+      next('putGroupsPeople');
+      break;
+    default:
+      next();
   }
-  next();
 });
 
+//
+// Get group collection.
+//
 // curl -isX POST http://localhost:8000/sisaarex-dev/adrx/portal.do?action=getGroupsAndMembers | json
 // curl -is http://localhost:8000/groups | json
 server.get(
@@ -74,6 +86,9 @@ server.get(
     next();
   });
 
+//
+// Create group resource.
+//
 // curl -isX POST http://localhost:8000/sisaarex-dev/adrx/portal.do?action=createGroup&groupName=Group | json
 // curl -isX POST http://localhost:8000/groups -H "Content-Type: application/json" -d '{"data":{"type":"group","attributes":{"name":"Group"}}}' | json
 server.post(
@@ -104,7 +119,10 @@ server.post(
     next();
   });
 
-// curl -isX PUT http://localhost:8000/sisaarex-dev/adrx/portal.do?action=renameGroup&groupId=0&groupName=Group | json
+//
+// Update (rename) group resource.
+//
+// curl -isX POST http://localhost:8000/sisaarex-dev/adrx/portal.do?action=renameGroup&groupId=0&groupName=Group | json
 // curl -isX PUT http://localhost:8000/groups/0 -H "Content-Type: application/json" -d '{"data":{"type":"group","id":"0","attributes":{"name":"Group"}}}' | json
 server.put(
   {
@@ -129,6 +147,43 @@ server.put(
     res.send(204);
     next();
   });
+
+//
+// Update (remove all) group-people relationship.
+//
+// curl -isX POST http://localhost:8000/sisaarex-dev/adrx/portal.do?action=removeAllMembersFromGroup&groupId=0 | json
+// curl -isX PUT http://localhost:8000/groups/0/relationships/people -H "Content-Type: application/json" -d '{"data":[]}' | json
+server.put(
+  {
+    name: 'putGroupsPeople',
+    path: '/groups/:id/relationships/people'
+  },
+  function(req, res, next) {
+    var id = req.params.id;
+    var group = data.groupMap[id];
+
+    // Group not found.
+    if(!group) {
+      res.send(404);
+      return next();
+    }
+
+    var members = req.body.data.map(function(peopleReference) {
+      return peopleReference.id;
+    });
+
+    // Update the relationship.
+    group.memberList = members;
+
+    // Update successful.
+    res.send(204);
+    next();
+  });
+
+//
+// Create group-people relationship.
+//
+// curl -isX POST http://localhost:8000/groups/0/relationships/people -H "Content-Type: application/json" -d '{"data":[{"type":"people","id":"7496827183"}]}' | json
 
 server.listen(8000, function() {
   console.log('%s listening at %s', server.name, server.url);
