@@ -89,7 +89,7 @@ var App = React.createClass({
     }
 
     // Transition to the default group if there is none selected.
-    actions.redirectToGroup(data.defaultGroupId);
+    actions.redirect('group', { id: data.defaultGroupId });
   },
   //
   // Action methods
@@ -112,14 +112,8 @@ var App = React.createClass({
       isLoading: false
     });
   },
-  onRedirectToGroup: function(groupId) {
-    this.context.router.transitionTo('group', { id: groupId });
-  },
-  onRemoveAllMembersCompleted: function(groupId) {
-    this.context.router.transitionTo('group.membership', { id: groupId });
-  },
-  onRenameGroupCompleted: function(groupId) {
-    this.context.router.transitionTo('group', { id: groupId });
+  onRedirect: function(routeName, params, query) {
+    this.context.router.transitionTo(routeName, params, query);
   }
 });
 

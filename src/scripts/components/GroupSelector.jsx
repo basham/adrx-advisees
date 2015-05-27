@@ -58,7 +58,7 @@ var GroupSelector = React.createClass({
       selectedIndex: index,
       value: ''
     });
-    this.context.router.transitionTo('group', { id: id });
+    actions.redirect('group', { id: id });
   },
   handleCreate: function(value) {
     actions.createGroup(value);
