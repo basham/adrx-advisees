@@ -28,7 +28,32 @@ server.post('/sisaarex-dev/adrx/portal.do', function(req, res, next) {
       next('getGroups');
       break;
     case 'createGroup':
+      var name = req.body.groupName;
+      req.body = {
+        data: {
+          type: 'groups',
+          attributes: {
+            name: name
+          }
+        }
+      };
       next('postGroups');
+      break;
+    case 'renameGroup':
+      var id = req.query.groupId;
+      var name = req.query.groupName;
+      req.method = 'PUT';
+      req.params.id = id;
+      req.body = {
+        data: {
+          type: 'groups',
+          id: id,
+          attributes: {
+            name: name
+          }
+        }
+      };
+      next('putGroups');
       break;
   }
   next();
@@ -50,7 +75,7 @@ server.get(
   });
 
 // curl -isX POST http://localhost:8000/sisaarex-dev/adrx/portal.do?action=createGroup&groupName=Group | json
-// curl -isX POST http://localhost:8000/groups -d "groupName=Group" | json
+// curl -isX POST http://localhost:8000/groups -H "Content-Type: application/json" -d '{"data":{"type":"group","attributes":{"name":"Group"}}}' | json
 server.post(
   {
     name: 'postGroups',
@@ -62,7 +87,7 @@ server.post(
       groupMap: {}
     };
     var id = uuid.v4();
-    var name = req.body.groupName;
+    var name = req.body.data.attributes.name;
     var group = {
       groupId: id,
       groupName: name,
@@ -76,6 +101,32 @@ server.post(
 
     //res.send(403);
     res.send(201, _data);
+    next();
+  });
+
+// curl -isX PUT http://localhost:8000/sisaarex-dev/adrx/portal.do?action=renameGroup&groupId=0&groupName=Group | json
+// curl -isX PUT http://localhost:8000/groups/0 -H "Content-Type: application/json" -d '{"data":{"type":"group","id":"0","attributes":{"name":"Group"}}}' | json
+server.put(
+  {
+    name: 'putGroups',
+    path: '/groups/:id'
+  },
+  function(req, res, next) {
+    var id = req.params.id;
+    var name = req.body.data.attributes.name;
+    var group = data.groupMap[id];
+
+    // Group not found.
+    if(!group) {
+      res.send(404);
+      return next();
+    }
+
+    // Update the group name.
+    data.groupMap[id].groupName = name;
+
+    // Update successful.
+    res.send(204);
     next();
   });
 
