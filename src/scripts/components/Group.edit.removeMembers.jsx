@@ -103,7 +103,6 @@ var GroupEdit = React.createClass({
     this.handleDialogCancel();
     actions.removeAllMembers(this.props.data.groupId);
     this.setState({
-      errorMessage: null,
       requesting: true
     });
   },
