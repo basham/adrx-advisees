@@ -20,6 +20,7 @@ var GroupEdit = React.createClass({
   //
   getInitialState: function() {
     return {
+      errorMessage: null,
       requesting: false,
       showDialog: false
     }
@@ -37,6 +38,7 @@ var GroupEdit = React.createClass({
         <h2 className="adv-EditGroup-heading">
           Remove all members
         </h2>
+        {this.renderError()}
         <p>
           Remove all members. The group will not be deleted.
         </p>
@@ -60,6 +62,10 @@ var GroupEdit = React.createClass({
     );
   },
   renderError: function() {
+    if(!this.state.errorMessage) {
+      return null;
+    }
+
     return (
       <Alert
         message={this.state.errorMessage}
@@ -97,6 +103,7 @@ var GroupEdit = React.createClass({
     this.handleDialogCancel();
     actions.removeAllMembers(this.props.data.groupId);
     this.setState({
+      errorMessage: null,
       requesting: true
     });
   },
