@@ -61,8 +61,9 @@ server.post('/sisaarex-dev/adrx/portal.do', function(req, res, next) {
       next('putGroups');
       break;
     case 'removeAllMembersFromGroup':
+      var id = req.query.groupId;
+      req._params = { id: id };
       req.method = 'PUT';
-      req.params.id = req.query.groupId;
       req.body = {
         data: []
       };
@@ -164,7 +165,7 @@ server.put(
     path: '/groups/:id/relationships/people'
   },
   function(req, res, next) {
-    var id = req.params.id;
+    var id = req._params ? req._params.id : req.params.id;
     var group = data.groupMap[id];
 
     // Group not found.
