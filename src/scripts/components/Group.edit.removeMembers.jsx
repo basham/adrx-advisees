@@ -29,6 +29,11 @@ var GroupEdit = React.createClass({
   // Render methods
   //
   render: function() {
+    var hasMembers = !!this.props.data.memberList.length;
+    if(!hasMembers) {
+      return null;
+    }
+
     var dialogMessage = (
       <span>Remove all members from <em>{this.props.data.groupName}</em> group?</span>
     );

@@ -27,6 +27,12 @@ var GroupEdit = React.createClass({
   // Render methods
   //
   render: function() {
+    var hasMembers = !!this.props.data.memberList.length;
+
+    var description = hasMembers ?
+      'Remove all members and delete the group.' :
+      'There are no members in this group.';
+
     var dialogMessage = (
       <span>Delete <em>{this.props.data.groupName}</em> group?</span>
     );
@@ -37,7 +43,7 @@ var GroupEdit = React.createClass({
           Delete group
         </h2>
         <p>
-          Remove all members and delete the group.
+          {description}
         </p>
         <div className="adv-EditGroup-controls">
           <button
