@@ -25,8 +25,9 @@ module.exports = Reflux.createActions({
   removeMember: async,
   removeAllMembers: async,
   // Notify actions
-  getAllIdsForNotify: {},
-  getSelectedIdsForNotify: {},
+  setNotifyStoreWithAllIds: {},
+  setNotifyStoreWithSelectedIds: {},
+  setSelectedIdsForNotify: {},
   // Helper actions
   redirect: {}
 });

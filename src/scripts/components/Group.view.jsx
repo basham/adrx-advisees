@@ -54,7 +54,6 @@ var GroupView = React.createClass({
     return {
       errorMessage: null,
       isAscending: sortStore.defaultIsAscending,
-      isDisabledButtonNotify: true,
       isLongerTabLabel: true,
       sortByKey: sortStore.defaultSortByKey,
       windowInnerWidth_borderForTabLabelChange: 700
@@ -122,6 +121,10 @@ var GroupView = React.createClass({
       return this.renderEmpty();
     }
 
+    //console.log('--', notifyStore.selectedIds);
+    var isNotifyButtonDisabled = !notifyStore.selectedIds.length;
+    var countOfSelectedIds = !notifyStore.selectedIds.length ? '' : notifyStore.selectedIds.length;
+
     return (
       <div>
         <div className="adv-Controls">
@@ -131,10 +134,10 @@ var GroupView = React.createClass({
 
           <button
             className="adv-Button"
-            disabled={this.state.isDisabledButtonNotify}
+            disabled={isNotifyButtonDisabled}
             onClick={this.handleClickNotifySelected}
           >
-            Notify selected students
+            Notify {countOfSelectedIds} {helpers.pluralize(countOfSelectedIds, 'selected student')}
           </button>
           <button
             className="adv-Button"
@@ -142,11 +145,6 @@ var GroupView = React.createClass({
           >
             Notify all students
           </button>
-          <Link
-            params={{ id: this.props.params.id }}
-            to="group.notify">
-            Notify all students
-          </Link>
 
           <form className="adv-Controls-form">
             <label
@@ -239,11 +237,15 @@ var GroupView = React.createClass({
     var hasPSI = member.positiveServiceIndicators_Impact.length || member.positiveServiceIndicators_NoImpact.length;
     var hasNSI = member.negativeServiceIndicators_Impact.length || member.negativeServiceIndicators_NoImpact.length;
 
+    //console.log('--', notifyStore.selectedIds);
+    var isChecked = notifyStore.selectedIds.indexOf(member.universityId) >= 0;
+
     return (
       <li className="adv-MemberList-item adv-Member">
         <header className="adv-Member-header">
           <div className="adv-Member-nameGroup">
             <input
+              checked={isChecked}
               name="idForNotify"
               onChange={this.handleCheckboxChange}
               type="checkbox"
@@ -402,23 +404,15 @@ var GroupView = React.createClass({
     //event.preventDefault();
     var value = event.target.value;
     var checked = event.target.checked;
-    actions.getSelectedIdsForNotify(value, checked);
-    var selectedIds = notifyStore.selectedIds;
-    //console.log('++ from handleCheckboxChange in Group.view.jsx ++ ', value, checked, selectedIds, selectedIds.length, selectedIds[0]);
-    this.setState({
-      isDisabledButtonNotify: ( !checked && (selectedIds.length==1 && selectedIds[0]==value) ) ? true : false
-    });
+    actions.setSelectedIdsForNotify(value, checked);
   },
   handleClickNotifyAll: function(event) {
     //event.preventDefault();
-    actions.getAllIdsForNotify(this.props.params.id);
-    //actions.notifyGroup(this.props.data.groupId, "all");
-    this.context.router.transitionTo('group.notify', { id: this.props.data.groupId }, { type: 'all' });
+    actions.redirect('group.notify', { id: this.props.data.groupId }, { type: 'all' });
   },
   handleClickNotifySelected: function(event) {
     //event.preventDefault();
-    //actions.notifyGroup(this.props.data.groupId, "selected");
-    this.context.router.transitionTo('group.notify', { id: this.props.data.groupId }, { type: 'selected' });
+    actions.redirect('group.notify', { id: this.props.data.groupId }, { type: 'selected' });
   },
   handleSortByChange: function(event) {
     var key = event.target.value;

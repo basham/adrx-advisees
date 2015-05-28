@@ -20,6 +20,18 @@ var GroupNotify = React.createClass({
   propTypes: {
     data: React.PropTypes.object
   },
+  statics: {
+    // Trigger selected/all ids for output.
+    willTransitionTo: function(transition, params, query) {
+
+      //console.log(query);
+      if(query.type === 'selected') {
+        actions.setNotifyStoreWithSelectedIds();
+      } else {
+        actions.setNotifyStoreWithAllIds(params.id);
+      }
+    }
+  },
   //
   // Lifecycle methods
   //
@@ -51,6 +63,8 @@ var GroupNotify = React.createClass({
       id: this.props.params.id,
       type: this.props.params.type
     };
+
+    console.log('++ from Group.notify.jsx ++ ', this.props.notifyData);
 
     return (
       <div>
