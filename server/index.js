@@ -23,6 +23,15 @@ server.use(function(req, res, next) {
   next();
 });
 
+// Delay each response to simulate lag.
+server.use(function(req, res, next) {
+  var delay = 1000;
+  console.log('Delaying by', delay + 'ms');
+  setTimeout(function() {
+    next();
+  }, delay);
+});
+
 // Redirect production-style API calls to more ideal routes.
 server.post('/sisaarex-dev/adrx/portal.do', function(req, res, next) {
   switch(req.query.action) {
@@ -85,10 +94,8 @@ server.get(
     path: '/groups'
   },
   function(req, res, next) {
-    setTimeout(function() {
-      //res.send(500);
-      res.send(data);
-    }, 1000);
+    //res.send(500);
+    res.send(data);
     next();
   });
 
