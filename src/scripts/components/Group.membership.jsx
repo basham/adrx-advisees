@@ -78,7 +78,6 @@ var GroupMembership = React.createClass({
             className="adv-AddMemberForm-input adv-Input"
             id="adv-AddMemberForm-input"
             onChange={this.handleInputChange}
-            maxLength="10"
             placeholder="Username or University ID"
             value={this.state.inputValue}
             type="text"/>
