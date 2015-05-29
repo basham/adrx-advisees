@@ -51,12 +51,17 @@ var GroupNotify = React.createClass({
   },
   getInitialState: function() {
     return {
+      // Parameters to be passed
       emplids: '',
       ccList: '',
       bccList: '',
       subject: '',
       message: '',
-      isSendButtonDisabled: true
+      // Variable to handle the button
+      isSendButtonDisabled: true,
+      // Variables to handle the error
+      errorMessage: null,
+      requesting: false
     }
   },
   //
@@ -86,9 +91,9 @@ var GroupNotify = React.createClass({
           groupName={this.props.data.groupName}
           label={headingLabel} />
         {this.renderError()}
-
         <form
           className="adv-AddMemberForm adv-AddMemberForm--small"
+          onSubmit={this.handleSubmit}
         >
           <label
             className="adv-Label"
@@ -162,14 +167,16 @@ var GroupNotify = React.createClass({
           />
           <button
             className="adv-AddMemberForm-button adv-Button"
-            disabled={this.state.isSendButtonDisabled}
-            onClick={this.handleSubmit}
+            disabled={this.state.isSendButtonDisabled || this.state.requesting}
+            ref="submitButton"
+            type="submit"
           >
-            Send
+            {this.renderButtonLabel()}
           </button>
           <button
             className="adv-AddMemberForm-button adv-Button"
             onClick={this.handleCancel}
+            ref="cancelButton"
           >
             Cancel
           </button>
@@ -196,6 +203,18 @@ var GroupNotify = React.createClass({
         ref="error"
         type="error"/>
     );
+  },
+  renderButtonLabel: function() {
+    if(!this.state.requesting) {
+      return 'Send';
+    }
+
+    return (
+      <span>
+        Sending
+        <span className="adv-ProcessIndicator"/>
+      </span>
+    )
   },
   renderEmpty: function() {
     return (
@@ -263,10 +282,25 @@ var GroupNotify = React.createClass({
     var subject = this.state.subject;
     var message = this.state.message;
     actions.notifyGroup(groupId, emplids, ccList, bccList, subject, message);
-  }
+    this.setState({
+      requesting: true
+    });
+  },
   //
   // Action methods
   //
+  onNotifyGroupFailed: function(message) {
+    this.setState({
+      errorMessage: message,
+      requesting: false
+    }, this.focusOnSubmitButton);
+  },
+  //
+  // Helper methods
+  //
+  focusOnSubmitButton: function() {
+    this.refs.submitButton.getDOMNode().focus();
+  }
 });
 
 module.exports = GroupNotify;

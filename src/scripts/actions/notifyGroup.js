@@ -26,11 +26,11 @@ actions.notifyGroup.listen(function(groupId, emplids, ccList, bccList, subject, 
 
 function completed(groupId) {
   return function() {
-    actions.notify.completed(groupId);
+    actions.notifyGroup.completed(groupId);
     actions.redirect('group', { id: groupId });
   }
 }
 
 function failed() {
-  actions.notify.failed('Notification could not be sent. Please try again.');
+  actions.notifyGroup.failed('Notification could not be sent. Please try again.');
 }
