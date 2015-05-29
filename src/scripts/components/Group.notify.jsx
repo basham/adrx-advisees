@@ -14,6 +14,7 @@ var dataStore = require('../stores/data');
 var notifyStore = require('../stores/notify');
 
 var Alert = require('./Alert');
+var Dialog = require('./Dialog');
 var Icon = require('./Icon');
 var config = require('../config');
 
@@ -33,6 +34,24 @@ var GroupNotify = React.createClass({
         actions.setNotifyStoreWithSelectedIds();
       } else {
         actions.setNotifyStoreWithAllIds(params.id);
+      }
+    },
+    willTransitionFrom: function(transition, component, callback) {
+      if(component.formHasUnsavedData()) {
+        component.handleDialog(
+          // Confirm transition.
+          function() {
+            callback();
+          },
+          // Abort transition.
+          function() {
+            transition.abort();
+            callback();
+          }
+        );
+      }
+      else {
+        callback();
       }
     }
   },
@@ -57,8 +76,9 @@ var GroupNotify = React.createClass({
       bccList: '',
       subject: '',
       message: '',
-      // Variable to handle the button
+      // Variables to control the form
       isSendButtonDisabled: true,
+      showDialog: false,
       // Variables to handle the error
       errorMessage: null,
       requesting: false
@@ -68,9 +88,7 @@ var GroupNotify = React.createClass({
   // Render methods
   //
   render: function() {
-    var params = {
-      id: this.props.params.id
-    };
+    var dialogMessage = 'The form has unsaved information. Are you sure you want to leave this page?';
 
     //console.log('++ from Group.notify.jsx ++ notifyStore.selectedIds: ', notifyStore.selectedIds);
     //console.log('++ from Group.notify.jsx ++ this.props.notifyData: ', this.props.notifyData);
@@ -181,7 +199,13 @@ var GroupNotify = React.createClass({
             Cancel
           </button>
         </form>
-
+        <Dialog
+          confirmationButtonLabel="Yes, cancel"
+          message={dialogMessage}
+          onCancel={this.handleDialogCancel}
+          onConfirm={this.handleDialogConfirm}
+          show={this.state.showDialog}
+          title="Cancel notification"/>
       </div>
     );
   },
@@ -226,43 +250,50 @@ var GroupNotify = React.createClass({
   //
   // Handler methods
   //
+  handleDialog: function(confirmCallback, cancelCallback) {
+
+    this.handleDialogCancel = function() {
+      this.setState({
+        showDialog: false
+      }, this.focusOnCancelButton);
+      cancelCallback();
+    }.bind(this);
+
+    this.handleDialogConfirm = function() {
+      confirmCallback();
+    };
+
+    this.setState({
+      showDialog: true
+    });
+  },
   handleInputChange: function(event) {
     // Set the value to the related state variable
-///*
     var stateObject = function() {
       var returnObj = {};
       returnObj[this.target.id] = this.target.value;
-         return returnObj;
+      return returnObj;
     }.bind(event)();
 
     this.setState(stateObject, this.handleSendButtonDisabled);
-//*/
-/*
-    var value = event.target.value;
-    this.setState({
-      subject: value
-    });
-*/
-    //this.handleSendButtonDisabled();
   },
   handleMessageInputChange: function(event) {
     var value = event.editor.getData();
     this.setState({
       message: value
     }, this.handleSendButtonDisabled);
-    console.log( '+++ handleMessageInputChange +++ message = ', this.state.message );
-    //this.handleSendButtonDisabled();
+    //console.log( '+++ handleMessageInputChange +++ message = ', this.state.message );
   },
   handleCancel: function(event) {
-    //event.preventDefault();
+    event.preventDefault();
     actions.redirect('group', { id: this.props.params.id });
   },
   handleSendButtonDisabled: function() {
     // Debugging area
-    console.log( '+++ handleSendButtonDisabled +++ ccList = ', this.state.ccList );
-    console.log( '+++ handleSendButtonDisabled +++ bccList = ', this.state.bccList );
-    console.log( '+++ handleSendButtonDisabled +++ subject = ', this.state.subject );
-    console.log( '+++ handleSendButtonDisabled +++ message = ', this.state.message );
+    //console.log( '+++ handleSendButtonDisabled +++ ccList = ', this.state.ccList );
+    //console.log( '+++ handleSendButtonDisabled +++ bccList = ', this.state.bccList );
+    //console.log( '+++ handleSendButtonDisabled +++ subject = ', this.state.subject );
+    //console.log( '+++ handleSendButtonDisabled +++ message = ', this.state.message );
 
     // Set the attribute "disabled" for the Send button
     var subject = this.state.subject;
@@ -277,10 +308,10 @@ var GroupNotify = React.createClass({
     event.preventDefault();
     var groupId = this.props.params.id;
     var emplids = this.props.notifyData.toString();
-    var ccList = this.state.ccList;
-    var bccList = this.state.bccList;
-    var subject = this.state.subject;
-    var message = this.state.message;
+    var ccList = this.state.ccList.trim();
+    var bccList = this.state.bccList.trim();
+    var subject = this.state.subject.trim();
+    var message = this.state.message.trim();
     actions.notifyGroup(groupId, emplids, ccList, bccList, subject, message);
     this.setState({
       requesting: true
@@ -298,8 +329,18 @@ var GroupNotify = React.createClass({
   //
   // Helper methods
   //
+  focusOnCancelButton: function() {
+    this.refs.cancelButton.getDOMNode().focus();
+  },
   focusOnSubmitButton: function() {
     this.refs.submitButton.getDOMNode().focus();
+  },
+  formHasUnsavedData: function() {
+    var ccList = this.state.ccList.trim();
+    var bccList = this.state.bccList.trim();
+    var subject = this.state.subject.trim();
+    var message = this.state.message.trim();
+    return !!ccList || !!bccList || !!subject || !!message;
   }
 });
 
