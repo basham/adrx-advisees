@@ -20,11 +20,12 @@ module.exports = Reflux.createStore({
   onRenameGroupCompleted: function(groupId, value) {
     this.data.groupMap[groupId].groupName = value;
     this.output();
+    actions.redirect('group', { id: groupId });
   },
   onDeleteGroupCompleted: function(groupId) {
     delete this.data.groupMap[groupId];
-    actions.redirectToGroup(this.data.defaultGroupId);
     this.output();
+    actions.redirectToDefaultGroup();
   },
   onAddMemberCompleted: function(groupId, json) {
     Object.keys(json.emplidsResultMap).forEach(function(key) {
@@ -47,6 +48,12 @@ module.exports = Reflux.createStore({
   onRemoveAllMembersCompleted: function(groupId) {
     this.data.groupMap[groupId].memberList = [];
     this.output();
+    actions.redirect('group', { id: groupId });
+  },
+  onRedirectToDefaultGroup: function() {
+    if(this.data) {
+      actions.redirect('group', { id: this.data.defaultGroupId });
+    }
   },
   //
   // Helper methods
