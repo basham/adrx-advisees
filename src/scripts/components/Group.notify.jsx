@@ -216,7 +216,7 @@ var GroupNotify = React.createClass({
          return returnObj;
     }.bind(event)();
 
-    this.setState( stateObject );
+    this.setState(stateObject, this.handleSendButtonDisabled);
 //*/
 /*
     var value = event.target.value;
@@ -224,15 +224,15 @@ var GroupNotify = React.createClass({
       subject: value
     });
 */
-    this.handleSendButtonDisabled();
+    //this.handleSendButtonDisabled();
   },
   handleMessageInputChange: function(event) {
     var value = event.editor.getData();
     this.setState({
       message: value
-    });
+    }, this.handleSendButtonDisabled);
     console.log( '+++ handleMessageInputChange +++ message = ', this.state.message );
-    this.handleSendButtonDisabled();
+    //this.handleSendButtonDisabled();
   },
   handleCancel: function(event) {
     //event.preventDefault();

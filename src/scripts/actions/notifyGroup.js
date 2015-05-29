@@ -7,14 +7,14 @@ var helpers = require('../helpers');
 
 actions.notifyGroup.listen(function(groupId, emplids, ccList, bccList, subject, message) {
   var query = helpers.getQueryParams();
-  query.action = 'notifyGroup';
+  //query.action = 'notifyGroup';
   query.groupId = groupId;
 
   request
     .post(helpers.api('sendStudentListNote'))
+    .type('form')
     .query(query)
-    //.send({
-    .query({
+    .send({
       emplids: emplids,
       ccList: ccList,
       bccList: bccList,
