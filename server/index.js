@@ -75,6 +75,21 @@ server.post('/sisaarex-dev/adrx/portal.do', function(req, res, next) {
       req.method = 'DELETE';
       next('deleteGroups');
       break;
+    case 'removeMember':
+      var id = req.query.groupId;
+      var peopleId = req.query.emplids;
+      req._params = { id: id };
+      req.method = 'DELETE';
+      req.body = {
+        data: [
+          {
+            type: "people",
+            id: peopleId
+          }
+        ]
+      };
+      next('deleteGroupsPeople');
+      break;
     case 'removeAllMembersFromGroup':
       var id = req.query.groupId;
       req._params = { id: id };
@@ -109,7 +124,7 @@ server.get(
 // Create group resource.
 //
 // curl -isX POST "http://localhost:8000/sisaarex-dev/adrx/portal.do?action=createGroup&groupName=Group" | json
-// curl -isX POST "http://localhost:8000/groups" -H "Content-Type: application/json" -d '{"data":{"type":"group","attributes":{"name":"Group"}}}' | json
+// curl -isX POST "http://localhost:8000/groups" -H "Content-Type: application/json" -d '{"data":{"type":"groups","attributes":{"name":"Group"}}}' | json
 server.post(
   {
     name: 'postGroups',
@@ -142,7 +157,7 @@ server.post(
 // Update (rename) group resource.
 //
 // curl -isX POST "http://localhost:8000/sisaarex-dev/adrx/portal.do?action=renameGroup&groupId=0&groupName=Group" | json
-// curl -isX PUT "http://localhost:8000/groups/0" -H "Content-Type: application/json" -d '{"data":{"type":"group","id":"0","attributes":{"name":"Group"}}}' | json
+// curl -isX PUT "http://localhost:8000/groups/0" -H "Content-Type: application/json" -d '{"data":{"type":"groups","id":"0","attributes":{"name":"Group"}}}' | json
 server.put(
   {
     name: 'putGroups',
@@ -159,6 +174,13 @@ server.put(
       return next();
     }
 
+    // Group is not editable, so it can't be deleted.
+    // Send `403 Forbidden`.
+    if(!group.isEditable) {
+      res.send(403);
+      return next();
+    }
+
     // Update the group name.
     data.groupMap[id].groupName = name;
 
@@ -170,8 +192,8 @@ server.put(
 //
 // Delete group resource.
 //
-// curl -isX POST "http://localhost:8000/sisaarex-dev/adrx/portal.do?action=deleteGroup&groupId=0" | json
-// curl -isX DELETE "http://localhost:8000/groups/0" | json
+// curl -isX POST "http://localhost:8000/sisaarex-dev/adrx/portal.do?action=deleteGroup&groupId=1b4aeed1-abed-4980-bfb9-8f12918f5b5b" | json
+// curl -isX DELETE "http://localhost:8000/groups/1b4aeed1-abed-4980-bfb9-8f12918f5b5b" | json
 server.del(
   {
     name: 'deleteGroups',
@@ -195,6 +217,46 @@ server.del(
     }
 
     delete data.groupMap[id];
+
+    // Delete successful.
+    res.send(204);
+    next();
+  });
+
+//
+// Delete group-people relationship.
+//
+// curl -isX POST "http://localhost:8000/sisaarex-dev/adrx/portal.do?action=removeMember&groupId=1b4aeed1-abed-4980-bfb9-8f12918f5b5b&emplids=3594629652" | json
+// curl -isX DELETE "http://localhost:8000/groups/1b4aeed1-abed-4980-bfb9-8f12918f5b5b/relationships/people" -H "Content-Type: application/json" -d '{"data":[{"type":"people","id":"3594629652"}]}' | json
+server.del(
+  {
+    name: 'deleteGroupsPeople',
+    path: '/groups/:id/relationships/people'
+  },
+  function(req, res, next) {
+    var id = req._params ? req._params.id : req.params.id;
+    var group = data.groupMap[id];
+
+    // Group not found.
+    if(!group) {
+      res.send(404);
+      return next();
+    }
+
+    // Group is not editable, so it can't be modified.
+    // Send `403 Forbidden`.
+    if(!group.isEditable) {
+      res.send(403);
+      return next();
+    }
+
+    // Remove indicated people relationships.
+    req.body.data.forEach(function(peopleReference) {
+      var index = data.groupMap[id].memberList.indexOf(peopleReference.id);
+      if(index >= 0) {
+        data.groupMap[id].memberList.splice(index, 1);
+      }
+    });
 
     // Delete successful.
     res.send(204);
