@@ -57,12 +57,12 @@ var GroupEdit = React.createClass({
           </button>
         </div>
         <Dialog
-         confirmationButtonLabel="Yes, remove members"
-         message={dialogMessage}
-         show={this.state.showDialog}
-         onCancel={this.handleDialogCancel}
-         onConfirm={this.handleDialogConfirm}
-         title="Remove members"/>
+          confirmationButtonLabel="Yes, remove members"
+          message={dialogMessage}
+          show={this.state.showDialog}
+          onCancel={this.handleDialogCancel}
+          onConfirm={this.handleDialogConfirm}
+          title="Remove members"/>
       </div>
     );
   },

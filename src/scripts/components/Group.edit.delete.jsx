@@ -58,12 +58,12 @@ var GroupEdit = React.createClass({
           </button>
         </div>
         <Dialog
-         confirmationButtonLabel="Yes, delete"
-         message={dialogMessage}
-         show={this.state.showDialog}
-         onCancel={this.handleDialogCancel}
-         onConfirm={this.handleDialogConfirm}
-         title="Delete group"/>
+          confirmationButtonLabel="Yes, delete"
+          message={dialogMessage}
+          show={this.state.showDialog}
+          onCancel={this.handleDialogCancel}
+          onConfirm={this.handleDialogConfirm}
+          title="Delete group"/>
       </div>
     );
   },
