@@ -69,6 +69,12 @@ server.post('/sisaarex-dev/adrx/portal.do', function(req, res, next) {
       };
       next('putGroups');
       break;
+    case 'deleteGroup':
+      var id = req.query.groupId;
+      req._params = { id: id };
+      req.method = 'DELETE';
+      next('deleteGroups');
+      break;
     case 'removeAllMembersFromGroup':
       var id = req.query.groupId;
       req._params = { id: id };
@@ -157,6 +163,40 @@ server.put(
     data.groupMap[id].groupName = name;
 
     // Update successful.
+    res.send(204);
+    next();
+  });
+
+//
+// Delete group resource.
+//
+// curl -isX POST "http://localhost:8000/sisaarex-dev/adrx/portal.do?action=deleteGroup&groupId=0" | json
+// curl -isX DELETE "http://localhost:8000/groups/0" | json
+server.del(
+  {
+    name: 'deleteGroups',
+    path: '/groups/:id'
+  },
+  function(req, res, next) {
+    var id = req._params ? req._params.id : req.params.id;
+    var group = data.groupMap[id];
+
+    // Group not found.
+    if(!group) {
+      res.send(404);
+      return next();
+    }
+
+    // Group is not editable, so it can't be deleted.
+    // Send `403 Forbidden`.
+    if(!group.isEditable) {
+      res.send(403);
+      return next();
+    }
+
+    delete data.groupMap[id];
+
+    // Delete successful.
     res.send(204);
     next();
   });
