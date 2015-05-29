@@ -121,7 +121,6 @@ var GroupView = React.createClass({
       return this.renderEmpty();
     }
 
-    //console.log('--', notifyStore.selectedIds);
     var isNotifyButtonDisabled = !notifyStore.selectedIds.length;
     var countOfSelectedIds = !notifyStore.selectedIds.length ? '' : notifyStore.selectedIds.length;
 
@@ -135,13 +134,13 @@ var GroupView = React.createClass({
           <button
             className="adv-Button"
             disabled={isNotifyButtonDisabled}
-            onClick={this.handleClickNotifySelected}
+            onClick={this.handleClickNotifyButton('selected')}
           >
-            Notify {countOfSelectedIds} {helpers.pluralize(countOfSelectedIds, 'selected student')}
+            Notify {countOfSelectedIds} {helpers.pluralize(countOfSelectedIds, ' selected student')}
           </button>
           <button
             className="adv-Button"
-            onClick={this.handleClickNotifyAll}
+            onClick={this.handleClickNotifyButton('all')}
           >
             Notify all students
           </button>
@@ -406,13 +405,10 @@ var GroupView = React.createClass({
     var checked = event.target.checked;
     actions.setSelectedIdsForNotify(value, checked);
   },
-  handleClickNotifyAll: function(event) {
-    //event.preventDefault();
-    actions.redirect('group.notify', { id: this.props.data.groupId }, { type: 'all' });
-  },
-  handleClickNotifySelected: function(event) {
-    //event.preventDefault();
-    actions.redirect('group.notify', { id: this.props.data.groupId }, { type: 'selected' });
+  handleClickNotifyButton: function(type) {
+    return function(event) {
+      actions.redirect('group.notify', { id: this.props.data.groupId }, { type: type });
+    }.bind(this);
   },
   handleSortByChange: function(event) {
     var key = event.target.value;

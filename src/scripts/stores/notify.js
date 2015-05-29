@@ -23,7 +23,6 @@ module.exports = Reflux.createStore({
   //
   onSetNotifyStoreWithAllIds: function(groupId) {
     var ids = dataStore.data.groupMap[groupId].memberList
-    console.log('++ from onSetNotifyStoreWithAllIds in notify.js ++ ', groupId, ids);
     this.output(ids);
   },
   onSetNotifyStoreWithSelectedIds: function() {
@@ -38,7 +37,6 @@ module.exports = Reflux.createStore({
     else if(!isSelected && containsId) {
       this.selectedIds.splice(index, 1);
     }
-    //console.log('++ from onSetSelectedIdsForNotify in notify.js ++ ', id, isSelected, this.selectedIds);
     this.output(this.selectedIds);
   },
   //
