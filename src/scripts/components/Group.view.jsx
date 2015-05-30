@@ -32,7 +32,8 @@ var GroupView = React.createClass({
     willTransitionFrom: function(transition, component) {
       // Remove error message when transitioning away.
       component.setState({
-        errorMessage: null
+        errorMessage: null,
+        successMessage: null
       });
     }
   },
@@ -41,6 +42,7 @@ var GroupView = React.createClass({
   //
   componentDidMount: function() {
     window.addEventListener('resize', this.onWindowResized);
+    actions.redirect.completed('group', { id: this.props.data.groupId });
   },
   componentWillUnmount: function() {
     window.removeEventListener('resize', this.onWindowResized);
@@ -56,6 +58,7 @@ var GroupView = React.createClass({
       isAscending: sortStore.defaultIsAscending,
       isLongerTabLabel: true,
       sortByKey: sortStore.defaultSortByKey,
+      successMessage: null,
       windowInnerWidth_borderForTabLabelChange: 700
     }
   },
@@ -69,6 +72,7 @@ var GroupView = React.createClass({
           Caseload
         </h1>
         {this.renderError()}
+        {this.renderSuccess()}
         <div className="adv-GroupSelectorControls">
           <GroupSelector
             className="adv-GroupSelectorControls-selector"
@@ -88,6 +92,17 @@ var GroupView = React.createClass({
       <Alert
         message={this.state.errorMessage}
         ref="error"
+        type="error"/>
+    );
+  },
+  renderSuccess: function() {
+    if(!this.state.successMessage) {
+      return null;
+    }
+
+    return (
+      <Alert
+        message={this.state.successMessage}
         type="error"/>
     );
   },
@@ -438,6 +453,11 @@ var GroupView = React.createClass({
   onCreateGroupFailed: function(message) {
     this.setState({
       errorMessage: message
+    });
+  },
+  onNotifyGroupCompleted: function(message) {
+    this.setState({
+      successMessage: message
     });
   },
   //

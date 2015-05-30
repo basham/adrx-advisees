@@ -60,15 +60,15 @@ var Group = React.createClass({
   // Store methods
   //
   onGroupStoreChange: function(data) {
-   this.setState({
-     groupData: data
-   });
- },
- onNotifyStoreChange: function(data) {
-  this.setState({
-    notifyData: data
-  });
- }
+    this.setState({
+      groupData: data
+    });
+  },
+  onNotifyStoreChange: function(data) {
+    this.setState({
+      notifyData: data
+    });
+  }
 });
 
 module.exports = Group;

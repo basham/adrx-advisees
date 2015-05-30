@@ -37,7 +37,7 @@ var GroupNotify = React.createClass({
       }
     },
     willTransitionFrom: function(transition, component, callback) {
-      if(component.formHasUnsavedData()) {
+      if(component.formHasUnsavedData() && !component.state.requesting) {
         component.handleDialog(
           // Confirm transition.
           function() {
@@ -71,7 +71,6 @@ var GroupNotify = React.createClass({
   getInitialState: function() {
     return {
       // Parameters to be passed
-      emplids: '',
       ccList: '',
       bccList: '',
       subject: '',
@@ -94,7 +93,6 @@ var GroupNotify = React.createClass({
     //console.log('++ from Group.notify.jsx ++ this.props.notifyData: ', this.props.notifyData);
     var ids = this.props.notifyData || [];
     var count = ids.length;
-    var headingLabel = this.props.query.type == 'all' ? 'Notify all students' : ( 'Notify ' + count + helpers.pluralize(count, ' selected student') );
     var names =
       ids.map(function(id) {
         return dataStore.data.memberMap[id].studentName;
@@ -107,16 +105,14 @@ var GroupNotify = React.createClass({
         <Heading
           groupId={this.props.params.id}
           groupName={this.props.data.groupName}
-          label={headingLabel} />
+          label="Notify" />
         {this.renderError()}
         <form
           className="adv-AddMemberForm adv-AddMemberForm--small"
-          onSubmit={this.handleSubmit}
-        >
+          onSubmit={this.handleSubmit} >
           <label
             className="adv-Label"
-            htmlFor="toList"
-          >
+            htmlFor="toList" >
             To
           </label>
 
@@ -127,8 +123,7 @@ var GroupNotify = React.createClass({
 
           <label
             className="adv-Label"
-            htmlFor="ccList"
-          >
+            htmlFor="ccList" >
             Cc
           </label>
           <div className="adv-AddMemberForm-field">
@@ -138,13 +133,11 @@ var GroupNotify = React.createClass({
               maxLength="1000"
               onChange={this.handleInputChange}
               placeholder="Email ids with comma separator"
-              type="text"
-            />
+              type="text" />
           </div>
           <label
             className="adv-Label"
-            htmlFor="bccList"
-          >
+            htmlFor="bccList" >
             Bcc
           </label>
           <div className="adv-AddMemberForm-field">
@@ -154,13 +147,11 @@ var GroupNotify = React.createClass({
               maxLength="1000"
               onChange={this.handleInputChange}
               placeholder="Email ids with comma separator"
-              type="text"
-            />
+              type="text" />
           </div>
           <label
             className="adv-Label"
-            htmlFor="subject"
-          >
+            htmlFor="subject" >
             Subject *
           </label>
           <div className="adv-AddMemberForm-field">
@@ -170,8 +161,7 @@ var GroupNotify = React.createClass({
               maxLength="100"
               onChange={this.handleInputChange}
               placeholder="Subject with max length 100"
-              type="text"
-            />
+              type="text" />
           </div>
           <label
             className="adv-Label"
@@ -181,25 +171,23 @@ var GroupNotify = React.createClass({
           </label>
           <textarea
             className="adv-AddMemberForm-textarea adv-Input"
-            id="message"
-          />
+            id="message" />
           <button
             className="adv-AddMemberForm-button adv-Button"
             disabled={this.state.isSendButtonDisabled || this.state.requesting}
             ref="submitButton"
-            type="submit"
-          >
+            type="submit" >
             {this.renderButtonLabel()}
           </button>
           <button
             className="adv-AddMemberForm-button adv-Button"
             onClick={this.handleCancel}
-            ref="cancelButton"
-          >
+            ref="cancelButton" >
             Cancel
           </button>
         </form>
         <Dialog
+          cancelButtonLabel="No, stay here"
           confirmationButtonLabel="Yes, cancel"
           message={dialogMessage}
           onCancel={this.handleDialogCancel}
@@ -296,8 +284,8 @@ var GroupNotify = React.createClass({
     //console.log( '+++ handleSendButtonDisabled +++ message = ', this.state.message );
 
     // Set the attribute "disabled" for the Send button
-    var subject = this.state.subject;
-    var message = this.state.message;
+    var subject = this.state.subject.trim();
+    var message = this.state.message.trim();
     var isDisabled = !( !!subject && !!message );
 
     this.setState({
@@ -307,7 +295,7 @@ var GroupNotify = React.createClass({
   handleSubmit: function(event) {
     event.preventDefault();
     var groupId = this.props.params.id;
-    var emplids = this.props.notifyData.toString();
+    var emplids = this.props.notifyData;
     var ccList = this.state.ccList.trim();
     var bccList = this.state.bccList.trim();
     var subject = this.state.subject.trim();
