@@ -161,18 +161,20 @@ var GroupView = React.createClass({
           </button>
 
           <form className="adv-Controls-form">
-            <label
-              className="adv-Controls-label"
-              htmlFor="sortByInput">
-              Sort by
-            </label>
-            <select
-              className="adv-Controls-select"
-              id="sortByInput"
-              onChange={this.handleSortByChange}
-              value={this.state.sortByKey}>
-              {sortStore.sortList.map(this.renderSortOption)}
-            </select>
+            <div className="adv-Controls-field">
+              <label
+                className="adv-Controls-label"
+                htmlFor="sortByInput">
+                Sort by
+              </label>
+              <select
+                className="adv-Controls-select"
+                id="sortByInput"
+                onChange={this.handleSortByChange}
+                value={this.state.sortByKey}>
+                {sortStore.sortList.map(this.renderSortOption)}
+              </select>
+            </div>
             {this.renderOrderBySection()}
           </form>
         </div>
@@ -211,7 +213,7 @@ var GroupView = React.createClass({
 
     var orderOptions = sortStore.sortMap[this.state.sortByKey].order;
     return (
-      <span>
+      <div className="adv-Controls-field">
         <label
           className="adv-Controls-label"
           htmlFor="orderByInput">
@@ -224,7 +226,7 @@ var GroupView = React.createClass({
           value={this.state.isAscending}>
           {orderOptions.map(this.renderOrderOption)}
         </select>
-      </span>
+      </div>
     );
   },
   renderMember: function(member) {

@@ -5,19 +5,24 @@
   margin: 0.5em 0;
 
   &-count {
-    flex: 1;
+    flex-basis: 7em;
+    flex-grow: 1;
     margin: 0 0 0.5em;
-    min-width: 7em;
   }
 
   &-form {
+    display: flex;
+    flex-wrap: wrap;
     margin: 0;
+  }
+
+  &-field {
   }
 
   &-label {
     display: inline-block;
     font-weight: bold;
-    margin: 0.5em 0.5em 0.5em 0.5em;
+    margin: 0.5em 0.5em 0.5em 1em;
   }
 
   &-select {

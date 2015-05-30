@@ -5,7 +5,6 @@ var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 
 var actions = require('../actions');
-var dataStore = require('../stores/data');
 
 var Alert = require('./Alert');
 
@@ -14,14 +13,22 @@ var App = React.createClass({
     router: React.PropTypes.func
   },
   mixins: [
-    Reflux.listenTo(dataStore, 'onStoreChange'),
     Reflux.listenToMany(actions)
   ],
   //
   // Lifecycle methods
   //
-  componentDidMount: function() {
+  componentWillMount: function() {
     actions.getData();
+  },
+  componentWillUpdate: function(nextProps) {
+    // Automatically redirect to the default group, when getting new data
+    // or manually removing the group id parameter in the URL.
+    // Because this component uses `setState()` in `onGetDataCompleted()`,
+    // there doesn't need to be an explicit lister for when the store updates.
+    if(!nextProps.params.id) {
+      actions.redirectToDefaultGroup();
+    }
   },
   getInitialState: function() {
     return {
@@ -79,17 +86,6 @@ var App = React.createClass({
     return (
       <RouteHandler {...this.props} />
     );
-  },
-  //
-  // Store methods
-  //
-  onStoreChange: function(data) {
-    if(this.props.params.id) {
-      return;
-    }
-
-    // Transition to the default group if there is none selected.
-    actions.redirect('group', { id: data.defaultGroupId });
   },
   //
   // Action methods

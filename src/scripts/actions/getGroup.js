@@ -2,7 +2,6 @@
 
 var actions = require('./');
 var dataStore = require('../stores/data');
-var groupStore = require('../stores/group');
 
 var actionQueue = [];
 
@@ -43,5 +42,4 @@ function completed(data, id) {
 function failed(id) {
   var message = ['ERROR: Group not found (id:', id, ')'].join(' ');
   actions.getGroup.failed(message);
-  actions.redirect('group', { id: groupStore.groupId });
 }

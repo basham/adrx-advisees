@@ -20,7 +20,6 @@ actions.removeAllMembers.listen(function(groupId, memberId) {
 function completed(groupId) {
   return function() {
     actions.removeAllMembers.completed(groupId);
-    actions.redirect('group.membership', { id: groupId });
   }
 }
 

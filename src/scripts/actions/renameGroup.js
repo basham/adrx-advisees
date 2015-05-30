@@ -49,7 +49,6 @@ actions.renameGroup.listen(function(groupId, value) {
 function completed(groupId, value) {
   return function() {
     actions.renameGroup.completed(groupId, value);
-    actions.redirect('group', { id: groupId });
   }
 }
 

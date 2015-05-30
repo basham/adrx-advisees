@@ -36,6 +36,18 @@
     &:focus {
       background-color: @color-Interactive--100;
     }
+
+    &:focus {
+      .focus();
+    }
+
+    &[disabled]:hover {
+      background-color: transparent;
+    }
+
+    &[disabled] &Icon {
+      fill: @color-Interactive--400;
+    }
   }
 
   &-removeButtonIcon {
