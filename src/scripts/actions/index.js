@@ -29,7 +29,8 @@ module.exports = Reflux.createActions({
   setNotifyStoreWithSelectedIds: {},
   setSelectedIdsForNotify: {},
   // Helper actions
-  redirect: async
+  redirect: async,
+  redirectToDefaultGroup: {}
 });
 
 require('./getData');
