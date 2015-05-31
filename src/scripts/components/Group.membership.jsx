@@ -85,7 +85,7 @@ var GroupMembership = React.createClass({
             className="adv-AddMemberForm-button adv-Button"
             disabled={this.state.requesting}
             type="submit">
-            Add
+            {this.renderButtonLabel()}
           </button>
         </div>
         <button
@@ -121,11 +121,23 @@ var GroupMembership = React.createClass({
             className="adv-AddMemberForm-button adv-Button"
             disabled={this.state.requesting}
             type="submit">
-            Add
+            {this.renderButtonLabel()}
           </button>
         </div>
       </form>
     );
+  },
+  renderButtonLabel: function() {
+    if(!this.state.requesting) {
+      return 'Add';
+    }
+
+    return (
+      <span>
+        Adding
+        <span className="adv-ProcessIndicator"/>
+      </span>
+    )
   },
   renderEmpty: function() {
     return (
@@ -207,13 +219,18 @@ var GroupMembership = React.createClass({
     var groupId = this.props.data.groupId;
     var value = this.state.inputValue;
     actions.addMember(groupId, value);
+    this.setState({
+      requesting: true
+    });
   },
   //
   // Action methods
   //
   onAddMemberCompleted: function() {
     this.setState({
-      inputValue: ''
+      errorMessage: 'Add member completed',
+      inputValue: '',
+      requesting: false
     });
   },
   onRemoveMemberCompleted: function() {
