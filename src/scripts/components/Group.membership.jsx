@@ -226,9 +226,49 @@ var GroupMembership = React.createClass({
   //
   // Action methods
   //
-  onAddMemberCompleted: function() {
+  onAddMemberCompleted: function(groupId, json) {
+    //console.log('json = ', json );
+
+    // Added - 200 - OK
+    // Already in the group - 204 - No Content
+    // Not Found - 404 - Not Found
+    var message = '';
+    var messageMap = {
+      "200": { "status": "200", "count": 0, "queryList":"", partOfMessage: " added." },
+      "204": { "status": "204", "count": 0, "queryList":"", partOfMessage: " is/are already in the group." },
+      "404": { "status": "404", "count": 0, "queryList":"", partOfMessage: " could not be found." }
+    };
+
+    Object.keys(json.emplidsResultMap).forEach(function(key) {
+      var result = json.emplidsResultMap[key];
+      var query = key;
+      //var emplid = result[0];
+      //var text = result[1]; // Added/Already in the group/Not Found
+      var status = result[2]; // 200/204/404
+      //var title = result[3]; // OK/No Content/Not Found
+
+      messageMap[status].count = messageMap[status].count + 1;
+      messageMap[status].queryList = messageMap[status].queryList + ', ' + query;
+    });
+    //console.log('messageMap = ', messageMap );
+
+    Object.keys(messageMap).forEach(function(key) {
+      var status = key;
+      var count = messageMap[status].count;
+      if(count > 0) {
+        var queryList = messageMap[status].queryList.substr(2);
+        var partOfMessage = messageMap[status].partOfMessage;
+
+        message = message + count + helpers.pluralize(count, ' student');
+        message = message + partOfMessage;
+        message = message + ' -- ' + queryList;
+        message = message + '<hr />';
+      }
+    });
+    message = message.substring(0, message.length - 6);
+
     this.setState({
-      errorMessage: 'Add member completed',
+      errorMessage: message,
       inputValue: '',
       requesting: false
     });
