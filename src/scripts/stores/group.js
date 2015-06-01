@@ -34,6 +34,9 @@ module.exports = Reflux.createStore({
     this.groupId = id;
     this.output();
   },
+  onGetGroupFailed: function() {
+    actions.redirect('group', { id: this.groupId });
+  },
   onSortBy: function(key, isAscending) {
     this.sortByKey = key;
     this.isAscending = isAscending;

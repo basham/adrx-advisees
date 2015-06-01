@@ -833,7 +833,8 @@
   "groupMap":{
     "0":{
       "groupId":"0",
-      "groupName":"Advisee",
+      "groupName":"Advisees",
+      "isEditable":false,
       "memberList":[
         "8242035571",
         "4786766189",
@@ -847,6 +848,7 @@
     "1b4aeed1-abed-4980-bfb9-8f12918f5b5b":{
       "groupId":"1b4aeed1-abed-4980-bfb9-8f12918f5b5b",
       "groupName":"New Admits",
+      "isEditable":true,
       "memberList":[
         "3594629652",
         "7496827183",
@@ -857,6 +859,7 @@
     "4485f10b-3f07-4e2e-90b8-c0a66bed5417":{
       "groupId":"4485f10b-3f07-4e2e-90b8-c0a66bed5417",
       "groupName":"Honors",
+      "isEditable":true,
       "memberList":[
         "3970471366",
         "5474916620",

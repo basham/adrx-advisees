@@ -8,17 +8,17 @@
     background-color: @color-Interactive--150;
   }
 
-  &-header {
-    align-items: baseline;
-    display: flex;
-    flex-wrap: wrap;
-  }
-
   &-heading {
-    flex: 1;
+    align-items: center;
+    display: flex;
     font-size: @scale-FontSize--20;
     font-weight: normal;
     line-height: 1;
+  }
+
+  &-breadcrumbsIcon {
+    font-size: 1rem;
+    margin: 0 0.5em;
   }
 
   &-empty,
@@ -31,8 +31,7 @@
     text-align: center;
   }
 
-  &-editGroup,
-  &-membership {
+  &-editView {
     max-width: 30em;
   }
 }

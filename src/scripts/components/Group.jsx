@@ -7,13 +7,12 @@ var RouteHandler = Router.RouteHandler;
 
 var actions = require('../actions');
 var groupStore = require('../stores/group');
-
-var Alert = require('./Alert');
+var notifyStore = require('../stores/notify');
 
 var Group = React.createClass({
   mixins: [
-    Reflux.listenTo(groupStore, 'onStoreChange'),
-    Reflux.listenToMany(actions)
+    Reflux.listenTo(groupStore, 'onGroupStoreChange'),
+    Reflux.listenTo(notifyStore, 'onNotifyStoreChange')
   ],
   statics: {
     // Get the group by its id when transitioning to this component.
@@ -26,79 +25,48 @@ var Group = React.createClass({
   //
   getInitialState: function() {
     return {
-      data: {},
-      requesting: true
+      groupData: null,
+      notifyData: null
     }
   },
   //
   // Render methods
   //
   render: function() {
-    var content = null;
-
-    if(this.state.requesting) {
-      content = this.renderLoading();
-    }
-    else if(this.state.errorMessage) {
-      content = this.renderError();
-    }
-    else {
-      content = this.renderView();
-    }
-
     return (
       <section className="adv-App">
-        {content}
+        {this.state.groupData ? this.renderRoutes() : this.renderLoading()}
       </section>
     );
   },
+  // Prevents a flash of no content in the milliseconds it takes to
+  // transform dataStore data into groupStore data.
   renderLoading: function() {
     return (
-      <p className="adv-App-loading">
-        Loading
-        <span className="adv-ProcessIndicator"/>
-      </p>
+      <h1 className="adv-App-heading">
+        Caseload
+      </h1>
     );
   },
-  renderError: function() {
-    return (
-      <Alert
-        message={this.state.errorMessage}
-        ref="error"
-        type="error"/>
-    );
-  },
-  renderView: function() {
+  renderRoutes: function() {
     return (
       <RouteHandler
         {...this.props}
-        data={this.state.data} />
+        data={this.state.groupData}
+        notifyData={this.state.notifyData} />
     );
   },
   //
   // Store methods
   //
-  onStoreChange: function(data) {
-   this.setState({
-     data: data,
-     requesting: false
-   });
-  },
-  //
-  // Action methods
-  //
-  onGetData: function() {
+  onGroupStoreChange: function(data) {
     this.setState({
-      errorMessage: null,
-      requesting: true
+      groupData: data
     });
   },
-  onGetDataFailed: function(message) {
+  onNotifyStoreChange: function(data) {
     this.setState({
-      errorMessage: message,
-      requesting: false
-    }, function() {
-      this.refs.error.getDOMNode().focus();
+      notifyData: data
     });
   }
 });

@@ -13,6 +13,7 @@ var TabList = ReactTabs.TabList;
 var TabPanel = ReactTabs.TabPanel;
 
 var actions = require('../actions');
+var notifyStore = require('../stores/notify');
 var sortStore = require('../stores/sort');
 var helpers = require('../helpers');
 
@@ -21,14 +22,27 @@ var Icon = require('./Icon');
 var GroupSelector = require('./GroupSelector');
 
 var GroupView = React.createClass({
+  mixins: [
+    Reflux.listenToMany(actions)
+  ],
   propTypes: {
     data: React.PropTypes.object
+  },
+  statics: {
+    willTransitionFrom: function(transition, component) {
+      // Remove error message when transitioning away.
+      component.setState({
+        errorMessage: null,
+        successMessage: null
+      });
+    }
   },
   //
   // Lifecycle methods
   //
   componentDidMount: function() {
     window.addEventListener('resize', this.onWindowResized);
+    actions.redirect.completed('group', { id: this.props.data.groupId });
   },
   componentWillUnmount: function() {
     window.removeEventListener('resize', this.onWindowResized);
@@ -40,9 +54,11 @@ var GroupView = React.createClass({
   },
   getInitialState: function() {
     return {
+      errorMessage: null,
       isAscending: sortStore.defaultIsAscending,
       isLongerTabLabel: true,
       sortByKey: sortStore.defaultSortByKey,
+      successMessage: null,
       windowInnerWidth_borderForTabLabelChange: 700
     }
   },
@@ -55,25 +71,23 @@ var GroupView = React.createClass({
         <h1 className="adv-App-heading">
           Caseload
         </h1>
+        {this.renderError()}
+        {this.renderSuccess()}
         <div className="adv-GroupSelectorControls">
           <GroupSelector
             className="adv-GroupSelectorControls-selector"
-            selectedId={this.props.params.id}
-            />
-          {this.renderEditMembershipLink()}
+            selectedId={this.props.params.id}/>
+          {this.renderEditLinks()}
         </div>
         {this.renderList()}
       </div>
     );
   },
-  renderEmpty: function() {
-    return (
-      <p className="adv-App-empty">
-        You currently have no students assigned to this group.
-      </p>
-    );
-  },
   renderError: function() {
+    if(!this.state.errorMessage) {
+      return null;
+    }
+
     return (
       <Alert
         message={this.state.errorMessage}
@@ -81,18 +95,37 @@ var GroupView = React.createClass({
         type="error"/>
     );
   },
-  renderEditMembershipLink: function() {
+  renderSuccess: function() {
+    if(!this.state.successMessage) {
+      return null;
+    }
+
+    return (
+      <Alert
+        message={this.state.successMessage}
+        type="error"/>
+    );
+  },
+  renderEditLinks: function() {
     if(!this.props.data.isEditable) {
       return null;
     }
 
     return (
-      <Link
-        className="adv-GroupSelectorControls-link"
-        params={{ id: this.props.params.id}}
-        to="group.membership">
-        Edit membership
-      </Link>
+      <div className="adv-GroupSelectorControls-list">
+        <Link
+          className="adv-Link adv-GroupSelectorControls-item"
+          params={{ id: this.props.params.id}}
+          to="group.membership">
+          Edit Membership
+        </Link>
+        <Link
+          className="adv-Link adv-GroupSelectorControls-item"
+          params={{ id: this.props.params.id}}
+          to="group.edit">
+          Edit Group
+        </Link>
+      </div>
     );
   },
   renderList: function() {
@@ -103,25 +136,45 @@ var GroupView = React.createClass({
       return this.renderEmpty();
     }
 
+    var isNotifyButtonDisabled = !notifyStore.selectedIds.length;
+    var countOfSelectedIds = !notifyStore.selectedIds.length ? '' : notifyStore.selectedIds.length;
+
     return (
       <div>
         <div className="adv-Controls">
           <p className="adv-Controls-count">
             {count} {helpers.pluralize(count, 'student')}
           </p>
+
+          <button
+            className="adv-Button"
+            disabled={isNotifyButtonDisabled}
+            onClick={this.handleClickNotifyButton('selected')}
+          >
+            Notify {countOfSelectedIds} {helpers.pluralize(countOfSelectedIds, ' selected student')}
+          </button>
+          <button
+            className="adv-Button"
+            onClick={this.handleClickNotifyButton('all')}
+          >
+            Notify all students
+          </button>
+
           <form className="adv-Controls-form">
-            <label
-              className="adv-Controls-label"
-              htmlFor="sortByInput">
-              Sort by
-            </label>
-            <select
-              className="adv-Controls-select"
-              id="sortByInput"
-              onChange={this.handleSortByChange}
-              value={this.state.sortByKey}>
-              {sortStore.sortList.map(this.renderSortOption)}
-            </select>
+            <div className="adv-Controls-field">
+              <label
+                className="adv-Controls-label"
+                htmlFor="sortByInput">
+                Sort by
+              </label>
+              <select
+                className="adv-Controls-select"
+                id="sortByInput"
+                onChange={this.handleSortByChange}
+                value={this.state.sortByKey}>
+                {sortStore.sortList.map(this.renderSortOption)}
+              </select>
+            </div>
             {this.renderOrderBySection()}
           </form>
         </div>
@@ -129,6 +182,13 @@ var GroupView = React.createClass({
           {data.map(this.renderMember)}
         </ol>
       </div>
+    );
+  },
+  renderEmpty: function() {
+    return (
+      <p className="adv-App-empty">
+        You currently have no students assigned to this group.
+      </p>
     );
   },
   renderSortOption: function(option, index) {
@@ -153,7 +213,7 @@ var GroupView = React.createClass({
 
     var orderOptions = sortStore.sortMap[this.state.sortByKey].order;
     return (
-      <span>
+      <div className="adv-Controls-field">
         <label
           className="adv-Controls-label"
           htmlFor="orderByInput">
@@ -166,7 +226,7 @@ var GroupView = React.createClass({
           value={this.state.isAscending}>
           {orderOptions.map(this.renderOrderOption)}
         </select>
-      </span>
+      </div>
     );
   },
   renderMember: function(member) {
@@ -193,10 +253,20 @@ var GroupView = React.createClass({
     var hasPSI = member.positiveServiceIndicators_Impact.length || member.positiveServiceIndicators_NoImpact.length;
     var hasNSI = member.negativeServiceIndicators_Impact.length || member.negativeServiceIndicators_NoImpact.length;
 
+    //console.log('--', notifyStore.selectedIds);
+    var isChecked = notifyStore.selectedIds.indexOf(member.universityId) >= 0;
+
     return (
       <li className="adv-MemberList-item adv-Member">
         <header className="adv-Member-header">
           <div className="adv-Member-nameGroup">
+            <input
+              checked={isChecked}
+              name="idForNotify"
+              onChange={this.handleCheckboxChange}
+              type="checkbox"
+              value={member.universityId}
+            />
             <h2 className="adv-Member-heading">
               <a
                 className="adv-Link"
@@ -346,6 +416,17 @@ var GroupView = React.createClass({
   //
   // Handler methods
   //
+  handleCheckboxChange: function(event) {
+    //event.preventDefault();
+    var value = event.target.value;
+    var checked = event.target.checked;
+    actions.setSelectedIdsForNotify(value, checked);
+  },
+  handleClickNotifyButton: function(type) {
+    return function(event) {
+      actions.redirect('group.notify', { id: this.props.data.groupId }, { type: type });
+    }.bind(this);
+  },
   handleSortByChange: function(event) {
     var key = event.target.value;
     // Reset order whenever sort field changes.
@@ -362,6 +443,24 @@ var GroupView = React.createClass({
       isAscending: isAscending
     });
     actions.sortBy(this.state.sortByKey, isAscending);
+  },
+  //
+  // Action methods
+  //
+  onCreateGroupCompleted: function() {
+    this.setState({
+      errorMessage: null
+    });
+  },
+  onCreateGroupFailed: function(message) {
+    this.setState({
+      errorMessage: message
+    });
+  },
+  onNotifyGroupCompleted: function(message) {
+    this.setState({
+      successMessage: message
+    });
   },
   //
   // Window event listener

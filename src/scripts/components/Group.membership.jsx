@@ -11,6 +11,7 @@ var helpers = require('../helpers');
 
 var Alert = require('./Alert');
 var Icon = require('./Icon');
+var Heading = require('./Group.heading');
 
 var GroupMembership = React.createClass({
   mixins: [
@@ -24,8 +25,10 @@ var GroupMembership = React.createClass({
   //
   getInitialState: function() {
     return {
+      errorMessage: null,
       inputValue: '',
-      isBulkUpload: false
+      isBulkUpload: false,
+      requesting: false
     }
   },
   //
@@ -37,30 +40,22 @@ var GroupMembership = React.createClass({
     };
 
     return (
-      <div className="adv-App-membership">
-        <header className="adv-App-header">
-          <h1 className="adv-App-heading">
-            {this.props.data.groupName}
-          </h1>
-          <Link
-            className="adv-Link adv-Link--underlined"
-            params={params}
-            to="group.edit">
-            Edit group
-          </Link>
-        </header>
-        <Link
-          className="adv-Link adv-Link--underlined"
-          params={params}
-          to="group">
-          Return to Caseload
-        </Link>
+      <div className="adv-App-editView">
+        <Heading
+          groupId={this.props.params.id}
+          groupName={this.props.data.groupName}
+          label="Edit Membership" />
+        {this.renderError()}
         {this.state.isBulkUpload ? this.renderBulkAddMemberForm() : this.renderSingleAddMemberForm()}
         {this.renderList()}
       </div>
     );
   },
   renderError: function() {
+    if(!this.state.errorMessage) {
+      return null;
+    }
+
     return (
       <Alert
         message={this.state.errorMessage}
@@ -83,23 +78,21 @@ var GroupMembership = React.createClass({
             className="adv-AddMemberForm-input adv-Input"
             id="adv-AddMemberForm-input"
             onChange={this.handleInputChange}
-            maxLength="10"
             placeholder="Username or University ID"
             value={this.state.inputValue}
             type="text"/>
           <button
             className="adv-AddMemberForm-button adv-Button"
+            disabled={this.state.requesting}
             type="submit">
-            Add
+            {this.renderButtonLabel()}
           </button>
         </div>
-        <p>
-          <a
-            className="adv-Link adv-Link--underlined"
-            onClick={this.handleBulkButtonClick}>
-            Add students in bulk
-          </a>
-        </p>
+        <button
+          className="adv-Link"
+          onClick={this.handleBulkButtonClick}>
+          Add students in bulk
+        </button>
       </form>
     );
   },
@@ -126,12 +119,25 @@ var GroupMembership = React.createClass({
         <div className="adv-AddMemberForm-controls">
           <button
             className="adv-AddMemberForm-button adv-Button"
+            disabled={this.state.requesting}
             type="submit">
-            Add
+            {this.renderButtonLabel()}
           </button>
         </div>
       </form>
     );
+  },
+  renderButtonLabel: function() {
+    if(!this.state.requesting) {
+      return 'Add';
+    }
+
+    return (
+      <span>
+        Adding
+        <span className="adv-ProcessIndicator"/>
+      </span>
+    )
   },
   renderEmpty: function() {
     return (
@@ -177,6 +183,7 @@ var GroupMembership = React.createClass({
           <button
             aria-label={removeLabel}
             className="adv-Membership-removeButton"
+            disabled={this.state.requesting}
             onClick={this.handleRemoveButtonClick(member)}>
             <Icon
               className="adv-Membership-removeButtonIcon"
@@ -202,6 +209,9 @@ var GroupMembership = React.createClass({
   handleRemoveButtonClick: function(member) {
     return function(event) {
       actions.removeMember(this.props.data.groupId, member.universityId);
+      this.setState({
+        requesting: true
+      });
     }.bind(this);
   },
   handleSubmit: function(event) {
@@ -209,13 +219,70 @@ var GroupMembership = React.createClass({
     var groupId = this.props.data.groupId;
     var value = this.state.inputValue;
     actions.addMember(groupId, value);
+    this.setState({
+      requesting: true
+    });
   },
   //
   // Action methods
   //
-  onAddMemberCompleted: function() {
+  onAddMemberCompleted: function(groupId, json) {
+    //console.log('json = ', json );
+
+    // Added - 200 - OK
+    // Already in the group - 204 - No Content
+    // Not Found - 404 - Not Found
+    var message = '';
+    var messageMap = {
+      "200": { "status": "200", "count": 0, "queryList":"", partOfMessage: " added." },
+      "204": { "status": "204", "count": 0, "queryList":"", partOfMessage: " is/are already in the group." },
+      "404": { "status": "404", "count": 0, "queryList":"", partOfMessage: " could not be found." }
+    };
+
+    Object.keys(json.emplidsResultMap).forEach(function(key) {
+      var result = json.emplidsResultMap[key];
+      var query = key;
+      //var emplid = result[0];
+      //var text = result[1]; // Added/Already in the group/Not Found
+      var status = result[2]; // 200/204/404
+      //var title = result[3]; // OK/No Content/Not Found
+
+      messageMap[status].count = messageMap[status].count + 1;
+      messageMap[status].queryList = messageMap[status].queryList + ', ' + query;
+    });
+    //console.log('messageMap = ', messageMap );
+
+    Object.keys(messageMap).forEach(function(key) {
+      var status = key;
+      var count = messageMap[status].count;
+      if(count > 0) {
+        var queryList = messageMap[status].queryList.substr(2);
+        var partOfMessage = messageMap[status].partOfMessage;
+
+        message = message + count + helpers.pluralize(count, ' student');
+        message = message + partOfMessage;
+        message = message + ' -- ' + queryList;
+        message = message + '<hr />';
+      }
+    });
+    message = message.substring(0, message.length - 6);
+
     this.setState({
-      inputValue: ''
+      errorMessage: message,
+      inputValue: '',
+      requesting: false
+    });
+  },
+  onRemoveMemberCompleted: function() {
+    this.setState({
+      errorMessage: null,
+      requesting: false
+    });
+  },
+  onRemoveMemberFailed: function(message) {
+    this.setState({
+      errorMessage: message,
+      requesting: false
     });
   }
 });

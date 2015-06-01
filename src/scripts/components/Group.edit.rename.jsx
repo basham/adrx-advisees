@@ -19,7 +19,10 @@ var GroupEdit = React.createClass({
   //
   getInitialState: function() {
     return {
-      groupName: this.props.data.groupName
+      errorMessage: null,
+      isDisabled: true,
+      groupName: this.props.data.groupName,
+      requesting: false
     }
   },
   //
@@ -33,24 +36,30 @@ var GroupEdit = React.createClass({
         <h2 className="adv-EditGroup-heading">
           Rename
         </h2>
+        {this.renderError()}
         <input
           aria-label="Group name"
           className="adv-Input"
           maxLength="50"
-          onChange={this.handleGroupNameInputChange}
+          onChange={this.handleInputChange}
           type="text"
           value={this.state.groupName}/>
         <div className="adv-EditGroup-controls">
           <button
             className="adv-Button"
+            disabled={this.state.isDisabled || this.state.requesting}
             type="submit">
-            Save
+            {this.renderButtonLabel()}
           </button>
         </div>
       </form>
     );
   },
   renderError: function() {
+    if(!this.state.errorMessage) {
+      return null;
+    }
+
     return (
       <Alert
         message={this.state.errorMessage}
@@ -58,19 +67,38 @@ var GroupEdit = React.createClass({
         type="error"/>
     );
   },
+  renderButtonLabel: function() {
+    if(!this.state.requesting) {
+      return 'Save';
+    }
+
+    return (
+      <span>
+        Saving
+        <span className="adv-ProcessIndicator"/>
+      </span>
+    )
+  },
   //
   // Handler methods
   //
-  handleGroupNameInputChange: function(event) {
+  handleInputChange: function(event) {
+    var value = event.target.value;
+    var isIdentical = value.trim() === this.props.data.groupName;
+    var isEmpty = !value.trim().length;
     this.setState({
-      groupName: event.target.value
+      isDisabled: isIdentical || isEmpty,
+      groupName: value
     });
   },
   handleSubmit: function(event) {
     event.preventDefault();
     var groupId = this.props.data.groupId;
-    var value = this.state.groupName;
+    var value = this.state.groupName.trim();
     actions.renameGroup(groupId, value);
+    this.setState({
+      requesting: true
+    });
   },
   //
   // Action methods
