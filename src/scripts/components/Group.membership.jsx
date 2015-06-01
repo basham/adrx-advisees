@@ -13,6 +13,8 @@ var Alert = require('./Alert');
 var Icon = require('./Icon');
 var Heading = require('./Group.heading');
 
+var dataStore = require('../stores/data');
+
 var GroupMembership = React.createClass({
   mixins: [
     Reflux.listenToMany(actions)
@@ -53,18 +55,6 @@ var GroupMembership = React.createClass({
       </div>
     );
   },
-  renderError: function() {
-    if(!this.state.errorMessage) {
-      return null;
-    }
-
-    return (
-      <Alert
-        message={this.state.errorMessage}
-        ref="error"
-        type="error"/>
-    );
-  },
   renderSuccess: function() {
     if(!this.state.successMessage) {
       return null;
@@ -73,6 +63,17 @@ var GroupMembership = React.createClass({
     return (
       <Alert
         message={this.state.successMessage}
+        type="success"/>
+    );
+  },
+  renderError: function() {
+    if(!this.state.errorMessage) {
+      return null;
+    }
+
+    return (
+      <Alert
+        message={this.state.errorMessage}
         type="error"/>
     );
   },
@@ -242,73 +243,83 @@ var GroupMembership = React.createClass({
   // Action methods
   //
   onAddMemberCompleted: function(groupId, json) {
-    //console.log('json = ', json );
 
-    // Added - 200 - OK
-    // Already in the group - 204 - No Content
-    // Not Found - 404 - Not Found
     var messageMap = {
+      // Added.
       '200': {
-        status: '200',
         count: 0,
         queryList: [],
-        message: '',
-        partOfMessage: ' added.'
+        names: [],
+        singular: '{name} added.',
+        plural: '{count} students added.'
       },
+      // Already in the group.
       '204': {
-        status: '204',
         count: 0,
         queryList: [],
-        message: '',
-        partOfMessage: ' is/are already in the group.'
+        names: [],
+        partOfMessage: ' is/are already in the group.',
+        singular: '{name} is already in the group.',
+        plural: '{count} students are already in the group.'
       },
+      // Not found.
       '404': {
-        status: '404',
         count: 0,
         queryList: [],
-        message: '',
-        partOfMessage: ' could not be found.'
+        names: [],
+        singular: '1 student could not be found.',
+        plural: '{count} students could not be found.'
       }
     };
 
+    function formatMessage(options) {
+      switch(options.count) {
+        case 0:
+          return null;
+        case 1:
+          var name = options.names[0];
+          return options.singular.format({ name: name });
+        default:
+          return options.plural.format({ count: options.count });
+      }
+    }
+
     Object.keys(json.emplidsResultMap).forEach(function(key) {
       var result = json.emplidsResultMap[key];
-      var query = key;
-      //var emplid = result[0];
-      //var text = result[1]; // Added/Already in the group/Not Found
       var status = result[2]; // 200/204/404
-      //var title = result[3]; // OK/No Content/Not Found
 
       messageMap[status].count += 1;
-      messageMap[status].queryList.push(query);
-    });
-    //console.log('messageMap = ', messageMap );
+      messageMap[status].queryList.push(key);
 
-    Object.keys(messageMap).forEach(function(key) {
-      var status = key;
-      var count = messageMap[status].count;
-      if(count > 0) {
-        var queryList = messageMap[status].queryList.join(', ');
-        var partOfMessage = messageMap[status].partOfMessage;
-        var message = [
-          count,
-          helpers.pluralize(count, ' student'),
-          partOfMessage,
-          ' -- ',
-          queryList
-        ].join('');
+      var memberStore = null;
+      switch(status) {
+        case '200':
+          memberStore = json.memberMap;
+          break;
+        case '204':
+          memberStore = dataStore.data.memberMap;
+          break;
+      }
 
-        messageMap[status].message = message;
+      if(memberStore) {
+        var id = result[0];
+        var name = memberStore[id].studentName;
+        messageMap[status].names.push(name);
       }
     });
 
+    Object.keys(messageMap).forEach(function(key) {
+      messageMap[key].message = formatMessage(messageMap[key]);
+    });
+
     var successMessage = messageMap[200].message;
+
     var errorMessage = null;
-    if(!!messageMap[204].message && messageMap[404].message) {
+    if(!!messageMap[204].message && !!messageMap[404].message) {
       errorMessage = (
         <div>
-          <p>{messageMap[204].message}</p>
-          <p>{messageMap[404].message}</p>
+          <div>{messageMap[404].message}</div>
+          <div>{messageMap[204].message}</div>
         </div>
       );
     }
@@ -319,9 +330,14 @@ var GroupMembership = React.createClass({
       errorMessage = messageMap[404].message;
     }
 
+    var notFoundQueries = messageMap[404].queryList;
+    var isBulkUpload = this.state.isBulkUpload ? true : notFoundQueries.length > 1;
+    var inputValue = notFoundQueries.join('\n');
+
     this.setState({
       errorMessage: errorMessage,
-      inputValue: '',
+      inputValue: inputValue,
+      isBulkUpload: isBulkUpload,
       requesting: false,
       successMessage: successMessage
     });
