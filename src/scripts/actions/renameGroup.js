@@ -41,7 +41,7 @@ actions.renameGroup.listen(function(groupId, value) {
     .post(helpers.api('handleAdHocGroup'))
     .query(query)
     .send({
-      emplids: value
+      groupName: value
     })
     .end(helpers.requestCallback(completed(groupId, value), failed));
 });

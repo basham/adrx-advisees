@@ -5,6 +5,7 @@ var Reflux = require('reflux');
 
 var Selector = require('./Selector');
 var groupListStore = require('../stores/groupList');
+var notifyStore = require('../stores/notify');
 var actions = require('../actions');
 
 var GroupSelector = React.createClass({
@@ -54,6 +55,9 @@ var GroupSelector = React.createClass({
   // Handler methods
   //
   handleChange: function(index, id) {
+    // Added by Eunmee Yi on 2015/05/29
+    // Refresh notifyStore.selectedIds when the group is changed.
+    notifyStore.selectedIds = [];
     this.setState({
       selectedIndex: index,
       value: ''

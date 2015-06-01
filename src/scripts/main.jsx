@@ -10,6 +10,7 @@ var Group = require('./components/Group');
 var GroupView = require('./components/Group.view');
 var GroupMembership = require('./components/Group.membership');
 var GroupEdit = require('./components/Group.edit');
+var GroupNotify = require('./components/Group.notify');
 
 var routes = (
   <Route handler={App} ignoreScrollBehavior>
@@ -17,6 +18,7 @@ var routes = (
       <DefaultRoute handler={GroupView} />
       <Route name="group.membership" handler={GroupMembership} path="membership" />
       <Route name="group.edit" handler={GroupEdit} path="edit" />
+      <Route name="group.notify" handler={GroupNotify} path="notify" />
     </Route>
   </Route>
 );
