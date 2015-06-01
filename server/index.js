@@ -2,6 +2,7 @@ var restify = require('restify');
 var uuid = require('node-uuid');
 
 var data = require('./data.json');
+var addMemberJson = require('./addMember.json');
 
 var server = restify.createServer();
 
@@ -98,6 +99,15 @@ server.post('/sisaarex-dev/adrx/portal.do', function(req, res, next) {
         data: []
       };
       next('putGroupsPeople');
+      break;
+    case 'addMember':
+      var id = req.query.groupId;
+      req._params = { id: id };
+      req.method = 'POST';
+      req.body = {
+        data: []
+      };
+      next('postGroupsPeople');
       break;
     default:
       next();
@@ -298,7 +308,18 @@ server.put(
 //
 // Create group-people relationship.
 //
+// curl -isX POST "http://localhost:8000/sisaarex-dev/adrx/portal.do?action=addMember&groupId=0" | json
 // curl -isX POST "http://localhost:8000/groups/0/relationships/people" -H "Content-Type: application/json" -d '{"data":[{"type":"people","id":"7496827183"}]}' | json
+server.post(
+  {
+    name: 'postGroupsPeople',
+    path: '/groups/:id/relationships/people'
+  },
+  function(req, res, next) {
+    // Update successful.
+    res.send(201, addMemberJson);
+    next();
+  });
 
 server.listen(8000, function() {
   console.log('%s listening at %s', server.name, server.url);

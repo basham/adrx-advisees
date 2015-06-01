@@ -28,7 +28,8 @@ var GroupMembership = React.createClass({
       errorMessage: null,
       inputValue: '',
       isBulkUpload: false,
-      requesting: false
+      requesting: false,
+      successMessage: null
     }
   },
   //
@@ -45,6 +46,7 @@ var GroupMembership = React.createClass({
           groupId={this.props.params.id}
           groupName={this.props.data.groupName}
           label="Edit Membership" />
+        {this.renderSuccess()}
         {this.renderError()}
         {this.state.isBulkUpload ? this.renderBulkAddMemberForm() : this.renderSingleAddMemberForm()}
         {this.renderList()}
@@ -60,6 +62,17 @@ var GroupMembership = React.createClass({
       <Alert
         message={this.state.errorMessage}
         ref="error"
+        type="error"/>
+    );
+  },
+  renderSuccess: function() {
+    if(!this.state.successMessage) {
+      return null;
+    }
+
+    return (
+      <Alert
+        message={this.state.successMessage}
         type="error"/>
     );
   },
@@ -210,7 +223,9 @@ var GroupMembership = React.createClass({
     return function(event) {
       actions.removeMember(this.props.data.groupId, member.universityId);
       this.setState({
-        requesting: true
+        errorMessage: null,
+        requesting: true,
+        successMessage: null
       });
     }.bind(this);
   },
@@ -232,11 +247,28 @@ var GroupMembership = React.createClass({
     // Added - 200 - OK
     // Already in the group - 204 - No Content
     // Not Found - 404 - Not Found
-    var message = '';
     var messageMap = {
-      "200": { "status": "200", "count": 0, "queryList":"", partOfMessage: " added." },
-      "204": { "status": "204", "count": 0, "queryList":"", partOfMessage: " is/are already in the group." },
-      "404": { "status": "404", "count": 0, "queryList":"", partOfMessage: " could not be found." }
+      '200': {
+        status: '200',
+        count: 0,
+        queryList: [],
+        message: '',
+        partOfMessage: ' added.'
+      },
+      '204': {
+        status: '204',
+        count: 0,
+        queryList: [],
+        message: '',
+        partOfMessage: ' is/are already in the group.'
+      },
+      '404': {
+        status: '404',
+        count: 0,
+        queryList: [],
+        message: '',
+        partOfMessage: ' could not be found.'
+      }
     };
 
     Object.keys(json.emplidsResultMap).forEach(function(key) {
@@ -247,8 +279,8 @@ var GroupMembership = React.createClass({
       var status = result[2]; // 200/204/404
       //var title = result[3]; // OK/No Content/Not Found
 
-      messageMap[status].count = messageMap[status].count + 1;
-      messageMap[status].queryList = messageMap[status].queryList + ', ' + query;
+      messageMap[status].count += 1;
+      messageMap[status].queryList.push(query);
     });
     //console.log('messageMap = ', messageMap );
 
@@ -256,21 +288,42 @@ var GroupMembership = React.createClass({
       var status = key;
       var count = messageMap[status].count;
       if(count > 0) {
-        var queryList = messageMap[status].queryList.substr(2);
+        var queryList = messageMap[status].queryList.join(', ');
         var partOfMessage = messageMap[status].partOfMessage;
+        var message = [
+          count,
+          helpers.pluralize(count, ' student'),
+          partOfMessage,
+          ' -- ',
+          queryList
+        ].join('');
 
-        message = message + count + helpers.pluralize(count, ' student');
-        message = message + partOfMessage;
-        message = message + ' -- ' + queryList;
-        message = message + '<hr />';
+        messageMap[status].message = message;
       }
     });
-    message = message.substring(0, message.length - 6);
+
+    var successMessage = messageMap[200].message;
+    var errorMessage = null;
+    if(!!messageMap[204].message && messageMap[404].message) {
+      errorMessage = (
+        <div>
+          <p>{messageMap[204].message}</p>
+          <p>{messageMap[404].message}</p>
+        </div>
+      );
+    }
+    else if(!!messageMap[204].message) {
+      errorMessage = messageMap[204].message;
+    }
+    else if(!!messageMap[404].message) {
+      errorMessage = messageMap[404].message;
+    }
 
     this.setState({
-      errorMessage: message,
+      errorMessage: errorMessage,
       inputValue: '',
-      requesting: false
+      requesting: false,
+      successMessage: successMessage
     });
   },
   onRemoveMemberCompleted: function() {
@@ -282,7 +335,8 @@ var GroupMembership = React.createClass({
   onRemoveMemberFailed: function(message) {
     this.setState({
       errorMessage: message,
-      requesting: false
+      requesting: false,
+      successMessage: null
     });
   }
 });
