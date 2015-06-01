@@ -80,7 +80,7 @@ var GroupMembership = React.createClass({
   renderSingleAddMemberForm: function() {
     return (
       <form
-        className="adv-AddMemberForm adv-AddMemberForm--small"
+        className="adv-AddMemberForm"
         onSubmit={this.handleSubmit}>
         <label
           className="adv-Label"
