@@ -248,9 +248,27 @@ var GroupMembership = React.createClass({
     // Already in the group - 204 - No Content
     // Not Found - 404 - Not Found
     var messageMap = {
-      "200": { "status": "200", "count": 0, "queryList":"", "message": "", partOfMessage: " added." },
-      "204": { "status": "204", "count": 0, "queryList":"", "message": "", partOfMessage: " is/are already in the group." },
-      "404": { "status": "404", "count": 0, "queryList":"", "message": "", partOfMessage: " could not be found." }
+      '200': {
+        status: '200',
+        count: 0,
+        queryList: [],
+        message: '',
+        partOfMessage: ' added.'
+      },
+      '204': {
+        status: '204',
+        count: 0,
+        queryList: [],
+        message: '',
+        partOfMessage: ' is/are already in the group.'
+      },
+      '404': {
+        status: '404',
+        count: 0,
+        queryList: [],
+        message: '',
+        partOfMessage: ' could not be found.'
+      }
     };
 
     Object.keys(json.emplidsResultMap).forEach(function(key) {
@@ -261,8 +279,8 @@ var GroupMembership = React.createClass({
       var status = result[2]; // 200/204/404
       //var title = result[3]; // OK/No Content/Not Found
 
-      messageMap[status].count = messageMap[status].count + 1;
-      messageMap[status].queryList = messageMap[status].queryList + ', ' + query;
+      messageMap[status].count += 1;
+      messageMap[status].queryList.push(query);
     });
     //console.log('messageMap = ', messageMap );
 
@@ -270,21 +288,29 @@ var GroupMembership = React.createClass({
       var status = key;
       var count = messageMap[status].count;
       if(count > 0) {
-        var queryList = messageMap[status].queryList.substr(2);
+        var queryList = messageMap[status].queryList.join(', ');
         var partOfMessage = messageMap[status].partOfMessage;
-        var message = '';
+        var message = [
+          count,
+          helpers.pluralize(count, ' student'),
+          partOfMessage,
+          ' -- ',
+          queryList
+        ].join('');
 
-        message = message + count + helpers.pluralize(count, ' student');
-        message = message + partOfMessage;
-        message = message + ' -- ' + queryList;
         messageMap[status].message = message;
       }
     });
 
     var successMessage = messageMap[200].message;
-    var errorMessage = '';
+    var errorMessage = null;
     if(!!messageMap[204].message && messageMap[404].message) {
-      errorMessage = messageMap[204].message + '<hr />' + messageMap[404].message;
+      errorMessage = (
+        <div>
+          <p>{messageMap[204].message}</p>
+          <p>{messageMap[404].message}</p>
+        </div>
+      );
     }
     else if(!!messageMap[204].message) {
       errorMessage = messageMap[204].message;
