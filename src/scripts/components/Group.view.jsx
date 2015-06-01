@@ -458,6 +458,7 @@ var GroupView = React.createClass({
     });
   },
   onNotifyGroupCompleted: function(message) {
+    notifyStore.selectedIds = [];
     this.setState({
       successMessage: message
     });
