@@ -87,7 +87,7 @@ var GroupNotify = React.createClass({
   // Render methods
   //
   render: function() {
-    var dialogMessage = 'The form has unsaved information. Are you sure you want to leave this page?';
+    var dialogMessage = 'The message will be lost. Are you sure you want to cancel?';
 
     //console.log('++ from Group.notify.jsx ++ notifyStore.selectedIds: ', notifyStore.selectedIds);
     //console.log('++ from Group.notify.jsx ++ this.props.notifyData: ', this.props.notifyData);
@@ -187,13 +187,12 @@ var GroupNotify = React.createClass({
           </button>
         </form>
         <Dialog
-          cancelButtonLabel="No, stay here"
+          cancelButtonLabel="No, continue writing"
           confirmationButtonLabel="Yes, cancel"
           message={dialogMessage}
           onCancel={this.handleDialogCancel}
           onConfirm={this.handleDialogConfirm}
-          show={this.state.showDialog}
-          title="Cancel notification"/>
+          show={this.state.showDialog}/>
       </div>
     );
   },

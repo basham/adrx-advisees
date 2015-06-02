@@ -145,18 +145,17 @@ var GroupView = React.createClass({
           <p className="adv-Controls-count">
             {count} {helpers.pluralize(count, 'student')}
           </p>
-
           <button
             className="adv-Button"
             disabled={isNotifyButtonDisabled}
-            onClick={this.handleClickNotifyButton('selected')}
-          >
+            id="adv-GroupNotifyButton-selected"
+            onClick={this.handleClickNotifyButton('selected')}>
             Notify {countOfSelectedIds} {helpers.pluralize(countOfSelectedIds, ' selected student')}
           </button>
           <button
             className="adv-Button"
-            onClick={this.handleClickNotifyButton('all')}
-          >
+            id="adv-GroupNotifyButton-all"
+            onClick={this.handleClickNotifyButton('all')}>
             Notify all students
           </button>
 
@@ -253,7 +252,6 @@ var GroupView = React.createClass({
     var hasPSI = member.positiveServiceIndicators_Impact.length || member.positiveServiceIndicators_NoImpact.length;
     var hasNSI = member.negativeServiceIndicators_Impact.length || member.negativeServiceIndicators_NoImpact.length;
 
-    //console.log('--', notifyStore.selectedIds);
     var isChecked = notifyStore.selectedIds.indexOf(member.universityId) >= 0;
 
     return (
@@ -261,12 +259,12 @@ var GroupView = React.createClass({
         <header className="adv-Member-header">
           <div className="adv-Member-nameGroup">
             <input
+              aria-controls="adv-GroupNotifyButton-selected adv-GroupNotifyButton-all"
+              aria-label="Notify"
               checked={isChecked}
-              name="idForNotify"
               onChange={this.handleCheckboxChange}
               type="checkbox"
-              value={member.universityId}
-            />
+              value={member.universityId}/>
             <h2 className="adv-Member-heading">
               <a
                 className="adv-Link"

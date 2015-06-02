@@ -4,6 +4,7 @@
   border: unit(1/16, em) solid @color-Base--250;
   display: flex;
   line-height: @scale-FontSize--10;
+  margin: 1em 0;
   padding: 1em;
 
   &:focus {
@@ -17,6 +18,15 @@
 
   &--error &-icon {
     fill: @color-Danger--400;
+  }
+
+  &--success {
+   background-color: @color-Success--100;
+   border-color: @color-Success--400;
+  }
+
+  &--success &-icon {
+    fill: @color-Success--400;
   }
 
   &-icon {
@@ -33,5 +43,13 @@
     color: @color-Interactive--600;
     cursor: pointer;
     padding: 0;
+  }
+
+  p {
+    margin: 0;
+
+    + p {
+      margin-top: 0.5em;
+    }
   }
 }
