@@ -19,15 +19,15 @@ module.exports = Reflux.createActions({
   createGroup: async,
   renameGroup: async,
   deleteGroup: async,
-  notifyGroup: async,
   // Member actions
   addMember: async,
   removeMember: async,
   removeAllMembers: async,
-  // Notify actions
-  setNotifyStoreWithAllIds: {},
-  setNotifyStoreWithSelectedIds: {},
-  setSelectedIdsForNotify: {},
+  // Message actions
+  messageGroup: async,
+  setMessageStoreWithAllIds: {},
+  setMessageStoreWithSelectedIds: {},
+  setSelectedIdsForMessage: {},
   // Helper actions
   redirect: async,
   redirectToDefaultGroup: {}
@@ -41,4 +41,4 @@ require('./deleteGroup');
 require('./addMember');
 require('./removeMember');
 require('./removeAllMembers');
-require('./notifyGroup');
+require('./messageGroup');

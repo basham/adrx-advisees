@@ -21,14 +21,14 @@ module.exports = Reflux.createStore({
   //
   // Action methods
   //
-  onSetNotifyStoreWithAllIds: function(groupId) {
+  onSetMessageStoreWithAllIds: function(groupId) {
     var ids = dataStore.data.groupMap[groupId].memberList
     this.output(ids);
   },
-  onSetNotifyStoreWithSelectedIds: function() {
+  onSetMessageStoreWithSelectedIds: function() {
     this.output(this.selectedIds);
   },
-  onSetSelectedIdsForNotify: function(id, isSelected) {
+  onSetSelectedIdsForMessage: function(id, isSelected) {
     var index = this.selectedIds.indexOf(id);
     var containsId = index >= 0;
     if(isSelected && !containsId) {

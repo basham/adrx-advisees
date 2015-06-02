@@ -13,7 +13,7 @@ var TabList = ReactTabs.TabList;
 var TabPanel = ReactTabs.TabPanel;
 
 var actions = require('../actions');
-var notifyStore = require('../stores/notify');
+var messageStore = require('../stores/message');
 var sortStore = require('../stores/sort');
 var helpers = require('../helpers');
 
@@ -136,8 +136,8 @@ var GroupView = React.createClass({
       return this.renderEmpty();
     }
 
-    var isNotifyButtonDisabled = !notifyStore.selectedIds.length;
-    var countOfSelectedIds = !notifyStore.selectedIds.length ? '' : notifyStore.selectedIds.length;
+    var isMessageButtonDisabled = !messageStore.selectedIds.length;
+    var countOfSelectedIds = !messageStore.selectedIds.length ? '' : messageStore.selectedIds.length;
 
     return (
       <div>
@@ -147,16 +147,16 @@ var GroupView = React.createClass({
           </p>
           <button
             className="adv-Button"
-            disabled={isNotifyButtonDisabled}
-            id="adv-GroupNotifyButton-selected"
-            onClick={this.handleClickNotifyButton('selected')}>
-            Notify {countOfSelectedIds} {helpers.pluralize(countOfSelectedIds, ' selected student')}
+            disabled={isMessageButtonDisabled}
+            id="adv-GroupMessageButton-selected"
+            onClick={this.handleClickMessageButton('selected')}>
+            Message {countOfSelectedIds} {helpers.pluralize(countOfSelectedIds, ' selected student')}
           </button>
           <button
             className="adv-Button"
-            id="adv-GroupNotifyButton-all"
-            onClick={this.handleClickNotifyButton('all')}>
-            Notify all students
+            id="adv-GroupMessageButton-all"
+            onClick={this.handleClickMessageButton('all')}>
+            Message all students
           </button>
 
           <form className="adv-Controls-form">
@@ -252,15 +252,15 @@ var GroupView = React.createClass({
     var hasPSI = member.positiveServiceIndicators_Impact.length || member.positiveServiceIndicators_NoImpact.length;
     var hasNSI = member.negativeServiceIndicators_Impact.length || member.negativeServiceIndicators_NoImpact.length;
 
-    var isChecked = notifyStore.selectedIds.indexOf(member.universityId) >= 0;
+    var isChecked = messageStore.selectedIds.indexOf(member.universityId) >= 0;
 
     return (
       <li className="adv-MemberList-item adv-Member">
         <header className="adv-Member-header">
           <div className="adv-Member-nameGroup">
             <input
-              aria-controls="adv-GroupNotifyButton-selected adv-GroupNotifyButton-all"
-              aria-label="Notify"
+              aria-controls="adv-GroupMessageButton-selected adv-GroupMessageButton-all"
+              aria-label="Message"
               checked={isChecked}
               onChange={this.handleCheckboxChange}
               type="checkbox"
@@ -418,11 +418,11 @@ var GroupView = React.createClass({
     //event.preventDefault();
     var value = event.target.value;
     var checked = event.target.checked;
-    actions.setSelectedIdsForNotify(value, checked);
+    actions.setSelectedIdsForMessage(value, checked);
   },
-  handleClickNotifyButton: function(type) {
+  handleClickMessageButton: function(type) {
     return function(event) {
-      actions.redirect('group.notify', { id: this.props.data.groupId }, { type: type });
+      actions.redirect('group.message', { id: this.props.data.groupId }, { type: type });
     }.bind(this);
   },
   handleSortByChange: function(event) {
@@ -455,7 +455,7 @@ var GroupView = React.createClass({
       errorMessage: message
     });
   },
-  onNotifyGroupCompleted: function(message) {
+  onMessageGroupCompleted: function(message) {
     this.setState({
       successMessage: message
     });

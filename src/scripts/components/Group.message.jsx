@@ -11,14 +11,14 @@ var actions = require('../actions');
 var helpers = require('../helpers');
 
 var dataStore = require('../stores/data');
-var notifyStore = require('../stores/notify');
+var messageStore = require('../stores/message');
 
 var Alert = require('./Alert');
 var Dialog = require('./Dialog');
 var Icon = require('./Icon');
 var config = require('../config');
 
-var GroupNotify = React.createClass({
+var GroupMessage = React.createClass({
   mixins: [
     Reflux.listenToMany(actions)
   ],
@@ -31,9 +31,9 @@ var GroupNotify = React.createClass({
 
       //console.log(query);
       if(query.type === 'selected') {
-        actions.setNotifyStoreWithSelectedIds();
+        actions.setMessageStoreWithSelectedIds();
       } else {
-        actions.setNotifyStoreWithAllIds(params.id);
+        actions.setMessageStoreWithAllIds(params.id);
       }
     },
     willTransitionFrom: function(transition, component, callback) {
@@ -89,9 +89,9 @@ var GroupNotify = React.createClass({
   render: function() {
     var dialogMessage = 'The message will be lost. Are you sure you want to cancel?';
 
-    //console.log('++ from Group.notify.jsx ++ notifyStore.selectedIds: ', notifyStore.selectedIds);
-    //console.log('++ from Group.notify.jsx ++ this.props.notifyData: ', this.props.notifyData);
-    var ids = this.props.notifyData || [];
+    //console.log('++ from Group.message.jsx ++ messageStore.selectedIds: ', messageStore.selectedIds);
+    //console.log('++ from Group.message.jsx ++ this.props.messageData: ', this.props.messageData);
+    var ids = this.props.messageData || [];
     var count = ids.length;
     var names =
       ids.map(function(id) {
@@ -105,7 +105,7 @@ var GroupNotify = React.createClass({
         <Heading
           groupId={this.props.params.id}
           groupName={this.props.data.groupName}
-          label="Notify" />
+          label="Message" />
         {this.renderError()}
         <form
           className="adv-AddMemberForm adv-AddMemberForm--small"
@@ -294,12 +294,12 @@ var GroupNotify = React.createClass({
   handleSubmit: function(event) {
     event.preventDefault();
     var groupId = this.props.params.id;
-    var emplids = this.props.notifyData;
+    var emplids = this.props.messageData;
     var ccList = this.state.ccList.trim();
     var bccList = this.state.bccList.trim();
     var subject = this.state.subject.trim();
     var message = this.state.message.trim();
-    actions.notifyGroup(groupId, emplids, ccList, bccList, subject, message);
+    actions.messageGroup(groupId, emplids, ccList, bccList, subject, message);
     this.setState({
       requesting: true
     });
@@ -307,7 +307,7 @@ var GroupNotify = React.createClass({
   //
   // Action methods
   //
-  onNotifyGroupFailed: function(message) {
+  onMessageGroupFailed: function(message) {
     this.setState({
       errorMessage: message,
       requesting: false
@@ -331,4 +331,4 @@ var GroupNotify = React.createClass({
   }
 });
 
-module.exports = GroupNotify;
+module.exports = GroupMessage;
