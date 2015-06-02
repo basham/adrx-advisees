@@ -103,7 +103,7 @@ var GroupView = React.createClass({
     return (
       <Alert
         message={this.state.successMessage}
-        type="error"/>
+        type="success"/>
     );
   },
   renderEditLinks: function() {
