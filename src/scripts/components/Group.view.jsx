@@ -146,14 +146,14 @@ var GroupView = React.createClass({
             {count} {helpers.pluralize(count, 'student')}
           </p>
           <button
-            className="adv-Button"
+            className="adv-Button adv-Button--small"
             disabled={isMessageButtonDisabled}
             id="adv-GroupMessageButton-selected"
             onClick={this.handleClickMessageButton('selected')}>
             Message {countOfSelectedIds} {helpers.pluralize(countOfSelectedIds, ' selected student')}
           </button>
           <button
-            className="adv-Button"
+            className="adv-Button adv-Button--small"
             id="adv-GroupMessageButton-all"
             onClick={this.handleClickMessageButton('all')}>
             Message all students
