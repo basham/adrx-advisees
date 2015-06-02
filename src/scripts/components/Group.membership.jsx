@@ -30,7 +30,8 @@ var GroupMembership = React.createClass({
       errorMessage: null,
       inputValue: '',
       isBulkUpload: false,
-      requesting: false,
+      requestingAdd: false,
+      requestingRemove: false,
       successMessage: null
     }
   },
@@ -97,7 +98,7 @@ var GroupMembership = React.createClass({
             type="text"/>
           <button
             className="adv-AddMemberForm-button adv-Button"
-            disabled={this.state.requesting}
+            disabled={this.state.requestingAdd || this.state.requestingRemove}
             type="submit">
             {this.renderButtonLabel()}
           </button>
@@ -133,7 +134,7 @@ var GroupMembership = React.createClass({
         <div className="adv-AddMemberForm-controls">
           <button
             className="adv-AddMemberForm-button adv-Button"
-            disabled={this.state.requesting}
+            disabled={this.state.requestingAdd || this.state.requestingRemove}
             type="submit">
             {this.renderButtonLabel()}
           </button>
@@ -142,7 +143,7 @@ var GroupMembership = React.createClass({
     );
   },
   renderButtonLabel: function() {
-    if(!this.state.requesting) {
+    if(!this.state.requestingAdd) {
       return 'Add';
     }
 
@@ -197,7 +198,7 @@ var GroupMembership = React.createClass({
           <button
             aria-label={removeLabel}
             className="adv-Membership-removeButton"
-            disabled={this.state.requesting}
+            disabled={this.state.requestingAdd || this.state.requestingRemove}
             onClick={this.handleRemoveButtonClick(member)}>
             <Icon
               className="adv-Membership-removeButtonIcon"
@@ -225,7 +226,7 @@ var GroupMembership = React.createClass({
       actions.removeMember(this.props.data.groupId, member.universityId);
       this.setState({
         errorMessage: null,
-        requesting: true,
+        requestingRemove: true,
         successMessage: null
       });
     }.bind(this);
@@ -236,7 +237,7 @@ var GroupMembership = React.createClass({
     var value = this.state.inputValue;
     actions.addMember(groupId, value);
     this.setState({
-      requesting: true
+      requestingAdd: true
     });
   },
   //
@@ -338,20 +339,20 @@ var GroupMembership = React.createClass({
       errorMessage: errorMessage,
       inputValue: inputValue,
       isBulkUpload: isBulkUpload,
-      requesting: false,
+      requestingAdd: false,
       successMessage: successMessage
     });
   },
   onRemoveMemberCompleted: function() {
     this.setState({
       errorMessage: null,
-      requesting: false
+      requestingRemove: false
     });
   },
   onRemoveMemberFailed: function(message) {
     this.setState({
       errorMessage: message,
-      requesting: false,
+      requestingRemove: false,
       successMessage: null
     });
   }
