@@ -60,7 +60,7 @@ var GroupMessage = React.createClass({
   //
   componentDidMount: function() {
     // Replace the textarea with a CKEditor instance.
-    this.editor = window.CKEDITOR.replace('message', config.CKEDITOR);
+    this.editor = window.CKEDITOR.replace('adv-MessageForm-body', config.CKEDITOR);
     this.editor.on('change', this.handleMessageInputChange);
   },
   componentWillUnmount: function() {
@@ -76,8 +76,9 @@ var GroupMessage = React.createClass({
       subject: '',
       message: '',
       // Variables to control the form
-      isSendButtonDisabled: true,
+      isDisabled: true,
       showDialog: false,
+      showToList: false,
       // Variables to handle the error
       errorMessage: null,
       requesting: false
@@ -89,102 +90,99 @@ var GroupMessage = React.createClass({
   render: function() {
     var dialogMessage = 'The message will be lost. Are you sure you want to cancel?';
 
-    //console.log('++ from Group.message.jsx ++ messageStore.selectedIds: ', messageStore.selectedIds);
-    //console.log('++ from Group.message.jsx ++ this.props.messageData: ', this.props.messageData);
-    var ids = this.props.messageData || [];
-    var count = ids.length;
-    var names =
-      ids.map(function(id) {
+    var names = (this.props.messageData || [])
+      .map(function(id) {
         return dataStore.data.memberMap[id].studentName;
       })
-      .sort()
-      ;
+      .sort();
 
     return (
-      <div>
+      <div className="adv-App-editView">
         <Heading
           groupId={this.props.params.id}
           groupName={this.props.data.groupName}
-          label="Message" />
+          label="New message" />
         {this.renderError()}
         <form
-          className="adv-AddMemberForm adv-AddMemberForm--small"
-          onSubmit={this.handleSubmit} >
-          <label
-            className="adv-Label"
-            htmlFor="toList" >
-            To
-          </label>
-
-          {count} {helpers.pluralize(count, ' student')}
-          <hr />
-          {names.map(this.renderName)}
-          <hr />
-
-          <label
-            className="adv-Label"
-            htmlFor="ccList" >
-            Cc
-          </label>
-          <div className="adv-AddMemberForm-field">
+          className="adv-MessageForm"
+          onSubmit={this.handleSubmit}>
+          <dl className="adv-MessageForm-field">
+            <dt className="adv-MessageForm-label">
+              To
+            </dt>
+            <dd className="adv-MessageForm-toListControl">
+              {this.renderToListControl(names)}
+            </dd>
+          </dl>
+          {this.renderToList(names)}
+          <div className="adv-MessageForm-field">
+            <label
+              className="adv-MessageForm-label"
+              htmlFor="ccList">
+              Cc
+            </label>
             <input
-              className="adv-AddMemberForm-input adv-Input"
+              aria-describedby="adv-MessageForm-ccDescription"
+              className="adv-MessageForm-input adv-Input"
               id="ccList"
               maxLength="1000"
               onChange={this.handleInputChange}
-              placeholder="Email ids with comma separator"
               type="text" />
           </div>
-          <label
-            className="adv-Label"
-            htmlFor="bccList" >
-            Bcc
-          </label>
-          <div className="adv-AddMemberForm-field">
+          <div className="adv-MessageForm-field">
+            <label
+              className="adv-MessageForm-label"
+              htmlFor="bccList">
+              Bcc
+            </label>
             <input
-              className="adv-AddMemberForm-input adv-Input"
+              aria-describedby="adv-MessageForm-ccDescription"
+              className="adv-MessageForm-input adv-Input"
               id="bccList"
               maxLength="1000"
               onChange={this.handleInputChange}
-              placeholder="Email ids with comma separator"
               type="text" />
           </div>
+          <p
+            className="adv-MessageForm-description"
+            id="adv-MessageForm-ccDescription">
+            Separate email addresses with a comma.
+          </p>
           <label
-            className="adv-Label"
-            htmlFor="subject" >
-            Subject *
+            className="adv-MessageForm-label adv-Label"
+            htmlFor="adv-MessageForm-subject">
+            Subject <abbr title="required">*</abbr>
           </label>
-          <div className="adv-AddMemberForm-field">
-            <input
-              className="adv-AddMemberForm-input adv-Input"
-              id="subject"
-              maxLength="100"
-              onChange={this.handleInputChange}
-              placeholder="Subject with max length 100"
-              type="text" />
-          </div>
+          <input
+            className="adv-MessageForm-input adv-Input"
+            id="adv-MessageForm-subject"
+            maxLength="100"
+            onChange={this.handleInputChange}
+            required
+            type="text" />
           <label
             className="adv-Label"
-            htmlFor="message"
-          >
-            Body *
+            htmlFor="adv-MessageForm-body">
+            Body <abbr title="required">*</abbr>
           </label>
           <textarea
-            className="adv-AddMemberForm-textarea adv-Input"
-            id="message" />
-          <button
-            className="adv-AddMemberForm-button adv-Button"
-            disabled={this.state.isSendButtonDisabled || this.state.requesting}
-            ref="submitButton"
-            type="submit" >
-            {this.renderButtonLabel()}
-          </button>
-          <button
-            className="adv-AddMemberForm-button adv-Button"
-            onClick={this.handleCancel}
-            ref="cancelButton" >
-            Cancel
-          </button>
+            className="adv-MessageForm-textarea adv-Input"
+            id="adv-MessageForm-body" />
+          <div className="adv-MessageForm-controls">
+            <button
+              className="adv-MessageForm-button adv-Button"
+              disabled={this.state.isDisabled || this.state.requesting}
+              ref="submitButton"
+              type="submit" >
+              {this.renderButtonLabel()}
+            </button>
+            <button
+              className="adv-MessageForm-button adv-Button"
+              onClick={this.handleCancel}
+              ref="cancelButton" >
+              Cancel
+            </button>
+          </div>
         </form>
         <Dialog
           cancelButtonLabel="No, continue writing"
@@ -196,11 +194,45 @@ var GroupMessage = React.createClass({
       </div>
     );
   },
-  renderName: function(name) {
+  renderToListControl: function(names) {
+    var count = names.length;
+
+    if(count === 0) {
+      return 'No students';
+    }
+
+    if(count === 1) {
+      return names[0];
+    }
+
     return (
-      <div>
-        {name}
-      </div>
+      <button
+        aria-controls="adv-MessageForm-toList"
+        aria-expanded={this.state.showToList}
+        className="adv-Link"
+        onClick={this.handleShowToList}>
+        {count} {helpers.pluralize(count, ' student')}
+      </button>
+    );
+  },
+  renderToList: function(names) {
+    if(names.length <= 1 || !this.state.showToList) {
+      return null;
+    }
+
+    return (
+      <ul
+        className="adv-MessageForm-toList"
+        id="adv-MessageForm-toList">
+        {names.map(this.renderToListItem)}
+      </ul>
+    );
+  },
+  renderToListItem: function(value) {
+    return (
+      <li className="adv-MessageForm-toListItem">
+        {value}
+      </li>
     );
   },
   renderError: function() {
@@ -226,13 +258,6 @@ var GroupMessage = React.createClass({
         <span className="adv-ProcessIndicator"/>
       </span>
     )
-  },
-  renderEmpty: function() {
-    return (
-      <p className="adv-App-empty">
-        No students in this group.
-      </p>
-    );
   },
   //
   // Handler methods
@@ -262,33 +287,22 @@ var GroupMessage = React.createClass({
       return returnObj;
     }.bind(event)();
 
-    this.setState(stateObject, this.handleSendButtonDisabled);
+    this.setState(stateObject, this.validateForm);
   },
   handleMessageInputChange: function(event) {
     var value = event.editor.getData();
     this.setState({
       message: value
-    }, this.handleSendButtonDisabled);
-    //console.log( '+++ handleMessageInputChange +++ message = ', this.state.message );
+    }, this.validateForm);
   },
   handleCancel: function(event) {
     event.preventDefault();
     actions.redirect('group', { id: this.props.params.id });
   },
-  handleSendButtonDisabled: function() {
-    // Debugging area
-    //console.log( '+++ handleSendButtonDisabled +++ ccList = ', this.state.ccList );
-    //console.log( '+++ handleSendButtonDisabled +++ bccList = ', this.state.bccList );
-    //console.log( '+++ handleSendButtonDisabled +++ subject = ', this.state.subject );
-    //console.log( '+++ handleSendButtonDisabled +++ message = ', this.state.message );
-
-    // Set the attribute "disabled" for the Send button
-    var subject = this.state.subject.trim();
-    var message = this.state.message.trim();
-    var isDisabled = !( !!subject && !!message );
-
+  handleShowToList: function(event) {
+    event.preventDefault();
     this.setState({
-      isSendButtonDisabled: isDisabled
+      showToList: !this.state.showToList
     });
   },
   handleSubmit: function(event) {
@@ -328,6 +342,16 @@ var GroupMessage = React.createClass({
     var subject = this.state.subject.trim();
     var message = this.state.message.trim();
     return !!ccList || !!bccList || !!subject || !!message;
+  },
+  validateForm: function() {
+    // Set the attribute "disabled" for the Send button
+    var subject = this.state.subject.trim();
+    var message = this.state.message.trim();
+    var isDisabled = !( !!subject && !!message );
+
+    this.setState({
+      isDisabled: isDisabled
+    });
   }
 });
 
