@@ -47,9 +47,15 @@ var GroupView = React.createClass({
   componentWillUnmount: function() {
     window.removeEventListener('resize', this.onWindowResized);
   },
-  componentWillMount: function(){
+  componentWillMount: function() {
     this.setState({
-      isLongerTabLabel: window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange
+      isLongerTabLabel: window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange,
+      selectedCount: this.getSelectedCount(this.props)
+    });
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      selectedCount: this.getSelectedCount(nextProps)
     });
   },
   getInitialState: function() {
@@ -57,6 +63,7 @@ var GroupView = React.createClass({
       errorMessage: null,
       isAscending: sortStore.defaultIsAscending,
       isLongerTabLabel: true,
+      selectedCount: 0,
       sortByKey: sortStore.defaultSortByKey,
       successMessage: null,
       windowInnerWidth_borderForTabLabelChange: 700
@@ -136,11 +143,7 @@ var GroupView = React.createClass({
       return this.renderEmpty();
     }
 
-    var selectedMembers = data.filter(function(member) {
-      return member.isSelected;
-    });
-    var selectedCount = selectedMembers.length;
-    var selectedLabel = selectedCount ? ' ({count} selected)'.format({ count: selectedCount }) : '';
+    var selectedLabel = this.state.selectedCount ? ' ({count} selected)'.format({ count: this.state.selectedCount }) : '';
 
     return (
       <div>
@@ -183,7 +186,7 @@ var GroupView = React.createClass({
           </div>
           <button
             className="adv-Button adv-Button--small"
-            disabled={!selectedCount}
+            disabled={!this.state.selectedCount}
             id="adv-SendMessageButton"
             onClick={this.handleSendMessage}>
             Send message
@@ -490,6 +493,14 @@ var GroupView = React.createClass({
         isLongerTabLabel: !this.state.isLongerTabLabel
       });
     }
+  },
+  //
+  // Helper methods
+  //
+  getSelectedCount: function(props) {
+    return props.data.memberDetailList.filter(function(member) {
+      return member.isSelected;
+    }).length;
   }
 });
 
