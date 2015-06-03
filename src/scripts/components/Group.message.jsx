@@ -198,7 +198,7 @@ var GroupMessage = React.createClass({
     }
 
     if(count === 1) {
-      return this.state.selectedMembers[0];
+      return this.state.selectedMembers[0].name;
     }
 
     return (
