@@ -149,8 +149,7 @@ var Selector = React.createClass({
       <li
         className={cn}
         id={isSelected ? this.state.selectedOptionId : null}
-        data-id={option.id}
-        onClick={this.handleSubmit}
+        onClick={this.handleOptionClick(index)}
         onMouseOver={this.handleOptionMouseOver(index)}
         role="option">
         <div className='adv-Selector-optionLabel'>
@@ -232,13 +231,22 @@ var Selector = React.createClass({
         break;
     }
   },
+  handleOptionClick: function(index) {
+    return function(event) {
+      this.selectIndex(index, function() {
+        this.handleSubmit();
+      }.bind(this));
+    }.bind(this);
+  },
   handleOptionMouseOver: function(index) {
     return function() {
       this.selectIndex(index);
     }.bind(this);
   },
   handleSubmit: function(event) {
-    event.preventDefault();
+    if(!!event) {
+      event.preventDefault();
+    }
     var option = this.state.options[this.state.selectedIndex];
     if(option.isNewOption) {
       if(this.props.onCreate) {
@@ -315,10 +323,10 @@ var Selector = React.createClass({
     index = index === 0 ? this.state.options.length - 1 : index - 1;
     this.selectIndex(index);
   },
-  selectIndex: function(index) {
+  selectIndex: function(index, callback) {
     this.setState({
       selectedIndex: index
-    });
+    }, callback);
   }
 });
 
