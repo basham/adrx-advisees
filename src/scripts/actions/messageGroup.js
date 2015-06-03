@@ -7,9 +7,8 @@ var helpers = require('../helpers');
 
 var dataStore = require('../stores/data');
 
-actions.notifyGroup.listen(function(groupId, emplids, ccList, bccList, subject, message) {
+actions.messageGroup.listen(function(groupId, emplids, ccList, bccList, subject, message) {
   var query = helpers.getQueryParams();
-  //query.action = 'notifyGroup';
   query.groupId = groupId;
 
   /*-- Test module --
@@ -34,7 +33,7 @@ actions.notifyGroup.listen(function(groupId, emplids, ccList, bccList, subject, 
 });
 
 function completed(groupId, peopleIds) {
-  var message = 'Notification sent to';
+  var message = 'Message sent to';
   if(peopleIds.length > 1) {
     message = [message, peopleIds.length, 'students.'].join(' ');
   }
@@ -48,7 +47,7 @@ function completed(groupId, peopleIds) {
       if(routeName !== 'group' && params.id !== groupId) {
         return;
       }
-      actions.notifyGroup.completed(message);
+      actions.messageGroup.completed(message);
       unsubscribe();
     });
     actions.redirect('group', { id: groupId });
@@ -56,5 +55,5 @@ function completed(groupId, peopleIds) {
 }
 
 function failed() {
-  actions.notifyGroup.failed('Notification could not be sent. Please try again.');
+  actions.messageGroup.failed('Notification could not be sent. Please try again.');
 }

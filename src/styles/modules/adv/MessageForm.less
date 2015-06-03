@@ -1,0 +1,58 @@
+.adv-MessageForm {
+  margin-top: 2em;
+
+  &-toListControl {
+    margin: 0;
+  }
+
+  &-toList {
+    list-style-type: none;
+    margin: 1em 0 1em 2.5em;
+    padding: 0;
+  }
+
+  &-toListItem {
+    margin: 0.5em 0;
+  }
+
+  &-field {
+    align-items: center;
+    display: flex;
+
+    & + & {
+      margin-top: 0.5em;
+    }
+  }
+
+  &-label {
+    flex-basis: 2.5em;
+    flex-grow: 0;
+    flex-shrink: 0;
+    font-weight: bold;
+  }
+
+  &-input {
+    flex: 1;
+  }
+
+  &-textarea {
+    resize: vertical;
+  }
+
+  &-description {
+    font-size: @scale-FontSize--05i;
+    margin: 0.5rem 0 1rem 2.5rem;
+  }
+
+  &-controls {
+    margin-top: 1em;
+    text-align: right;
+  }
+
+  &-button {
+
+    & + & {
+      margin-left: 0.5em;
+    }
+  }
+}

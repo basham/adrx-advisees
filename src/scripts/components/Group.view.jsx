@@ -13,7 +13,7 @@ var TabList = ReactTabs.TabList;
 var TabPanel = ReactTabs.TabPanel;
 
 var actions = require('../actions');
-var notifyStore = require('../stores/notify');
+var messageStore = require('../stores/message');
 var sortStore = require('../stores/sort');
 var helpers = require('../helpers');
 
@@ -47,9 +47,15 @@ var GroupView = React.createClass({
   componentWillUnmount: function() {
     window.removeEventListener('resize', this.onWindowResized);
   },
-  componentWillMount: function(){
+  componentWillMount: function() {
     this.setState({
-      isLongerTabLabel: window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange
+      isLongerTabLabel: window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange,
+      selectedCount: this.getSelectedCount(this.props)
+    });
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      selectedCount: this.getSelectedCount(nextProps)
     });
   },
   getInitialState: function() {
@@ -57,6 +63,7 @@ var GroupView = React.createClass({
       errorMessage: null,
       isAscending: sortStore.defaultIsAscending,
       isLongerTabLabel: true,
+      selectedCount: 0,
       sortByKey: sortStore.defaultSortByKey,
       successMessage: null,
       windowInnerWidth_borderForTabLabelChange: 700
@@ -136,29 +143,15 @@ var GroupView = React.createClass({
       return this.renderEmpty();
     }
 
-    var isNotifyButtonDisabled = !notifyStore.selectedIds.length;
-    var countOfSelectedIds = !notifyStore.selectedIds.length ? '' : notifyStore.selectedIds.length;
+    var selectedLabel = this.state.selectedCount ? ' ({count} selected)'.format({ count: this.state.selectedCount }) : '';
 
     return (
       <div>
         <div className="adv-Controls">
           <p className="adv-Controls-count">
             {count} {helpers.pluralize(count, 'student')}
+            {selectedLabel}
           </p>
-          <button
-            className="adv-Button"
-            disabled={isNotifyButtonDisabled}
-            id="adv-GroupNotifyButton-selected"
-            onClick={this.handleClickNotifyButton('selected')}>
-            Notify {countOfSelectedIds} {helpers.pluralize(countOfSelectedIds, ' selected student')}
-          </button>
-          <button
-            className="adv-Button"
-            id="adv-GroupNotifyButton-all"
-            onClick={this.handleClickNotifyButton('all')}>
-            Notify all students
-          </button>
-
           <form className="adv-Controls-form">
             <div className="adv-Controls-field">
               <label
@@ -176,6 +169,28 @@ var GroupView = React.createClass({
             </div>
             {this.renderOrderBySection()}
           </form>
+        </div>
+        <div className="adv-Controls">
+          <div className="adv-Controls-selectAll">
+            <label
+              className="adv-Controls-selectAllControl"
+              htmlFor="adv-SelectAllCheckbox">
+              <input
+                id="adv-SelectAllCheckbox"
+                onChange={this.handleSelectAllChange}
+                type="checkbox"/>
+              <span className="adv-Controls-selectAllLabel">
+                Select all
+              </span>
+            </label>
+          </div>
+          <button
+            className="adv-Button adv-Button--small"
+            disabled={!this.state.selectedCount}
+            id="adv-SendMessageButton"
+            onClick={this.handleSendMessage}>
+            Send message
+          </button>
         </div>
         <ol className="adv-MemberList">
           {data.map(this.renderMember)}
@@ -252,17 +267,15 @@ var GroupView = React.createClass({
     var hasPSI = member.positiveServiceIndicators_Impact.length || member.positiveServiceIndicators_NoImpact.length;
     var hasNSI = member.negativeServiceIndicators_Impact.length || member.negativeServiceIndicators_NoImpact.length;
 
-    var isChecked = notifyStore.selectedIds.indexOf(member.universityId) >= 0;
-
     return (
       <li className="adv-MemberList-item adv-Member">
         <header className="adv-Member-header">
           <div className="adv-Member-nameGroup">
             <input
-              aria-controls="adv-GroupNotifyButton-selected adv-GroupNotifyButton-all"
-              aria-label="Notify"
-              checked={isChecked}
-              onChange={this.handleCheckboxChange}
+              aria-controls="adv-SendMessageButton adv-GroupMessageButton-all"
+              aria-label="Message"
+              checked={member.isSelected}
+              onChange={this.handleSelectMemberChange}
               type="checkbox"
               value={member.universityId}/>
             <h2 className="adv-Member-heading">
@@ -414,16 +427,27 @@ var GroupView = React.createClass({
   //
   // Handler methods
   //
-  handleCheckboxChange: function(event) {
-    //event.preventDefault();
-    var value = event.target.value;
-    var checked = event.target.checked;
-    actions.setSelectedIdsForNotify(value, checked);
+  handleOrderByChange: function(event) {
+    var isAscending = event.target.value === 'true';
+    this.setState({
+      isAscending: isAscending
+    });
+    actions.sortBy(this.state.sortByKey, isAscending);
   },
-  handleClickNotifyButton: function(type) {
-    return function(event) {
-      actions.redirect('group.notify', { id: this.props.data.groupId }, { type: type });
-    }.bind(this);
+  handleSelectAllChange: function(event) {
+    var checked = event.target.checked;
+    var groupId = this.props.data.groupId;
+    actions.selectAllMembers(groupId, checked);
+  },
+  handleSelectMemberChange: function(event) {
+    var groupId = this.props.data.groupId;
+    var personId = event.target.value;
+    var isSelected = event.target.checked;
+    actions.selectMember(groupId, personId, isSelected);
+  },
+  handleSendMessage: function(event) {
+    event.preventDefault();
+    actions.redirect('group.message', { id: this.props.data.groupId });
   },
   handleSortByChange: function(event) {
     var key = event.target.value;
@@ -434,13 +458,6 @@ var GroupView = React.createClass({
       isAscending: isAscending
     });
     actions.sortBy(key, isAscending);
-  },
-  handleOrderByChange: function(event) {
-    var isAscending = event.target.value === 'true';
-    this.setState({
-      isAscending: isAscending
-    });
-    actions.sortBy(this.state.sortByKey, isAscending);
   },
   //
   // Action methods
@@ -455,8 +472,8 @@ var GroupView = React.createClass({
       errorMessage: message
     });
   },
-  onNotifyGroupCompleted: function(message) {
-    notifyStore.selectedIds = [];
+  onMessageGroupCompleted: function(message) {
+    messageStore.selectedIds = [];
     this.setState({
       successMessage: message
     });
@@ -476,6 +493,14 @@ var GroupView = React.createClass({
         isLongerTabLabel: !this.state.isLongerTabLabel
       });
     }
+  },
+  //
+  // Helper methods
+  //
+  getSelectedCount: function(props) {
+    return props.data.memberDetailList.filter(function(member) {
+      return member.isSelected;
+    }).length;
   }
 });
 
