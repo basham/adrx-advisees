@@ -2,7 +2,14 @@
 
 var config = {
   // Constants
-  API_URL: ''
+  API_URL: '',
+  // Vendor
+  CKEDITOR: {
+    //contentsCss: styleSheetPath,
+    //bodyClass: 'qn-Editor-content',
+    //height: '26em',
+    uiColor: '#E1D8B7'
+  }
 };
 
 // Override local config with global config.

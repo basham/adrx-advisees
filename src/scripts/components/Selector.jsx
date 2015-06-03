@@ -20,24 +20,22 @@ var Selector = React.createClass({
     onCreate: React.PropTypes.func,
     options: React.PropTypes.array,
     optionName: React.PropTypes.string,
-    selectedIndex: React.PropTypes.number
+    selectedIndex: React.PropTypes.number,
+    value: React.PropTypes.string
   },
   //
   // Lifecycle methods
   //
   componentWillMount: function() {
     document.addEventListener('click', this.handleBodyClick);
-    // Set unique ids for ARIA attributes.
-    this.setState({
-      optionListId: 'selectorOptionListId-' + uuid(),
-      selectedOptionId: 'selectorSelectedOptionId-' + uuid()
-    });
   },
   componentWillReceiveProps: function(nextProps) {
     this.setState({
       options: nextProps.options,
       selectedIndex: nextProps.selectedIndex
-    });
+    }, function() {
+      this.changeInputValue(nextProps.value || '');
+    }.bind(this));
   },
   componentWillUnmount: function() {
     document.removeEventListener('click', this.handleBodyClick);
@@ -45,10 +43,12 @@ var Selector = React.createClass({
   getInitialState: function() {
     return {
       isOpen: false,
-      inputValue: '',
+      inputValue: this.props.value || '',
       options: [],
+      optionListId: 'selectorOptionListId-' + uuid(),
       optionName: 'option',
-      selectedIndex: 0
+      selectedIndex: 0,
+      selectedOptionId: 'selectorSelectedOptionId-' + uuid()
     };
   },
   //
@@ -141,6 +141,7 @@ var Selector = React.createClass({
 
     var cn = classNames({
       'adv-Selector-option': true,
+      'adv-Selector-option--preselected': isPreselected || option.isNewOption,
       'adv-Selector-option--selected': isSelected
     }, option.className);
 
@@ -148,14 +149,13 @@ var Selector = React.createClass({
       <li
         className={cn}
         id={isSelected ? this.state.selectedOptionId : null}
-        data-id={option.id}
-        onClick={this.handleSubmit}
+        onClick={this.handleOptionClick(index)}
         onMouseOver={this.handleOptionMouseOver(index)}
         role="option">
-        <span className='adv-Selector-optionLabel'>
+        <div className='adv-Selector-optionLabel'>
           {option.label}
-        </span>
-        {isPreselected ? <Icon name="check"/> : null}
+        </div>
+        {this.renderPreselectedIcon(isPreselected)}
       </li>
     );
   },
@@ -170,6 +170,17 @@ var Selector = React.createClass({
           </kbd>
         </samp>
       </div>
+    );
+  },
+  renderPreselectedIcon: function(isPreselected) {
+    if(!isPreselected) {
+      return null;
+    }
+
+    return (
+      <Icon
+        className="adv-Selector-icon"
+        name="check"/>
     );
   },
   //
@@ -200,7 +211,60 @@ var Selector = React.createClass({
     }
   },
   handleInputChange: function(event) {
-    var inputValue = event.target.value;
+    this.changeInputValue(event.target.value);
+  },
+  handleInputKeyDown: function(event) {
+    switch(event.key) {
+      case 'Escape':
+        this.close();
+        break;
+      case 'Tab':
+        // Prevent changing focus,
+        // since the input field is the only focusable element.
+        event.preventDefault();
+        break;
+      case 'ArrowDown':
+        this.selectNext();
+        break;
+      case 'ArrowUp':
+        this.selectPrevious();
+        break;
+    }
+  },
+  handleOptionClick: function(index) {
+    return function(event) {
+      this.selectIndex(index, function() {
+        this.handleSubmit();
+      }.bind(this));
+    }.bind(this);
+  },
+  handleOptionMouseOver: function(index) {
+    return function() {
+      this.selectIndex(index);
+    }.bind(this);
+  },
+  handleSubmit: function(event) {
+    if(!!event) {
+      event.preventDefault();
+    }
+    var option = this.state.options[this.state.selectedIndex];
+    if(option.isNewOption) {
+      if(this.props.onCreate) {
+        this.props.onCreate(option.value);
+      }
+    }
+    else {
+      if(this.props.onChange) {
+        var index = this.props.options.indexOf(option);
+        this.props.onChange(index, option.id);
+      }
+    }
+    this.close();
+  },
+  //
+  // Helper methods
+  //
+  changeInputValue: function(inputValue) {
     var hasInput = !!inputValue.trim().length;
     var hasMatch = false;
 
@@ -221,57 +285,16 @@ var Selector = React.createClass({
       });
     }
 
-    var index = 0;
+    // Select the first option, if searching or creating.
+    // Otherwise, select the default selection.
+    var index = hasInput ? 0 : this.props.selectedIndex;
+
     this.setState({
       inputValue: inputValue,
       options: options,
       selectedIndex: index
     });
   },
-  handleInputKeyDown: function(event) {
-    switch(event.key) {
-      case 'Escape':
-        this.close();
-        break;
-      case 'Tab':
-        // Prevent changing focus,
-        // since the input field is the only focusable element.
-        event.preventDefault();
-        break;
-      case 'ArrowDown':
-      case 'ArrowRight':
-        this.selectNext();
-        break;
-      case 'ArrowUp':
-      case 'ArrowLeft':
-        this.selectPrevious();
-        break;
-    }
-  },
-  handleOptionMouseOver: function(index) {
-    return function() {
-      this.selectIndex(index);
-    }.bind(this);
-  },
-  handleSubmit: function(event) {
-    event.preventDefault();
-    var option = this.state.options[this.state.selectedIndex];
-    if(option.isNewOption) {
-      if(this.props.onCreate) {
-        this.props.onCreate(option.value);
-      }
-    }
-    else {
-      if(this.props.onChange) {
-        var index = this.props.options.indexOf(option);
-        this.props.onChange(index, option.id);
-      }
-    }
-    this.close();
-  },
-  //
-  // Helper methods
-  //
   close: function(ignoreFocus) {
     this.setState({
       inputValue: '',
@@ -300,10 +323,10 @@ var Selector = React.createClass({
     index = index === 0 ? this.state.options.length - 1 : index - 1;
     this.selectIndex(index);
   },
-  selectIndex: function(index) {
+  selectIndex: function(index, callback) {
     this.setState({
       selectedIndex: index
-    });
+    }, callback);
   }
 });
 

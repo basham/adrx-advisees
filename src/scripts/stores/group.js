@@ -34,6 +34,9 @@ module.exports = Reflux.createStore({
     this.groupId = id;
     this.output();
   },
+  onGetGroupFailed: function() {
+    actions.redirect('group', { id: this.groupId });
+  },
   onSortBy: function(key, isAscending) {
     this.sortByKey = key;
     this.isAscending = isAscending;
@@ -56,8 +59,9 @@ module.exports = Reflux.createStore({
       return;
     }
     group.memberDetailList = group.memberList
-      .map(function(id) {
-        var member = this.data.memberMap[id];
+      .map(function(memberRelationship) {
+        var member = this.data.memberMap[memberRelationship.id];
+        member.isSelected = memberRelationship.isSelected;
         member.hours = helpers.round(member.hours, 1);
         member.programGpa = helpers.round(member.programGpa, 2);
         member.iuGpa = helpers.round(member.iuGpa, 2);
@@ -211,6 +215,7 @@ module.exports = Reflux.createStore({
     return {
       name: member.studentName,
       universityId: member.emplid,
+      isSelected: member.isSelected,
       flag: member.flagsStatus,
       url_onFlag: url_onFlag,
       url_onName: url_onName,

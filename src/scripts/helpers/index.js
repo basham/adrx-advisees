@@ -1,5 +1,7 @@
 'use strict';
 
+require('../helpers/String');
+
 var config = require('../config');
 
 function api(method, query) {

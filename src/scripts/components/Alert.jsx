@@ -28,7 +28,7 @@ var Alert = React.createClass({
     ].join(' ');
 
     return (
-      <p
+      <div
         className={classNames}
         ref="content"
         role="alert">
@@ -36,7 +36,7 @@ var Alert = React.createClass({
           className="adv-Alert-icon"
           name={type}/>
         {this.props.message}
-      </p>
+      </div>
     );
   }
 });

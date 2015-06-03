@@ -3,22 +3,24 @@
   color: @color-Text--900;
   font-size: 16px;
   line-height: 1;
+  max-width: 50em;
 
   ::selection {
     background-color: @color-Interactive--150;
   }
 
-  &-header {
-    align-items: baseline;
+  &-heading {
+    align-items: center;
     display: flex;
     flex-wrap: wrap;
-  }
-
-  &-heading {
-    flex: 1;
     font-size: @scale-FontSize--20;
     font-weight: normal;
     line-height: 1;
+  }
+
+  &-breadcrumbsIcon {
+    font-size: 1rem;
+    margin: 0 0.5em;
   }
 
   &-empty,
@@ -31,8 +33,7 @@
     text-align: center;
   }
 
-  &-editGroup,
-  &-membership {
+  &-editView {
     max-width: 30em;
   }
 }

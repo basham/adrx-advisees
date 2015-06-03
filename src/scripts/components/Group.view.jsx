@@ -13,6 +13,7 @@ var TabList = ReactTabs.TabList;
 var TabPanel = ReactTabs.TabPanel;
 
 var actions = require('../actions');
+var messageStore = require('../stores/message');
 var sortStore = require('../stores/sort');
 var helpers = require('../helpers');
 
@@ -21,28 +22,50 @@ var Icon = require('./Icon');
 var GroupSelector = require('./GroupSelector');
 
 var GroupView = React.createClass({
+  mixins: [
+    Reflux.listenToMany(actions)
+  ],
   propTypes: {
     data: React.PropTypes.object
+  },
+  statics: {
+    willTransitionFrom: function(transition, component) {
+      // Remove error message when transitioning away.
+      component.setState({
+        errorMessage: null,
+        successMessage: null
+      });
+    }
   },
   //
   // Lifecycle methods
   //
   componentDidMount: function() {
     window.addEventListener('resize', this.onWindowResized);
+    actions.redirect.completed('group', { id: this.props.data.groupId });
   },
   componentWillUnmount: function() {
     window.removeEventListener('resize', this.onWindowResized);
   },
-  componentWillMount: function(){
+  componentWillMount: function() {
     this.setState({
-      isLongerTabLabel: window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange
+      isLongerTabLabel: window.innerWidth >= this.state.windowInnerWidth_borderForTabLabelChange,
+      selectedCount: this.getSelectedCount(this.props)
+    });
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      selectedCount: this.getSelectedCount(nextProps)
     });
   },
   getInitialState: function() {
     return {
+      errorMessage: null,
       isAscending: sortStore.defaultIsAscending,
       isLongerTabLabel: true,
+      selectedCount: 0,
       sortByKey: sortStore.defaultSortByKey,
+      successMessage: null,
       windowInnerWidth_borderForTabLabelChange: 700
     }
   },
@@ -55,25 +78,23 @@ var GroupView = React.createClass({
         <h1 className="adv-App-heading">
           Caseload
         </h1>
+        {this.renderError()}
+        {this.renderSuccess()}
         <div className="adv-GroupSelectorControls">
           <GroupSelector
             className="adv-GroupSelectorControls-selector"
-            selectedId={this.props.params.id}
-            />
-          {this.renderEditMembershipLink()}
+            selectedId={this.props.params.id}/>
+          {this.renderEditLinks()}
         </div>
         {this.renderList()}
       </div>
     );
   },
-  renderEmpty: function() {
-    return (
-      <p className="adv-App-empty">
-        You currently have no students assigned to this group.
-      </p>
-    );
-  },
   renderError: function() {
+    if(!this.state.errorMessage) {
+      return null;
+    }
+
     return (
       <Alert
         message={this.state.errorMessage}
@@ -81,18 +102,37 @@ var GroupView = React.createClass({
         type="error"/>
     );
   },
-  renderEditMembershipLink: function() {
+  renderSuccess: function() {
+    if(!this.state.successMessage) {
+      return null;
+    }
+
+    return (
+      <Alert
+        message={this.state.successMessage}
+        type="success"/>
+    );
+  },
+  renderEditLinks: function() {
     if(!this.props.data.isEditable) {
       return null;
     }
 
     return (
-      <Link
-        className="adv-GroupSelectorControls-link"
-        params={{ id: this.props.params.id}}
-        to="group.membership">
-        Edit membership
-      </Link>
+      <div className="adv-GroupSelectorControls-list">
+        <Link
+          className="adv-Link adv-GroupSelectorControls-item"
+          params={{ id: this.props.params.id}}
+          to="group.membership">
+          Edit Membership
+        </Link>
+        <Link
+          className="adv-Link adv-GroupSelectorControls-item"
+          params={{ id: this.props.params.id}}
+          to="group.edit">
+          Edit Group
+        </Link>
+      </div>
     );
   },
   renderList: function() {
@@ -103,32 +143,66 @@ var GroupView = React.createClass({
       return this.renderEmpty();
     }
 
+    var selectedLabel = this.state.selectedCount ? ' ({count} selected)'.format({ count: this.state.selectedCount }) : '';
+
     return (
       <div>
         <div className="adv-Controls">
           <p className="adv-Controls-count">
             {count} {helpers.pluralize(count, 'student')}
+            {selectedLabel}
           </p>
           <form className="adv-Controls-form">
-            <label
-              className="adv-Controls-label"
-              htmlFor="sortByInput">
-              Sort by
-            </label>
-            <select
-              className="adv-Controls-select"
-              id="sortByInput"
-              onChange={this.handleSortByChange}
-              value={this.state.sortByKey}>
-              {sortStore.sortList.map(this.renderSortOption)}
-            </select>
+            <div className="adv-Controls-field">
+              <label
+                className="adv-Controls-label"
+                htmlFor="sortByInput">
+                Sort by
+              </label>
+              <select
+                className="adv-Controls-select"
+                id="sortByInput"
+                onChange={this.handleSortByChange}
+                value={this.state.sortByKey}>
+                {sortStore.sortList.map(this.renderSortOption)}
+              </select>
+            </div>
             {this.renderOrderBySection()}
           </form>
+        </div>
+        <div className="adv-Controls">
+          <div className="adv-Controls-selectAll">
+            <label
+              className="adv-Controls-selectAllControl"
+              htmlFor="adv-SelectAllCheckbox">
+              <input
+                id="adv-SelectAllCheckbox"
+                onChange={this.handleSelectAllChange}
+                type="checkbox"/>
+              <span className="adv-Controls-selectAllLabel">
+                Select all
+              </span>
+            </label>
+          </div>
+          <button
+            className="adv-Button adv-Button--small"
+            disabled={!this.state.selectedCount}
+            id="adv-SendMessageButton"
+            onClick={this.handleSendMessage}>
+            Send message
+          </button>
         </div>
         <ol className="adv-MemberList">
           {data.map(this.renderMember)}
         </ol>
       </div>
+    );
+  },
+  renderEmpty: function() {
+    return (
+      <p className="adv-App-empty">
+        You currently have no students assigned to this group.
+      </p>
     );
   },
   renderSortOption: function(option, index) {
@@ -153,7 +227,7 @@ var GroupView = React.createClass({
 
     var orderOptions = sortStore.sortMap[this.state.sortByKey].order;
     return (
-      <span>
+      <div className="adv-Controls-field">
         <label
           className="adv-Controls-label"
           htmlFor="orderByInput">
@@ -166,7 +240,7 @@ var GroupView = React.createClass({
           value={this.state.isAscending}>
           {orderOptions.map(this.renderOrderOption)}
         </select>
-      </span>
+      </div>
     );
   },
   renderMember: function(member) {
@@ -197,6 +271,13 @@ var GroupView = React.createClass({
       <li className="adv-MemberList-item adv-Member">
         <header className="adv-Member-header">
           <div className="adv-Member-nameGroup">
+            <input
+              aria-controls="adv-SendMessageButton adv-GroupMessageButton-all"
+              aria-label="Message"
+              checked={member.isSelected}
+              onChange={this.handleSelectMemberChange}
+              type="checkbox"
+              value={member.universityId}/>
             <h2 className="adv-Member-heading">
               <a
                 className="adv-Link"
@@ -346,6 +427,28 @@ var GroupView = React.createClass({
   //
   // Handler methods
   //
+  handleOrderByChange: function(event) {
+    var isAscending = event.target.value === 'true';
+    this.setState({
+      isAscending: isAscending
+    });
+    actions.sortBy(this.state.sortByKey, isAscending);
+  },
+  handleSelectAllChange: function(event) {
+    var checked = event.target.checked;
+    var groupId = this.props.data.groupId;
+    actions.selectAllMembers(groupId, checked);
+  },
+  handleSelectMemberChange: function(event) {
+    var groupId = this.props.data.groupId;
+    var personId = event.target.value;
+    var isSelected = event.target.checked;
+    actions.selectMember(groupId, personId, isSelected);
+  },
+  handleSendMessage: function(event) {
+    event.preventDefault();
+    actions.redirect('group.message', { id: this.props.data.groupId });
+  },
   handleSortByChange: function(event) {
     var key = event.target.value;
     // Reset order whenever sort field changes.
@@ -356,12 +459,24 @@ var GroupView = React.createClass({
     });
     actions.sortBy(key, isAscending);
   },
-  handleOrderByChange: function(event) {
-    var isAscending = event.target.value === 'true';
+  //
+  // Action methods
+  //
+  onCreateGroupCompleted: function() {
     this.setState({
-      isAscending: isAscending
+      errorMessage: null
     });
-    actions.sortBy(this.state.sortByKey, isAscending);
+  },
+  onCreateGroupFailed: function(message) {
+    this.setState({
+      errorMessage: message
+    });
+  },
+  onMessageGroupCompleted: function(message) {
+    messageStore.selectedIds = [];
+    this.setState({
+      successMessage: message
+    });
   },
   //
   // Window event listener
@@ -378,6 +493,14 @@ var GroupView = React.createClass({
         isLongerTabLabel: !this.state.isLongerTabLabel
       });
     }
+  },
+  //
+  // Helper methods
+  //
+  getSelectedCount: function(props) {
+    return props.data.memberDetailList.filter(function(member) {
+      return member.isSelected;
+    }).length;
   }
 });
 

@@ -1,0 +1,41 @@
+{
+  "memberMap":{
+    "9937408800":{
+      "emplid":"9937408800",
+      "studentName":"Yost, Edd Nathanael",
+      "acadPlanList":[],
+      "lastEnrolled":" ",
+      "lastEnrolledStrm":" ",
+      "flagsStatus":false,
+      "iuFirstNamePrf":"Edd",
+      "iuMiddleNamePrf":" ",
+      "iuLastNamePrf":"Yost"
+    }
+  },
+  "emplidsResultMap":{
+    "jjjamison":[
+      null,
+      "Not Found",
+      "404",
+      "Not Found"
+    ],
+    "enyost":[
+      "9937408800",
+      "Added",
+      "200",
+      "OK"
+    ],
+    "4786766189":[
+      "4786766189",
+      "Already in the group",
+      "204",
+      "No Content"
+    ],
+    "eun":[
+      null,
+      "Not Found",
+      "404",
+      "Not Found"
+    ]
+  }
+}

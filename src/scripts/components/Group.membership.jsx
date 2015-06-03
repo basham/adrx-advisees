@@ -11,6 +11,9 @@ var helpers = require('../helpers');
 
 var Alert = require('./Alert');
 var Icon = require('./Icon');
+var Heading = require('./Group.heading');
+
+var dataStore = require('../stores/data');
 
 var GroupMembership = React.createClass({
   mixins: [
@@ -24,8 +27,12 @@ var GroupMembership = React.createClass({
   //
   getInitialState: function() {
     return {
+      errorMessage: null,
       inputValue: '',
-      isBulkUpload: false
+      isBulkUpload: false,
+      requestingAdd: false,
+      requestingRemove: false,
+      successMessage: null
     }
   },
   //
@@ -37,41 +44,44 @@ var GroupMembership = React.createClass({
     };
 
     return (
-      <div className="adv-App-membership">
-        <header className="adv-App-header">
-          <h1 className="adv-App-heading">
-            {this.props.data.groupName}
-          </h1>
-          <Link
-            className="adv-Link adv-Link--underlined"
-            params={params}
-            to="group.edit">
-            Edit group
-          </Link>
-        </header>
-        <Link
-          className="adv-Link adv-Link--underlined"
-          params={params}
-          to="group">
-          Return to Caseload
-        </Link>
+      <div className="adv-App-editView">
+        <Heading
+          groupId={this.props.params.id}
+          groupName={this.props.data.groupName}
+          label="Edit Membership" />
+        {this.renderSuccess()}
+        {this.renderError()}
         {this.state.isBulkUpload ? this.renderBulkAddMemberForm() : this.renderSingleAddMemberForm()}
         {this.renderList()}
       </div>
     );
   },
+  renderSuccess: function() {
+    if(!this.state.successMessage) {
+      return null;
+    }
+
+    return (
+      <Alert
+        message={this.state.successMessage}
+        type="success"/>
+    );
+  },
   renderError: function() {
+    if(!this.state.errorMessage) {
+      return null;
+    }
+
     return (
       <Alert
         message={this.state.errorMessage}
-        ref="error"
         type="error"/>
     );
   },
   renderSingleAddMemberForm: function() {
     return (
       <form
-        className="adv-AddMemberForm adv-AddMemberForm--small"
+        className="adv-AddMemberForm"
         onSubmit={this.handleSubmit}>
         <label
           className="adv-Label"
@@ -83,23 +93,21 @@ var GroupMembership = React.createClass({
             className="adv-AddMemberForm-input adv-Input"
             id="adv-AddMemberForm-input"
             onChange={this.handleInputChange}
-            maxLength="10"
             placeholder="Username or University ID"
             value={this.state.inputValue}
             type="text"/>
           <button
             className="adv-AddMemberForm-button adv-Button"
+            disabled={this.state.requestingAdd || this.state.requestingRemove}
             type="submit">
-            Add
+            {this.renderButtonLabel()}
           </button>
         </div>
-        <p>
-          <a
-            className="adv-Link adv-Link--underlined"
-            onClick={this.handleBulkButtonClick}>
-            Add students in bulk
-          </a>
-        </p>
+        <button
+          className="adv-Link"
+          onClick={this.handleBulkButtonClick}>
+          Add students in bulk
+        </button>
       </form>
     );
   },
@@ -126,12 +134,25 @@ var GroupMembership = React.createClass({
         <div className="adv-AddMemberForm-controls">
           <button
             className="adv-AddMemberForm-button adv-Button"
+            disabled={this.state.requestingAdd || this.state.requestingRemove}
             type="submit">
-            Add
+            {this.renderButtonLabel()}
           </button>
         </div>
       </form>
     );
+  },
+  renderButtonLabel: function() {
+    if(!this.state.requestingAdd) {
+      return 'Add';
+    }
+
+    return (
+      <span>
+        Adding
+        <span className="adv-ProcessIndicator"/>
+      </span>
+    )
   },
   renderEmpty: function() {
     return (
@@ -177,6 +198,7 @@ var GroupMembership = React.createClass({
           <button
             aria-label={removeLabel}
             className="adv-Membership-removeButton"
+            disabled={this.state.requestingAdd || this.state.requestingRemove}
             onClick={this.handleRemoveButtonClick(member)}>
             <Icon
               className="adv-Membership-removeButtonIcon"
@@ -202,6 +224,11 @@ var GroupMembership = React.createClass({
   handleRemoveButtonClick: function(member) {
     return function(event) {
       actions.removeMember(this.props.data.groupId, member.universityId);
+      this.setState({
+        errorMessage: null,
+        requestingRemove: true,
+        successMessage: null
+      });
     }.bind(this);
   },
   handleSubmit: function(event) {
@@ -209,13 +236,124 @@ var GroupMembership = React.createClass({
     var groupId = this.props.data.groupId;
     var value = this.state.inputValue;
     actions.addMember(groupId, value);
+    this.setState({
+      requestingAdd: true
+    });
   },
   //
   // Action methods
   //
-  onAddMemberCompleted: function() {
+  onAddMemberCompleted: function(groupId, json) {
+
+    var messageMap = {
+      // Added.
+      '200': {
+        count: 0,
+        queryList: [],
+        names: [],
+        singular: '{name} added.',
+        plural: '{count} students added.'
+      },
+      // Already in the group.
+      '204': {
+        count: 0,
+        queryList: [],
+        names: [],
+        partOfMessage: ' is/are already in the group.',
+        singular: '{name} is already in the group.',
+        plural: '{count} students are already in the group.'
+      },
+      // Not found.
+      '404': {
+        count: 0,
+        queryList: [],
+        names: [],
+        singular: '1 student could not be found.',
+        plural: '{count} students could not be found.'
+      }
+    };
+
+    function formatMessage(options) {
+      switch(options.count) {
+        case 0:
+          return null;
+        case 1:
+          var name = options.names[0];
+          return options.singular.format({ name: name });
+        default:
+          return options.plural.format({ count: options.count });
+      }
+    }
+
+    Object.keys(json.emplidsResultMap).forEach(function(key) {
+      var result = json.emplidsResultMap[key];
+      var status = result[2]; // 200/204/404
+
+      messageMap[status].count += 1;
+      messageMap[status].queryList.push(key);
+
+      var memberStore = null;
+      switch(status) {
+        case '200':
+          memberStore = json.memberMap;
+          break;
+        case '204':
+          memberStore = dataStore.data.memberMap;
+          break;
+      }
+
+      if(memberStore) {
+        var id = result[0];
+        var name = memberStore[id].studentName;
+        messageMap[status].names.push(name);
+      }
+    });
+
+    Object.keys(messageMap).forEach(function(key) {
+      messageMap[key].message = formatMessage(messageMap[key]);
+    });
+
+    var successMessage = messageMap[200].message;
+
+    var errorMessage = null;
+    if(!!messageMap[204].message && !!messageMap[404].message) {
+      errorMessage = (
+        <div>
+          <div>{messageMap[404].message}</div>
+          <div>{messageMap[204].message}</div>
+        </div>
+      );
+    }
+    else if(!!messageMap[204].message) {
+      errorMessage = messageMap[204].message;
+    }
+    else if(!!messageMap[404].message) {
+      errorMessage = messageMap[404].message;
+    }
+
+    var notFoundQueries = messageMap[404].queryList;
+    var isBulkUpload = this.state.isBulkUpload ? true : notFoundQueries.length > 1;
+    var inputValue = notFoundQueries.join('\n');
+
     this.setState({
-      inputValue: ''
+      errorMessage: errorMessage,
+      inputValue: inputValue,
+      isBulkUpload: isBulkUpload,
+      requestingAdd: false,
+      successMessage: successMessage
+    });
+  },
+  onRemoveMemberCompleted: function() {
+    this.setState({
+      errorMessage: null,
+      requestingRemove: false
+    });
+  },
+  onRemoveMemberFailed: function(message) {
+    this.setState({
+      errorMessage: message,
+      requestingRemove: false,
+      successMessage: null
     });
   }
 });
