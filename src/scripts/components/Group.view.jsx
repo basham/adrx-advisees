@@ -136,9 +136,11 @@ var GroupView = React.createClass({
       return this.renderEmpty();
     }
 
-    var isMessageButtonDisabled = !messageStore.selectedIds.length;
-    var countOfSelectedIds = !messageStore.selectedIds.length ? '' : messageStore.selectedIds.length;
-    var selectedLabel = countOfSelectedIds ? ' ({count} selected)'.format({ count: countOfSelectedIds }) : '';
+    var selectedMembers = data.filter(function(member) {
+      return member.isSelected;
+    });
+    var selectedCount = selectedMembers.length;
+    var selectedLabel = selectedCount ? ' ({count} selected)'.format({ count: selectedCount }) : '';
 
     return (
       <div>
@@ -166,28 +168,25 @@ var GroupView = React.createClass({
           </form>
         </div>
         <div className="adv-Controls">
-          <label
-            className="adv-Controls-selectAll"
-            htmlFor="adv-SelectAllControl">
-            <input
-              id="adv-SelectAllControl"
-              type="checkbox"/>
-            <span className="adv-Controls-selectAllLabel">
-              Select all
-            </span>
-          </label>
+          <div className="adv-Controls-selectAll">
+            <label
+              className="adv-Controls-selectAllControl"
+              htmlFor="adv-SelectAllCheckbox">
+              <input
+                id="adv-SelectAllCheckbox"
+                onChange={this.handleSelectAllChange}
+                type="checkbox"/>
+              <span className="adv-Controls-selectAllLabel">
+                Select all
+              </span>
+            </label>
+          </div>
           <button
             className="adv-Button adv-Button--small"
-            disabled={isMessageButtonDisabled}
-            id="adv-GroupMessageButton-selected"
-            onClick={this.handleClickMessageButton('selected')}>
-            Message {countOfSelectedIds} {helpers.pluralize(countOfSelectedIds, ' selected student')}
-          </button>
-          <button
-            className="adv-Button adv-Button--small"
-            id="adv-GroupMessageButton-all"
-            onClick={this.handleClickMessageButton('all')}>
-            Message all students
+            disabled={!selectedCount}
+            id="adv-SendMessageButton"
+            onClick={this.handleSendMessage}>
+            Send message
           </button>
         </div>
         <ol className="adv-MemberList">
@@ -265,17 +264,15 @@ var GroupView = React.createClass({
     var hasPSI = member.positiveServiceIndicators_Impact.length || member.positiveServiceIndicators_NoImpact.length;
     var hasNSI = member.negativeServiceIndicators_Impact.length || member.negativeServiceIndicators_NoImpact.length;
 
-    var isChecked = messageStore.selectedIds.indexOf(member.universityId) >= 0;
-
     return (
       <li className="adv-MemberList-item adv-Member">
         <header className="adv-Member-header">
           <div className="adv-Member-nameGroup">
             <input
-              aria-controls="adv-GroupMessageButton-selected adv-GroupMessageButton-all"
+              aria-controls="adv-SendMessageButton adv-GroupMessageButton-all"
               aria-label="Message"
-              checked={isChecked}
-              onChange={this.handleCheckboxChange}
+              checked={member.isSelected}
+              onChange={this.handleSelectMemberChange}
               type="checkbox"
               value={member.universityId}/>
             <h2 className="adv-Member-heading">
@@ -427,16 +424,27 @@ var GroupView = React.createClass({
   //
   // Handler methods
   //
-  handleCheckboxChange: function(event) {
-    //event.preventDefault();
-    var value = event.target.value;
-    var checked = event.target.checked;
-    actions.setSelectedIdsForMessage(value, checked);
+  handleOrderByChange: function(event) {
+    var isAscending = event.target.value === 'true';
+    this.setState({
+      isAscending: isAscending
+    });
+    actions.sortBy(this.state.sortByKey, isAscending);
   },
-  handleClickMessageButton: function(type) {
-    return function(event) {
-      actions.redirect('group.message', { id: this.props.data.groupId }, { type: type });
-    }.bind(this);
+  handleSelectAllChange: function(event) {
+    var checked = event.target.checked;
+    var groupId = this.props.data.groupId;
+    actions.selectAllMembers(groupId, checked);
+  },
+  handleSelectMemberChange: function(event) {
+    var groupId = this.props.data.groupId;
+    var personId = event.target.value;
+    var isSelected = event.target.checked;
+    actions.selectMember(groupId, personId, isSelected);
+  },
+  handleSendMessage: function(event) {
+    event.preventDefault();
+    actions.redirect('group.message', { id: this.props.data.groupId });
   },
   handleSortByChange: function(event) {
     var key = event.target.value;
@@ -447,13 +455,6 @@ var GroupView = React.createClass({
       isAscending: isAscending
     });
     actions.sortBy(key, isAscending);
-  },
-  handleOrderByChange: function(event) {
-    var isAscending = event.target.value === 'true';
-    this.setState({
-      isAscending: isAscending
-    });
-    actions.sortBy(this.state.sortByKey, isAscending);
   },
   //
   // Action methods

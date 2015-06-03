@@ -7,12 +7,10 @@ var RouteHandler = Router.RouteHandler;
 
 var actions = require('../actions');
 var groupStore = require('../stores/group');
-var messageStore = require('../stores/message');
 
 var Group = React.createClass({
   mixins: [
-    Reflux.listenTo(groupStore, 'onGroupStoreChange'),
-    Reflux.listenTo(messageStore, 'onMessageStoreChange')
+    Reflux.listenTo(groupStore, 'onGroupStoreChange')
   ],
   statics: {
     // Get the group by its id when transitioning to this component.
@@ -25,8 +23,7 @@ var Group = React.createClass({
   //
   getInitialState: function() {
     return {
-      groupData: null,
-      messageData: null
+      groupData: null
     }
   },
   //
@@ -52,8 +49,7 @@ var Group = React.createClass({
     return (
       <RouteHandler
         {...this.props}
-        data={this.state.groupData}
-        messageData={this.state.messageData} />
+        data={this.state.groupData} />
     );
   },
   //
@@ -62,11 +58,6 @@ var Group = React.createClass({
   onGroupStoreChange: function(data) {
     this.setState({
       groupData: data
-    });
-  },
-  onMessageStoreChange: function(data) {
-    this.setState({
-      messageData: data
     });
   }
 });

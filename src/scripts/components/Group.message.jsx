@@ -10,7 +10,6 @@ var Heading = require('./Group.heading');
 var actions = require('../actions');
 var helpers = require('../helpers');
 
-var dataStore = require('../stores/data');
 var messageStore = require('../stores/message');
 
 var Alert = require('./Alert');
@@ -20,22 +19,13 @@ var config = require('../config');
 
 var GroupMessage = React.createClass({
   mixins: [
+    Reflux.listenTo(messageStore, 'onMessageStoreChange'),
     Reflux.listenToMany(actions)
   ],
   propTypes: {
     data: React.PropTypes.object
   },
   statics: {
-    // Trigger selected/all ids for output.
-    willTransitionTo: function(transition, params, query) {
-
-      //console.log(query);
-      if(query.type === 'selected') {
-        actions.setMessageStoreWithSelectedIds();
-      } else {
-        actions.setMessageStoreWithAllIds(params.id);
-      }
-    },
     willTransitionFrom: function(transition, component, callback) {
       if(component.formHasUnsavedData() && !component.state.requesting) {
         component.handleDialog(
@@ -62,11 +52,18 @@ var GroupMessage = React.createClass({
     // Replace the textarea with a CKEditor instance.
     this.editor = window.CKEDITOR.replace('adv-MessageForm-body', config.CKEDITOR);
     this.editor.on('change', this.handleMessageInputChange);
+    // Force message store output.
+    messageStore.output();
   },
   componentWillUnmount: function() {
     // Destroy the CKEditor instance.
     // Destroying will also remove any event listeners.
-    this.editor.destroy();
+    // `destroy()` may not work during the auto-redirect,
+    // which happens when there are no selected members.
+    try {
+      this.editor.destroy();
+    }
+    catch(err) {}
   },
   getInitialState: function() {
     return {
@@ -77,6 +74,7 @@ var GroupMessage = React.createClass({
       message: '',
       // Variables to control the form
       isDisabled: true,
+      selectedMembers: [],
       showDialog: false,
       showToList: false,
       // Variables to handle the error
@@ -89,12 +87,6 @@ var GroupMessage = React.createClass({
   //
   render: function() {
     var dialogMessage = 'The message will be lost. Are you sure you want to cancel?';
-
-    var names = (this.props.messageData || [])
-      .map(function(id) {
-        return dataStore.data.memberMap[id].studentName;
-      })
-      .sort();
 
     return (
       <div className="adv-App-editView">
@@ -111,36 +103,36 @@ var GroupMessage = React.createClass({
               To
             </dt>
             <dd className="adv-MessageForm-toListControl">
-              {this.renderToListControl(names)}
+              {this.renderToListControl()}
             </dd>
           </dl>
-          {this.renderToList(names)}
+          {this.renderToList()}
           <div className="adv-MessageForm-field">
             <label
               className="adv-MessageForm-label"
-              htmlFor="ccList">
+              htmlFor="adv-MessageForm-cc">
               Cc
             </label>
             <input
               aria-describedby="adv-MessageForm-ccDescription"
               className="adv-MessageForm-input adv-Input"
-              id="ccList"
+              id="adv-MessageForm-cc"
               maxLength="1000"
-              onChange={this.handleInputChange}
+              onChange={this.handleInputChange('ccList')}
               type="text" />
           </div>
           <div className="adv-MessageForm-field">
             <label
               className="adv-MessageForm-label"
-              htmlFor="bccList">
+              htmlFor="adv-MessageForm-bcc">
               Bcc
             </label>
             <input
               aria-describedby="adv-MessageForm-ccDescription"
               className="adv-MessageForm-input adv-Input"
-              id="bccList"
+              id="adv-MessageForm-bcc"
               maxLength="1000"
-              onChange={this.handleInputChange}
+              onChange={this.handleInputChange('bccList')}
               type="text" />
           </div>
           <p
@@ -157,7 +149,7 @@ var GroupMessage = React.createClass({
             className="adv-MessageForm-input adv-Input"
             id="adv-MessageForm-subject"
             maxLength="100"
-            onChange={this.handleInputChange}
+            onChange={this.handleInputChange('subject')}
             required
             type="text" />
           <label
@@ -194,15 +186,19 @@ var GroupMessage = React.createClass({
       </div>
     );
   },
-  renderToListControl: function(names) {
-    var count = names.length;
+  renderToListControl: function() {
+    if(!this.state.selectedMembers) {
+      return null;
+    }
+
+    var count = this.state.selectedMembers.length;
 
     if(count === 0) {
       return 'No students';
     }
 
     if(count === 1) {
-      return names[0];
+      return this.state.selectedMembers[0];
     }
 
     return (
@@ -215,8 +211,8 @@ var GroupMessage = React.createClass({
       </button>
     );
   },
-  renderToList: function(names) {
-    if(names.length <= 1 || !this.state.showToList) {
+  renderToList: function() {
+    if(!this.state.selectedMembers || this.state.selectedMembers.length <= 1 || !this.state.showToList) {
       return null;
     }
 
@@ -224,14 +220,14 @@ var GroupMessage = React.createClass({
       <ul
         className="adv-MessageForm-toList"
         id="adv-MessageForm-toList">
-        {names.map(this.renderToListItem)}
+        {this.state.selectedMembers.map(this.renderToListItem)}
       </ul>
     );
   },
-  renderToListItem: function(value) {
+  renderToListItem: function(member) {
     return (
       <li className="adv-MessageForm-toListItem">
-        {value}
+        {member.name}
       </li>
     );
   },
@@ -279,15 +275,13 @@ var GroupMessage = React.createClass({
       showDialog: true
     });
   },
-  handleInputChange: function(event) {
-    // Set the value to the related state variable
-    var stateObject = function() {
-      var returnObj = {};
-      returnObj[this.target.id] = this.target.value;
-      return returnObj;
-    }.bind(event)();
-
-    this.setState(stateObject, this.validateForm);
+  handleInputChange: function(key) {
+    // Set the value in state for the given key.
+    return function(event) {
+      var state = {};
+      state[key] = event.target.value;
+      this.setState(state, this.validateForm);
+    }.bind(this);
   },
   handleMessageInputChange: function(event) {
     var value = event.editor.getData();
@@ -308,7 +302,9 @@ var GroupMessage = React.createClass({
   handleSubmit: function(event) {
     event.preventDefault();
     var groupId = this.props.params.id;
-    var emplids = this.props.messageData;
+    var emplids = this.state.selectedMembers.map(function(member) {
+      return member.id;
+    });
     var ccList = this.state.ccList.trim();
     var bccList = this.state.bccList.trim();
     var subject = this.state.subject.trim();
@@ -326,6 +322,16 @@ var GroupMessage = React.createClass({
       errorMessage: message,
       requesting: false
     }, this.focusOnSubmitButton);
+  },
+  onMessageStoreChange: function(selectedMembers) {
+    if(selectedMembers.length === 0) {
+      actions.redirect('group', { id: this.props.params.id });
+      return;
+    }
+
+    this.setState({
+      selectedMembers: selectedMembers
+    });
   },
   //
   // Helper methods

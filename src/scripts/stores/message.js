@@ -2,51 +2,33 @@
 
 var Reflux = require('reflux');
 
-var actions = require('../actions');
-var dataStore = require('./data');
+var groupStore = require('./group');
 
 module.exports = Reflux.createStore({
-  listenables: actions,
   init: function() {
-    this.listenTo(dataStore, this.onStoreChange);
-    this.selectedIds = [];
+    this.listenTo(groupStore, this.onStoreChange);
+    this.data = [];
   },
   //
   // Store methods
   //
   onStoreChange: function(data) {
-    this.source = data;
+    this.data = data.memberDetailList
+      .filter(function(member) {
+        return member.isSelected;
+      })
+      .map(function(member) {
+        return {
+          id: member.universityId,
+          name: member.name
+        };
+      });
     this.output();
   },
   //
-  // Action methods
+  // Helper methods
   //
-  onSetMessageStoreWithAllIds: function(groupId) {
-    var ids = dataStore.data.groupMap[groupId].memberList
-    this.output(ids);
-  },
-  onSetMessageStoreWithSelectedIds: function() {
-    this.output(this.selectedIds);
-  },
-  onSetSelectedIdsForMessage: function(id, isSelected) {
-    var index = this.selectedIds.indexOf(id);
-    var containsId = index >= 0;
-    if(isSelected && !containsId) {
-      this.selectedIds.push(id);
-    }
-    else if(!isSelected && containsId) {
-      this.selectedIds.splice(index, 1);
-    }
-    this.output(this.selectedIds);
-  },
-  //
-  // Handler methods
-  //
-  output: function(ids) {
-    if(!this.source) {
-      return;
-    }
-
-    this.trigger(ids);
+  output: function() {
+    this.trigger(this.data);
   }
 });

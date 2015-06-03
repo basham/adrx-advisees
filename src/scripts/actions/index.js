@@ -19,15 +19,15 @@ module.exports = Reflux.createActions({
   createGroup: async,
   renameGroup: async,
   deleteGroup: async,
+  messageGroup: async,
   // Member actions
   addMember: async,
   removeMember: async,
   removeAllMembers: async,
-  // Message actions
-  messageGroup: async,
-  setMessageStoreWithAllIds: {},
-  setMessageStoreWithSelectedIds: {},
-  setSelectedIdsForMessage: {},
+  selectMember: {},
+  selectAllMembers: {},
+  unselectMember: {},
+  unselectAllMembers: {},
   // Helper actions
   redirect: async,
   redirectToDefaultGroup: {}
